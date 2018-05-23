@@ -4,6 +4,9 @@
 # Exclude entire subfolder of WebStorm
 .idea
 
+# build artifacts
+src/**/*.css
+
 ### Node ###
 # Logs
 logs

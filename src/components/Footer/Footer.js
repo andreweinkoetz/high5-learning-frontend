@@ -1,33 +1,31 @@
 import React from 'react';
-import Styled from 'styled-components';
+// import Styled from 'styled-components';
+import './Footer.css'
 
-
-class PlainFooter extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
+class Footer extends React.Component {
 
     render() {
         return (
-            <div className={this.props.className}>
-                <hr/>
+            <div className={"footer"}>
                 <p>© {new Date().getFullYear()} High-5-Learning. All rights reserved.</p>
             </div>
+
         );
     }
 }
 
-export const Footer = Styled(PlainFooter)`
+export default Footer;
+
+/*export const Footer = Styled(PlainFooter)`
     max-height: 35px;
     bottom: 0;
     left: 0;
     right: 0;
     position: fixed;
     padding-bottom: 30px;
-    background: white;
+    background: #03A9F4;
     > p {
         text-align: center;
         margin-top: 4px;
     }
-`;
+`;*/
