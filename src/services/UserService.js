@@ -9,12 +9,17 @@ export default class UserService {
 
     static baseURL() {return "http://localhost:3000/auth"; }
 
-    static register(user, pass) {
+    // if user is teacher, pass license to backend
+    static register(user, pass, type, license) {
+        let json = {
+            username: user,
+            password: pass,
+            type: type};
+        if(type === 'Teacher'){
+            json.push({license: license});
+        }
         return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/register`, {
-                username: user,
-                password: pass
-            }, function(data) {
+            HttpService.post(`${UserService.baseURL()}/register`, json, function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);
@@ -47,11 +52,23 @@ export default class UserService {
         let base64 = base64Url.replace('-', '+').replace('_', '/');
         return {
             id : JSON.parse(window.atob(base64)).id,
-            username: JSON.parse(window.atob(base64)).username
+            username: JSON.parse(window.atob(base64)).username,
+            type: JSON.parse(window.atob(base64)).type
         };
     }
 
     static isAuthenticated() {
         return !!window.localStorage['jwtToken'];
+    }
+
+    static isTeacher(){
+        let token = window.localStorage['jwtToken'];
+        if (!token) return false;
+
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace('-', '+').replace('_', '/');
+        let type = JSON.parse(window.atob(base64)).type;
+
+        return type === 'Teacher';
     }
 }
