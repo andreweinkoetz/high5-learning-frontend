@@ -1,5 +1,3 @@
-"use strict";
-
 import HttpService from "./HttpService";
 
 export default class UserService {

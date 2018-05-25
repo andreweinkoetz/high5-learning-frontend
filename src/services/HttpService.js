@@ -1,8 +1,4 @@
-"use strict";
-
 export default class HttpService {
-    constructor() {
-    }
 
     static apiURL() {return "http://localhost:3000"; }
 
@@ -136,7 +132,7 @@ export default class HttpService {
     }
 
     static checkIfUnauthorized(res) {
-        if(res.status == 401) {
+        if(res.status === 401) {
             return true;
         }
         return false;
