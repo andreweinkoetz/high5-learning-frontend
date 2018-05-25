@@ -22,7 +22,7 @@ export default class ClassDetail extends Component {
     }
 
     render() {
-        return (<ExpansionPanel label={this.state.title} saveLabel={"Go to"} onSave={this.panelClicked}>
+        return (<ExpansionPanel label={this.state.title} saveLabel={"Go to"} onSave={this.panelClicked} columnWidths={this.props.columnWidths} focused={this.props.focused} >
             <p>{this.state.description}</p>
             <span>URL: {this.state.url}</span>
             <p>Password: {this.state.password}</p>

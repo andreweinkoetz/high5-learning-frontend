@@ -9,18 +9,20 @@ const ClassList = (props) => {
         <div>
             <h1>Classes</h1>
             <hr/>
-            {props.classes.map(obj => {
+            <ExpansionList component={"ul"} recalculateThreshold={80}>
+            {props.classes.map((obj, key) => {
 
                 return (
 
-                    <ExpansionList>
-                        <ClassDetail id={obj.id} title={obj.title} description={obj.description} url={obj.URL}
+
+                        <ClassDetail key={obj.id} id={obj.id} title={obj.title} description={obj.description} url={obj.URL}
                                      password={obj.password}/>
-                    </ExpansionList>
+
 
                 )
 
             })}
+            </ExpansionList>
         </div>);
 }
 
