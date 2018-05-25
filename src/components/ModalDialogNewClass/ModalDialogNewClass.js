@@ -48,5 +48,3 @@ class ModalDialogNewClass extends Component {
     }
 
 }
-
-export default ModalDialogNewClass;
