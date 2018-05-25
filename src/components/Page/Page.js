@@ -33,7 +33,7 @@ export default class Page extends React.Component {
                     <Cell size={2} phoneHidden={true} tabletSize={2} className={"test"}>
                         <NavBar/>
                     </Cell>
-                    <Cell size={10} phoneSize={12} tabletSize={10} className={"content"}>{this.props.children}</Cell>
+                    <Cell size={10} phoneSize={12} tabletSize={6} className={"content"}>{this.props.children}</Cell>
                 </Grid>
                 <div className={"spacey"}></div>
                 <Footer/>

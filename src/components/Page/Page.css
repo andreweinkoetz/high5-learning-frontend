@@ -1,5 +1,13 @@
 .content {
-    padding-left: 35px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media only screen and (max-width: 600px) {
+    .content {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
 .spacey {
