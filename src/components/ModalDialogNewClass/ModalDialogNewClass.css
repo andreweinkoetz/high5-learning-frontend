@@ -1,0 +1,25 @@
+.modalDialogNewClass{
+    font-weight: bold;
+}
+
+.modalDialogNewClassButtonCreate{
+    padding: 10px;
+    margin: 10px;
+    background-color: #2196F3;
+    color: white;
+}
+
+.modalDialogNewClassButtonCreate:hover{
+    background-color: #1E88E5;
+}
+
+.modalDialogNewClassButtonCancel{
+    padding: 10px;
+    margin: 10px;
+    background-color: #9E9E9E;
+    color: white;
+}
+
+.modalDialogNewClassButtonCancel:hover{
+    background-color: #757575;
+}
