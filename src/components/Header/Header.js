@@ -1,26 +1,48 @@
-import React, {Component} from 'react';
-import {Toolbar} from 'react-md';
-import './Header.css'
+import React from 'react';
+import AppBar from "@material-ui/core/es/AppBar/AppBar";
+import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import Typography from "@material-ui/core/es/Typography/Typography";
+import Button from "@material-ui/core/es/Button/Button";
+import MenuIcon from '@material-ui/icons/Menu';
+import {withStyles} from '@material-ui/core/styles';
+import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 
-class Header extends Component{
+const styles = {
+    headDiv: {
+        flexGrow: 1,
+        marginBottom: 20
+    },
+    flex: {
+        flex: 1
+    },
+    menuButton: {
+        marginLeft: -10,
+        marginRight: 20
+    },
+};
 
-    render(){
+function Header(props) {
 
-        return (
-            <div className={"headerDiv"}>
-            <Toolbar
-                colored
-                prominentTitle
-                fixed={true}
-                title={this.props.title}
-                children={<img src={'https://d30y9cdsu7xlg0.cloudfront.net/png/414688-200.png'} alt={""} />}
-                zDepth={3}
-            />
-            </div>
-        );
+    const {classes} = props;
 
-    }
+    return (
+
+        <div className={classes.headDiv}>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+                        <MenuIcon/>
+                    </IconButton>
+                    <Typography variant="title" color="inherit" className={classes.flex}>
+                        {document.title}
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+        </div>
+
+    );
 
 }
 
-export default Header;
+export default withStyles(styles)(Header);

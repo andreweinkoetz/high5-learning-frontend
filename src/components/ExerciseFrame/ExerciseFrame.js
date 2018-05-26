@@ -1,5 +1,5 @@
 import React from 'react';
-import {ExerciseChoices} from './ExerciseChoices';
+import {ExerciseChoices} from '../ExerciseChoice/ExerciseChoices';
 
 export class ExerciseFrame extends React.Component {
     constructor(props) {

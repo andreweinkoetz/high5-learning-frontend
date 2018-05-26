@@ -4,8 +4,9 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import NavBar from '../NavBar/NavBar';
-import {Grid, Cell} from 'react-md';
-import './Page.css';
+import Grid from '@material-ui/core/Grid';
+
+import Hidden from "@material-ui/core/es/Hidden/Hidden";
 
 export default class Page extends React.Component {
 
@@ -17,6 +18,7 @@ export default class Page extends React.Component {
         }
     }
 
+
     componentDidMount() {
         this.setState({
             title: document.title
@@ -25,20 +27,37 @@ export default class Page extends React.Component {
 
     render() {
 
+        const classes = {
+            distDiv: {
+                marginBottom: '40px'
+            },
+            wrapContent: {
+                margin: 0
+            }
+        }
+
+
         return (
-            <section>
+            <div className={classes.wrapContent}>
                 <Header title={this.state.title}/>
-                <Breadcrumb sites={["home", "newpage", "lastpage"]}/>
-                <Grid className="body-grid">
-                    <Cell size={2} phoneHidden={true} tabletSize={2} className={"test"}>
-                        <NavBar/>
-                    </Cell>
-                    <Cell size={10} phoneSize={12} tabletSize={6} className={"content"}>{this.props.children}</Cell>
+
+                <Grid container spacing={32} alignItems={'flex-start'} justify={'flex-start'}>
+                    <Grid item xs={12}>
+                        <Breadcrumb sites={["home", "newpage", "lastpage"]}/>
+                    </Grid>
+                    <Grid item sm={4} md={2}>
+                        <Hidden only={'xs'}>
+                            <NavBar/>
+                        </Hidden>
+                    </Grid>
+                    <Grid item xs={10} sm={7} md={9}>
+                        {this.props.children}
+                    </Grid>
                 </Grid>
-                <div className={"spacey"}></div>
+                <div className={classes.distDiv}>&nbsp;</div>
                 <Footer/>
 
-            </section>
+            </div>
         );
     }
 }
