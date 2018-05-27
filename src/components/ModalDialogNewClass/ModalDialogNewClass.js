@@ -15,27 +15,44 @@ class ModalDialogNewClass extends Component {
         super(props);
 
         this.state = {
-            visible: true
+            visible: true,
+            title: "",
+            error: false
         };
-    }
-    disappear = () => {
-        this.setState({visible: false});
     };
 
+    disappear = () => {
+        if (this.state.title === "") {
+            this.setState({error:true});
+        }
+        else {
+            this.setState({error:false})
+            this.setState({visible: false});
+        }
+    };
+
+    handleChange = (event) => {
+        this.setState({title: event.target.value})
+    }
+
     render () {
+
         return (
-            <div className={"modalDialogNewClass"}>
+            <div>
                 <Dialog
                     disableBackdropClick
                     disableEscapeKeyDown
-                    className={"modalDialogNewClass"}
                     open={this.state.visible}
                 >
                     <DialogTitle>Create new class</DialogTitle>
                     <DialogContent>
                     <TextField
+                        error={this.state.error}
+                        onChange={this.handleChange}
                         label="Title"
                         helperText="Required"
+                        multiline
+                        required={true}
                     />
                     </DialogContent>
                     <DialogContent>
@@ -46,13 +63,11 @@ class ModalDialogNewClass extends Component {
                     </DialogContent>
                 <DialogActions>
                     <Button
-                        className={"modalDialogNewClassButtonCreate"}
                         color={"primary"}
                         variant={"raised"}
                         onClick={this.disappear}
                     >Create Class</Button>
                     <Button
-                        className={"modalDialogNewClassButtonCancel"}
                         color={"secondary"}
                         variant={"raised"}
                         onClick={this.disappear}

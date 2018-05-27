@@ -40,9 +40,9 @@ class ModalDialogNewHomework extends Component {
 
         let exercises = this.state.exercises
             .map(exc => {
-                    return (<div key={exc.id}>
-                        <CreateExercise id={exc.id}/>
-                    </div>)
+                    return (
+                        <CreateExercise key={exc.id} id={exc.id}/>
+                    )
                 }
             )
 
@@ -61,8 +61,9 @@ class ModalDialogNewHomework extends Component {
                         required={true}
                         fullWidth={true}
                         autoFocus={true}
-                    />
+                    /><div style={{maxHeight:'500px', marginBottom: '20px'}}>
                         {exercises}
+                    </div>
                     </DialogContent>
                     <Grid container justify={"center"}>
                     <DialogActions>
