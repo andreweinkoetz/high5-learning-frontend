@@ -29,6 +29,10 @@ export default class LandingPage extends React.Component {
         this.onHandleChangeUsername = this.onHandleChangeUsername.bind(this);
     }
 
+    onHandleChangeUsername(){
+        
+    }
+
     onClickRegisterButton() {
         this.setState({
             modalDialogVisibility: true,
