@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue'
+import blue from '@material-ui/core/colors/blue';
+import grey from '@material-ui/core/colors/grey';
 
 import Page from './components/Page/Page'
 import {ClassListView} from './views/ClassListView';
@@ -13,7 +14,8 @@ class App extends Component {
 
         const theme = createMuiTheme({
             palette: {
-                primary: blue
+                primary: blue,
+                secondary: grey
             }
 
         });
