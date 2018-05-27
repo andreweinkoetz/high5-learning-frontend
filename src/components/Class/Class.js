@@ -5,6 +5,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography';
+import {Link} from 'react-router-dom';
 
 export default class Class extends Component {
 
@@ -30,11 +31,11 @@ export default class Class extends Component {
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>{this.state.title}</Typography>
+                    <Link to={'myclasses/'+this.state.id}><Typography>{this.state.title}</Typography></Link>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>{this.state.description}<br/>
-                    URL: {this.state.url}<br/>
+                        URL: <a href={this.state.url}>{this.state.url}</a><br/>
                     Password: {this.state.password}<br/>
                     </Typography>
                 </ExpansionPanelDetails>

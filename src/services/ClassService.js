@@ -20,7 +20,7 @@ export default class ClassService {
     static addNewClass(){
 
         const newClass = {
-            title: "Math",
+            title: "Chemistry",
             description: "Easy level intro for IT students"
         }
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import Class from './Class';
 
+import config from '../../config';
+
+
 const ClassList = (props) => {
 
     return (
@@ -8,8 +11,8 @@ const ClassList = (props) => {
                 {props.classes.map((obj) => {
 
                     return (
-                        <Class key={obj.id} id={obj.id} title={obj.title} description={obj.description}
-                               url={obj.URL}
+                        <Class key={obj._id} id={obj._id} title={obj.title} description={obj.description}
+                               url={config.baseUrlFrontend + '/myclasses/' + obj._id}
                                password={obj.password}/>
                     )
 
