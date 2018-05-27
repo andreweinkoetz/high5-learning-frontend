@@ -17,5 +17,23 @@ export default class ClassService {
 
     }
 
+    static addNewClass(){
+
+        const newClass = {
+            title: "Math",
+            description: "Easy level intro for IT students"
+        }
+
+        return new Promise((resolve, reject) => {
+            HttpService.post(`${ClassService.baseUrl()}`, newClass,
+                function(data) {
+                resolve(data);
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+
+    }
+
 
 }

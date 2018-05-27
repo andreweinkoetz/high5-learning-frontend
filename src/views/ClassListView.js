@@ -19,10 +19,11 @@ export class ClassListView extends React.Component {
 
         this.state = {
             loading: false,
-            data: [],
+            classes: [],
             userId: props.userId
         };
 
+        this.addNewClass = this.addNewClass.bind(this);
     }
 
     componentWillMount() {
@@ -32,12 +33,23 @@ export class ClassListView extends React.Component {
 
         ClassService.getClasses().then((data) => {
             this.setState({
-                data: [...data],
+                classes: [...data],
                 loading: false
             });
         }).catch((e) => {
             console.error(e);
         });
+    }
+
+
+    addNewClass(){
+        ClassService.addNewClass().then((newClass) => {
+            const newClasses = [...this.state.classes,newClass];
+
+            this.setState({classes: newClasses});
+
+            }
+        );
     }
 
 
@@ -56,12 +68,12 @@ export class ClassListView extends React.Component {
                         <Grid container spacing={0} align={'right'}>
                             <Grid item xs={12}>
                                 <Hidden only={'xs'}>
-                                    <Button variant="raised" color="primary">
+                                    <Button variant="raised" color="primary" onClick={this.addNewClass}>
                                         <AddIcon/>
                                         Add new class</Button>
                                 </Hidden>
                                 <Hidden smUp>
-                                    <Button variant="fab" color="primary" aria-label="add">
+                                    <Button variant="fab" color="primary" aria-label="add" onClick={this.addNewClass}>
                                         <AddIcon />
                                     </Button>
                                 </Hidden>
@@ -72,7 +84,7 @@ export class ClassListView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><ClassList classes={this.state.data}/></Grid>
+                    <Grid item xs={12}><ClassList classes={this.state.classes}/></Grid>
                 </Grid>
 
             </div>
