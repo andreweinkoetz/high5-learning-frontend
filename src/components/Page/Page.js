@@ -7,6 +7,7 @@ import NavBar from '../NavBar/NavBar';
 import Grid from '@material-ui/core/Grid';
 
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
+import UserService from "../../services/UserService";
 
 export default class Page extends React.Component {
 
@@ -16,8 +17,13 @@ export default class Page extends React.Component {
         this.state = {
             title: ''
         }
+
+        this.logout = this.logout.bind(this);
     }
 
+    logout(){
+        UserService.logout();
+    }
 
     componentDidMount() {
         this.setState({
@@ -36,7 +42,7 @@ export default class Page extends React.Component {
 
         return (
             <div>
-                <Header title={this.state.title}/>
+                <Header title={this.state.title} logoutFn={this.logout} />
 
                 <Grid container spacing={32} alignItems={'flex-start'} justify={'flex-start'}>
                     <Grid item xs={12}>

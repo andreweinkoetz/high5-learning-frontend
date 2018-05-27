@@ -42,8 +42,8 @@ export class ClassListView extends React.Component {
     }
 
 
-    addNewClass(){
-        ClassService.addNewClass().then((newClass) => {
+    addNewClass(classToAdd){
+        ClassService.addNewClass(classToAdd).then((newClass) => {
             const newClasses = [...this.state.classes,newClass];
 
             this.setState({classes: newClasses});

@@ -36,7 +36,7 @@ function Header(props) {
                     <Typography variant="title" color="inherit" className={classes.flex}>
                         {document.title}
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={props.logoutFn} >Logout</Button>
                 </Toolbar>
             </AppBar>
         </div>

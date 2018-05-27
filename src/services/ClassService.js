@@ -17,15 +17,15 @@ export default class ClassService {
 
     }
 
-    static addNewClass(){
+    static addNewClass(classToAdd){
 
-        const newClass = {
+       /* const newClass = {
             title: "Chemistry",
             description: "Easy level intro for IT students"
-        }
+        }*/
 
         return new Promise((resolve, reject) => {
-            HttpService.post(`${ClassService.baseUrl()}`, newClass,
+            HttpService.post(`${ClassService.baseUrl()}`, classToAdd,
                 function(data) {
                 resolve(data);
             }, function(textStatus) {

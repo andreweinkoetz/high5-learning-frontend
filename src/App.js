@@ -10,6 +10,7 @@ import {ExerciseChoices} from './components/ExerciseChoice/ExerciseChoices';
 import UserService from './services/UserService';
 import ModalDialogNewHomework from "./components/ModalDialogNewHomework/ModalDialogNewHomework";
 import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNewClass";
+import LandingPage from './components/LandingPage/LandingPage';
 
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
 
         this.state = {
             userId: UserService.getCurrentUser().id,
+
             routes: [
                 {
                     render: () => (<ClassListView userId={userId}/>),
@@ -53,13 +55,16 @@ class App extends Component {
 
         return (
             <MuiThemeProvider theme={theme}>
-                <Page>
-                    <Router>
-                        <Switch>
-                            {this.state.routes.map((route, i) => (<Route key={i} {...route}/>))}
-                        </Switch>
-                    </Router>
-                </Page>
+
+                <Router>
+                    <Switch>
+                        {UserService.isAuthenticated() ?
+                            this.state.routes.map((route, i) => (<Page><Route key={i} {...route}/></Page>)) :
+                            <Route component={LandingPage} path={'/'} exact={true}/>
+                        }
+                    </Switch>
+                </Router>
+
             </MuiThemeProvider>
         );
 
