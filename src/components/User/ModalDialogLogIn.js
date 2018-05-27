@@ -38,7 +38,7 @@ class ModalDialogLogIn extends Component {
         const password = this.state.password;
         UserService.login(username, password).then((data) => {
             if(UserService.isAuthenticated()){
-
+                this.props.onUsername(username);
             }else{
                 alert("LogIn failed!");
             }
