@@ -4,10 +4,11 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import {FormControl, FormLabel, FormControlLabel, RadioGroup, Radio} from '@material-ui/core';
+import {FormControlLabel, RadioGroup, Radio} from '@material-ui/core';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import './ModalDialog.css';
+import UserService from "../../services/UserService";
 
 class ModalDialogRegister extends Component {
 
@@ -15,18 +16,48 @@ class ModalDialogRegister extends Component {
         super(props);
 
         this.state = {
+            password: "",
+            username: "",
             type: "Student",
+            license: ""
         };
+
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleChangeUsername = this.handleChangeUsername.bind(this);
+        this.handleChangeType = this.handleChangeType.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange = (event) => {
+    handleChangePassword(event) {
+        this.setState({password:event.target.value});
+    }
+
+    handleChangeUsername(event) {
+        this.setState({username:event.target.value});
+    }
+
+    handleChangeType = (event) => {
         this.setState({
             type: event.target.value,
         });
     };
 
-    save() {
-
+    handleSubmit(){
+        const username = this.state.username;
+        const password = this.state.password;
+        const type = this.state.type;
+        console.log(username);
+        let license = undefined;
+        if(type === "Teacher") license = this.state.license;
+        UserService.register(username, password, type, license).then((data) => {
+            console.log("hallo");
+            alert("Win");
+        }).catch((e) => {
+            console.error(e);
+            alert("Loss");
+        });
+        this.props.cancel();
     }
 
     render() {
@@ -43,26 +74,22 @@ class ModalDialogRegister extends Component {
                         <TextField
                             label="Username"
                             helperText="Required"
+                            onChange={this.handleChangeUsername}
                         />
                     </DialogContent>
                     <DialogContent>
                         <TextField
                             label="Password"
+                            type="password"
                             helperText="Required"
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <TextField
-                            label="Password"
-                            helperText="Required"
+                            onChange={this.handleChangePassword}
                         />
                     </DialogContent>
                     <DialogContent>
                         <RadioGroup
-                            aria-label="type"
                             name="type"
                             value={this.state.type}
-                            onChange={this.handleChange}
+                            onChange={this.handleChangeType}
                         >
                             <FormControlLabel value="Teacher" control={<Radio/>} label="Teacher"/>
                             <FormControlLabel value="Student" control={<Radio/>} label="Student"/>
@@ -70,10 +97,10 @@ class ModalDialogRegister extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button
-                            className={"saveButton"}
+                            className={"Button"}
                             color={"primary"}
                             variant={"raised"}
-                            onClick={this.save}
+                            onClick={this.handleSubmit}
                         >Register</Button>
                         <Button
                             className={"Button"}
