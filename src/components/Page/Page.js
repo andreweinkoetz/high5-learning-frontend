@@ -27,18 +27,15 @@ export default class Page extends React.Component {
 
     render() {
 
-        const classes = {
+        const styles = {
             distDiv: {
                 marginBottom: '40px'
-            },
-            wrapContent: {
-                margin: 0
             }
         }
 
 
         return (
-            <div className={classes.wrapContent}>
+            <div>
                 <Header title={this.state.title}/>
 
                 <Grid container spacing={32} alignItems={'flex-start'} justify={'flex-start'}>
@@ -54,7 +51,7 @@ export default class Page extends React.Component {
                         {this.props.children}
                     </Grid>
                 </Grid>
-                <div className={classes.distDiv}>&nbsp;</div>
+                <div style={styles.distDiv}>&nbsp;</div>
                 <Footer/>
 
             </div>

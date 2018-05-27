@@ -19,8 +19,10 @@ export class ClassListView extends React.Component {
 
         this.state = {
             loading: false,
-            data: []
+            data: [],
+            userId: props.userId
         };
+
     }
 
     componentWillMount() {
@@ -48,7 +50,7 @@ export class ClassListView extends React.Component {
             <div>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
-                        <Typography variant={'title'}>My classes</Typography>
+                        <Typography variant={'title'}>My classes {this.state.userId}</Typography>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6}>
                         <Grid container spacing={0} align={'right'}>

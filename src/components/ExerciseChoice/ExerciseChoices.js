@@ -1,13 +1,11 @@
 import React from 'react';
 
 export class ExerciseChoices extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+
     render(){
         return(
             <div>
-                <form>
+                {/*<form>
                     <fieldset>
                         <input type="radio" id="1" />
                         <label for="1"> {props.choices[0].solution}</label>
@@ -21,7 +19,7 @@ export class ExerciseChoices extends React.Component {
                         <input type="radio" id="4" />
                         <label htmlFor="4"> {props.choices[3].solution}</label>
                     </fieldset>
-                </form>
+                </form>*/}
             </div>
 
         );
