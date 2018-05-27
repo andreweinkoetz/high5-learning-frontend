@@ -7,14 +7,48 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
 import './ModalDialog.css';
+import UserService from '../../services/UserService'
 
 class ModalDialogLogIn extends Component {
 
-    save(){
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            password: "",
+            username: "",
+        };
+
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleChangeUsername = this.handleChangeUsername.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    render () {
+    handleChangePassword(event) {
+        this.setState({password:event.target.value});
+    }
+
+    handleChangeUsername(event) {
+        this.setState({username:event.target.value});
+    }
+
+    handleSubmit(){
+        const username = this.state.username;
+        const password = this.state.password;
+        UserService.login(username, password).then((data) => {
+            console.log("hallo");
+            if(UserService.isAuthenticated()){
+                alert("Win");
+            }
+        }).catch((e) => {
+            console.error(e);
+            alert("Loss");
+        });
+        this.props.cancel();
+    }
+
+    render() {
         return (
             <div>
                 <Dialog
@@ -28,25 +62,28 @@ class ModalDialogLogIn extends Component {
                         <TextField
                             label="Username"
                             helperText="Required"
+                            onChange={this.handleChangeUsername}
                         />
                     </DialogContent>
                     <DialogContent>
                         <TextField
                             label="Password"
+                            type="password"
                             helperText="Required"
+                            onChange={this.handleChangePassword}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button
-                            className={"saveButton"}
-                            color={"primary"}
-                            variant={"raised"}
-                            onClick={this.save}
+                            className="Button"
+                            color="primary"
+                            variant="raised"
+                            onClick={this.handleSubmit}
                         >LogIn</Button>
                         <Button
-                            className={"Button"}
-                            color={"secondary"}
-                            variant={"raised"}
+                            className="Button"
+                            color="secondary"
+                            variant="raised"
                             onClick={this.props.cancel}
                         >Cancel</Button>
                     </DialogActions>
