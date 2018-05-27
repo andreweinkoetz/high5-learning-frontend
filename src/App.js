@@ -9,6 +9,7 @@ import {ClassListView} from './views/ClassListView';
 import {ExerciseChoices} from './components/ExerciseChoice/ExerciseChoices';
 import UserService from './services/UserService';
 import ModalDialogNewHomework from "./components/ModalDialogNewHomework/ModalDialogNewHomework";
+import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNewClass";
 
 
 class App extends Component {
@@ -29,6 +30,7 @@ class App extends Component {
 
                 {component: ExerciseChoices, path: '/exercises', exact: true},
                 {component: ModalDialogNewHomework, path: '/modal', exact: true},
+                {component: ModalDialogNewClass, path: '/modalC', exact: true},
             ]
 
         }
