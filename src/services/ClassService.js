@@ -3,7 +3,7 @@ import HttpService from './HttpService';
 export default class ClassService {
 
     static baseUrl() {
-        return "http://localhost:3000/classes"
+        return HttpService.apiURL() + "/classes";
     }
 
     static getClasses(){

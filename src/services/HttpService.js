@@ -1,6 +1,8 @@
+import config from '../config';
+
 export default class HttpService {
 
-    static apiURL() {return "http://localhost:3000"; }
+    static apiURL() {return config.backendUrl; }
 
     static get(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
