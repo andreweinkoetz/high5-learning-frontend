@@ -70,7 +70,7 @@ export default class LandingPage extends React.Component {
         ];
 
         if (UserService.isAuthenticated()){
-            return (<Redirect to="myclass/"/>);
+            return (<Redirect to="myclasses/"/>);
         }
 
         if (this.state.modalDialogClass === "logIn") {
