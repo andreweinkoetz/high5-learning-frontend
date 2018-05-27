@@ -5,7 +5,7 @@ import blue from '@material-ui/core/colors/blue'
 import Page from './components/Page/Page'
 import {ClassListView} from './views/ClassListView';
 import UserService from './services/UserService';
-import LandingPage from './components/LandingPage/LandingPage';
+
 
 class App extends Component {
 
@@ -36,7 +36,7 @@ class App extends Component {
             return (
                 <MuiThemeProvider theme={theme}>
                     <Page>
-                        <ClassListView userId={id}/>
+                        <ClassListView userId={undefined}/>
                     </Page>
                 </MuiThemeProvider>
             );
