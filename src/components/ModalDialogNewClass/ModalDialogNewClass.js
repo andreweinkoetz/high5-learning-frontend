@@ -15,7 +15,7 @@ class ModalDialogNewClass extends Component {
         super(props);
 
         this.state = {
-            visible: false
+            visible: true
         };
     }
     disappear = () => {
@@ -25,7 +25,7 @@ class ModalDialogNewClass extends Component {
     render () {
         return (
             <div className={"modalDialogNewClass"}>
-                < Dialog
+                <Dialog
                     disableBackdropClick
                     disableEscapeKeyDown
                     className={"modalDialogNewClass"}
