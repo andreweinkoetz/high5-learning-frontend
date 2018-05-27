@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {Button, DialogContainer, TextField} from 'react-md';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 
 import './ModalDialogNewClass.css';
 
@@ -9,7 +15,7 @@ class ModalDialogNewClass extends Component {
         super(props);
 
         this.state = {
-            visible: true
+            visible: false
         };
     }
     disappear = () => {
@@ -18,33 +24,44 @@ class ModalDialogNewClass extends Component {
 
     render () {
         return (
-            <div >
-                <DialogContainer
+            <div className={"modalDialogNewClass"}>
+                < Dialog
+                    disableBackdropClick
+                    disableEscapeKeyDown
                     className={"modalDialogNewClass"}
-                    title="Create new class"
-                    visible={this.state.visible}
+                    open={this.state.visible}
                 >
+                    <DialogTitle>Create new class</DialogTitle>
+                    <DialogContent>
                     <TextField
                         label="Title"
-                        helpText="Required"
+                        helperText="Required"
                     />
+                    </DialogContent>
+                    <DialogContent>
                     <TextField
                         label="Description"
-                        rows={5}
+                        multiline
                     />
+                    </DialogContent>
+                <DialogActions>
                     <Button
                         className={"modalDialogNewClassButtonCreate"}
-                        label="Create class"
+                        color={"primary"}
+                        variant={"raised"}
                         onClick={this.disappear}
-                    />
+                    >Create Class</Button>
                     <Button
                         className={"modalDialogNewClassButtonCancel"}
-                        label="Cancel"
+                        color={"secondary"}
+                        variant={"raised"}
                         onClick={this.disappear}
-                    />
-                </DialogContainer>
+                    >Cancel</Button>
+                </DialogActions>
+                </Dialog>
             </div>
         )
     }
-
 }
+
+export default ModalDialogNewClass;
