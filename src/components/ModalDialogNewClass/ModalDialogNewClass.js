@@ -17,22 +17,31 @@ class ModalDialogNewClass extends Component {
         this.state = {
             visible: true,
             title: "",
+            description: "",
             error: false
         };
     };
 
-    disappear = () => {
+    handleCancel = () => {
+        this.setState({visible: false});
+    };
+
+    handleSubmit = () => {
         if (this.state.title === "") {
             this.setState({error:true});
         }
         else {
-            this.setState({error:false})
+            this.setState({error:false});
             this.setState({visible: false});
         }
     };
 
-    handleChange = (event) => {
+    handleTitleChange = (event) => {
         this.setState({title: event.target.value})
+    }
+
+    handleDescriptionChange = (event) => {
+        this.setState({description: event.target.value});
     }
 
     render () {
@@ -48,7 +57,7 @@ class ModalDialogNewClass extends Component {
                     <DialogContent>
                     <TextField
                         error={this.state.error}
-                        onChange={this.handleChange}
+                        onChange={this.handleTitleChange}
                         label="Title"
                         helperText="Required"
                         multiline
@@ -57,6 +66,7 @@ class ModalDialogNewClass extends Component {
                     </DialogContent>
                     <DialogContent>
                     <TextField
+                        onChange={this.handleDescriptionChange}
                         label="Description"
                         multiline
                     />
@@ -65,12 +75,12 @@ class ModalDialogNewClass extends Component {
                     <Button
                         color={"primary"}
                         variant={"raised"}
-                        onClick={this.disappear}
+                        onClick={this.handleSubmit}
                     >Create Class</Button>
                     <Button
                         color={"secondary"}
                         variant={"raised"}
-                        onClick={this.disappear}
+                        onClick={this.handleCancel}
                     >Cancel</Button>
                 </DialogActions>
                 </Dialog>
