@@ -37,13 +37,14 @@ class ModalDialogLogIn extends Component {
         const username = this.state.username;
         const password = this.state.password;
         UserService.login(username, password).then((data) => {
-            console.log("hallo");
             if(UserService.isAuthenticated()){
-                alert("Win");
+
+            }else{
+                alert("LogIn failed!");
             }
         }).catch((e) => {
             console.error(e);
-            alert("Loss");
+            alert("LogIn failed internally: "+e);
         });
         this.props.cancel();
     }
