@@ -51,11 +51,14 @@ class ModalDialogRegister extends Component {
         let license = undefined;
         if(type === "Teacher") license = this.state.license;
         UserService.register(username, password, type, license).then((data) => {
-            console.log("hallo");
-            alert("Win");
+            if(UserService.isAuthenticated()){
+                this.props.onUsername(username);
+            }else{
+                alert("Registration failed!");
+            }
         }).catch((e) => {
             console.error(e);
-            alert("Loss");
+            alert("Registration failed: "+e);
         });
         this.props.cancel();
     }

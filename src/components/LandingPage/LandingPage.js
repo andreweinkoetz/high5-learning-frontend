@@ -20,13 +20,19 @@ export default class LandingPage extends React.Component {
         this.state = {
             modalDialogVisibility: false,
             modalDialogClass: "register",
-            username: "",
+            username: ""
         };
 
         this.onClickLogInButton = this.onClickLogInButton.bind(this);
         this.onClickRegisterButton = this.onClickRegisterButton.bind(this);
         this.onClickCancelModalDialog = this.onClickCancelModalDialog.bind(this);
         this.onHandleChangeUsername = this.onHandleChangeUsername.bind(this);
+    }
+
+    onHandleChangeUsername(username){
+        this.setState({
+            username: "username"
+        });
     }
 
     onClickRegisterButton() {
@@ -71,7 +77,7 @@ export default class LandingPage extends React.Component {
             return (
                 <div>
                     <h1>Welcome to High5-Learning</h1>
-                    <LogIn cancel={this.onClickCancelModalDialog} visible={this.state.modalDialogVisibility}/>
+                    <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog} visible={this.state.modalDialogVisibility}/>
                     <div className="buttonDiv">
                         <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
                         <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
@@ -85,7 +91,7 @@ export default class LandingPage extends React.Component {
         return (
             <div>
                 <h1>Welcome to High5-Learning</h1>
-                <Register cancel={this.onClickCancelModalDialog} visible={this.state.modalDialogVisibility}/>
+                <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog} visible={this.state.modalDialogVisibility}/>
                 <div className="buttonDiv">
                     <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
                     <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
