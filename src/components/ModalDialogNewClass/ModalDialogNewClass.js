@@ -15,7 +15,7 @@ class ModalDialogNewClass extends Component {
         super(props);
 
         this.state = {
-            visible: true
+            visible: false
         };
     }
     disappear = () => {
