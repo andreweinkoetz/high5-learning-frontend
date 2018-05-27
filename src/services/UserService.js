@@ -2,7 +2,7 @@ import HttpService from "./HttpService";
 
 export default class UserService {
 
-    static baseURL() {return "http://localhost:3000/auth"; }
+    static baseURL() {return HttpService.apiURL() + "/auth"; }
 
     // if user is teacher, pass license to backend
     static register(user, pass, type, license) {
@@ -62,9 +62,6 @@ export default class UserService {
 
         let base64Url = token.split('.')[1];
         let base64 = base64Url.replace('-', '+').replace('_', '/');
-        console.log(base64);
-        console.log(window.atob(base64));
-        console.log(JSON.parse(window.atob(base64)));
         let type = JSON.parse(window.atob(base64)).type;
 
         return type === 'Teacher';
