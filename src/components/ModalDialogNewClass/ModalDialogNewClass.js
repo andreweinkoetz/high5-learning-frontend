@@ -21,7 +21,11 @@ class ModalDialogNewClass extends Component {
         };
     };
 
-    disappear = () => {
+    handleCancle = () => {
+        this.setState({visible: false});
+    };
+
+    handleSubmit = () => {
         if (this.state.title === "") {
             this.setState({error:true});
         }
@@ -65,12 +69,12 @@ class ModalDialogNewClass extends Component {
                     <Button
                         color={"primary"}
                         variant={"raised"}
-                        onClick={this.disappear}
+                        onClick={this.handleSubmit}
                     >Create Class</Button>
                     <Button
                         color={"secondary"}
                         variant={"raised"}
-                        onClick={this.disappear}
+                        onClick={this.handleCancle}
                     >Cancel</Button>
                 </DialogActions>
                 </Dialog>
