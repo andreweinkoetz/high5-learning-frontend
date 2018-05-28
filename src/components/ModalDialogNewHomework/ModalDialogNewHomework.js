@@ -8,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 
 import ErrorComponent from '../../components/ErrorComponent/ErrorComponent';
+import ErrorDeleteExerciseComponent from '../../components/ErrorDeleteExerciseComponent/ErrorDeleteExerciseComponent';
 import CreateExercise from '../CreateExercise/CreateExercise';
 
 class ModalDialogNewHomework extends Component {
@@ -33,7 +34,8 @@ class ModalDialogNewHomework extends Component {
                 }
             ],
             errorText: [],
-            errorState: false
+            errorStateFields: false,
+            errorStateDeleteExercise: false
         };
 
     }
@@ -104,7 +106,7 @@ class ModalDialogNewHomework extends Component {
                 Object.assign(updatedState[i].solutionPossibilitiesError[a])["a"+(a+1)] = testSolutionPossibilitiesMissing[i][a];
             }
         }
-        this.setState({exercisesData: updatedState, homeworkTitleError: (testHomeworkTitleMissing === ""), errorText: errorTextCurrent, errorState: (errorTextCurrent.length !== 0)});
+        this.setState({exercisesData: updatedState, homeworkTitleError: (testHomeworkTitleMissing === ""), errorText: errorTextCurrent, errorStateFields: (errorTextCurrent.length !== 0)});
         if(errorTextCurrent.length === 0) {
             this.props.handleCancel();
         }
@@ -123,26 +125,37 @@ class ModalDialogNewHomework extends Component {
         let s = i.solutionPossibilities[answerID-1];
         let b = "a"+answerID;
         s[b] = event.target.value;
+        if (event.target.value !== "") {
+            let e = i.solutionPossibilitiesError[answerID-1];
+            e[b] = false;
+        }
         this.setState({exercisesData: r});
     };
 
     changeHomeworkTitle = (event) => {
         let t = this.state.homeworkTitle;
+        let e = this.state.homeworkTitleError;
         t = event.target.value;
-        this.setState({homeworkTitle: t});
+        if (event.target.value !== "") {
+            e = false;
+        }
+        this.setState({homeworkTitle: t, homeworkTitleError: e});
     };
 
     changeExerciseTitle = (id) => (event) => {
         let r = [...this.state.exercisesData];
         let i = r.find(e => e.id === id);
         i.exerciseTitle = event.target.value;
+        if (event.target.value !== "") {
+            i.exerciseTitleError = false;
+        }
         this.setState({exerciseData: r});
     };
 
     addExercise = () => {
         let c = [...this.state.exercisesData];
         let n = c.length;
-        n = n + 1;
+        n = "" + (n + 1);
         c.push({id: n, exerciseTitle: "", exerciseTitleError: false, rightSolution: "", rightSolutionError: false, solutionPossibilities: [
                 {a1: ""},
                 {a2: ""},
@@ -158,7 +171,25 @@ class ModalDialogNewHomework extends Component {
     };
 
     handleErrorMessageRead = () => {
-        this.setState({errorState: false});
+        this.setState({errorStateFields: false});
+    };
+
+    handleDeleteExerciseErrorMessageRead = () => {
+        this.setState({errorStateDeleteExercise: false});
+    }
+
+    handleDeleteExercise = (id) => {
+        let r = [...this.state.exercisesData];
+        if (r.length===1) {
+            this.setState({errorStateDeleteExercise: true});
+        }
+        else {
+            r.splice(id - 1, 1);
+            for (let i = (id - 1); i < r.length; i++) {
+                r[i].id = "" + (i + 1);
+            }
+            this.setState({exercisesData: r});
+        }
     };
 
     render () {
@@ -174,6 +205,9 @@ class ModalDialogNewHomework extends Component {
                         changeTitle={this.changeExerciseTitle}
                         errorExerciseTitle={this.state.exercisesData[exc.id-1].exerciseTitleError}
                         errorExerciseSolutionPossibilities={this.state.exercisesData[exc.id-1].solutionPossibilitiesError}
+                        deleteExercise={this.handleDeleteExercise}
+                        answersValues={this.state.exercisesData[exc.id-1].solutionPossibilities}
+                        titleValue={this.state.exercisesData[exc.id-1].exerciseTitle}
                     />
                 )
             }
@@ -227,8 +261,12 @@ class ModalDialogNewHomework extends Component {
                 </Dialog>
                 <ErrorComponent
                     errorOutputText={this.state.errorText}
-                    visible={this.state.errorState}
+                    visible={this.state.errorStateFields}
                     errorMessageRead={this.handleErrorMessageRead}/>
+                <ErrorDeleteExerciseComponent
+                    visible={this.state.errorStateDeleteExercise}
+                    errorDeleteExerciseMessageRead={this.handleDeleteExerciseErrorMessageRead}
+                />
             </div>
         )
     }
