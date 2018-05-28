@@ -24,17 +24,22 @@ class ModalDialogRegister extends Component {
 
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
+        this.handleChangeLicense = this.handleChangeLicense.bind(this);
         this.handleChangeType = this.handleChangeType.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChangePassword(event) {
-        this.setState({password:event.target.value});
+        this.setState({password: event.target.value});
     }
 
     handleChangeUsername(event) {
-        this.setState({username:event.target.value});
+        this.setState({username: event.target.value});
+    }
+
+    handleChangeLicense(event){
+        this.setState({license: event.target.value});
     }
 
     handleChangeType = (event) => {
@@ -43,27 +48,35 @@ class ModalDialogRegister extends Component {
         });
     };
 
-    handleSubmit(){
+    handleSubmit() {
         const username = this.state.username;
         const password = this.state.password;
         const type = this.state.type;
-        console.log(username);
         let license = undefined;
-        if(type === "Teacher") license = this.state.license;
+        if (type === "Teacher") license = this.state.license;
         UserService.register(username, password, type, license).then((data) => {
-            if(UserService.isAuthenticated()){
+            if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
-            }else{
+            } else {
                 alert("Registration failed!");
             }
         }).catch((e) => {
             console.error(e);
-            alert("Registration failed: "+e);
+            alert("Registration failed: " + e);
         });
         this.props.cancel();
     }
 
     render() {
+
+        const licenseDialog = (this.state.type === "Teacher") ? (
+            <DialogContent> <TextField
+                label="License"
+                helperText="Required"
+                onChange={this.handleChangeLicense}
+            />
+            </DialogContent>) : undefined;
+
         return (
             <div>
                 <Dialog
@@ -98,6 +111,7 @@ class ModalDialogRegister extends Component {
                             <FormControlLabel value="Student" control={<Radio/>} label="Student"/>
                         </RadioGroup>
                     </DialogContent>
+                    {licenseDialog}
                     <DialogActions>
                         <Button
                             className={"Button"}

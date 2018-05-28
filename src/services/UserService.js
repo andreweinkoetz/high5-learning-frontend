@@ -6,15 +6,19 @@ export default class UserService {
 
     // if user is teacher, pass license to backend
     static register(user, pass, type, license) {
-        let json = {
+        let userModel = {
             username: user,
             password: pass,
-            type: type};
+            type: type
+        };
+        console.log(userModel);
+        console.log(license);
         if(type === 'Teacher'){
-            json.push({license: license});
+            userModel['license'] = license;
         }
+        console.log(userModel);
         return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/register`, json, function(data) {
+            HttpService.post(`${UserService.baseURL()}/register`, userModel, function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);
