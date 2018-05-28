@@ -5,6 +5,9 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import DialogContent from '@material-ui/core/DialogContent';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 class CreateExercise extends Component {
 
@@ -15,6 +18,8 @@ class CreateExercise extends Component {
             id: this.props.id
         }
     };
+
+
 
     render () {
         return (
@@ -28,6 +33,7 @@ class CreateExercise extends Component {
                         required={true}
                         multiline
                         fullWidth={true}
+                        value={this.props.titleValue}
                     />
                 </DialogContent>
                 <DialogContent>
@@ -44,6 +50,7 @@ class CreateExercise extends Component {
                                 label="Answer 1"
                                 helperText="Required"
                                 required={true}
+                                value={Object.values(this.props.answersValues[0])[0]}
                             />}
                             value={"1"}
                         />
@@ -56,6 +63,7 @@ class CreateExercise extends Component {
                                 multiline
                                 helperText="Required"
                                 required={true}
+                                value={Object.values(this.props.answersValues[1])[0]}
                             />}
                             value={"2"}
                         />
@@ -68,6 +76,7 @@ class CreateExercise extends Component {
                                 label="Answer 3"
                                 helperText="Required"
                                 required={true}
+                                value={Object.values(this.props.answersValues[2])[0]}
                             />}
                             value={"3"}
                         />
@@ -80,11 +89,21 @@ class CreateExercise extends Component {
                                 label="Answer 4"
                                 helperText="Required"
                                 required={true}
+                                value={Object.values(this.props.answersValues[3])[0]}
                             />}
                             value={"4"}
                         />
                     </RadioGroup>
                 </DialogContent>
+                <Grid container justify={"center"}>
+                    <DialogActions>
+                        <Button
+                            color={"secondary"}
+                            variant={"raised"}
+                            onClick={() => this.props.deleteExercise(this.state.id)}
+                        >Delete exercise {this.state.id}</Button>
+                    </DialogActions>
+                </Grid>
             </div>
         )
     }
