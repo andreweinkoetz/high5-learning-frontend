@@ -98,17 +98,17 @@ export default class LandingPage extends React.Component {
                     </p>
                     <br/><br/><br/><br/><br/>
                     <h2> How do we achieve this?</h2>
-                    <p>
-                        <ul>
-                            <li>Modern, intuitive e-learning platform</li>
-                            <li>Creation of virtual classes</li>
-                            <li>Teacherspublish multiple choice homework</li>
-                            <li>Instant feedback to teachers from students</li>
-                            <li>Statistics for teachers about homework</li>
-                            <li>Reusability of classes</li>
 
-                        </ul>
-                    </p>
+                    <ul>
+                        <li>Modern, intuitive e-learning platform</li>
+                        <li>Creation of virtual classes</li>
+                        <li>Teacherspublish multiple choice homework</li>
+                        <li>Instant feedback to teachers from students</li>
+                        <li>Statistics for teachers about homework</li>
+                        <li>Reusability of classes</li>
+
+                    </ul>
+
                 </div>
                 <div className="buttonDiv">
                     <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
