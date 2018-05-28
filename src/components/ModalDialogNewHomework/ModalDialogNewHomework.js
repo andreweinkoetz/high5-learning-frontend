@@ -5,10 +5,10 @@ import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-
-import CreateExercise from '../CreateExercise/CreateExercise';
-
 import Grid from '@material-ui/core/Grid';
+
+import ErrorComponent from '../../components/ErrorComponent/ErrorComponent';
+import CreateExercise from '../CreateExercise/CreateExercise';
 
 class ModalDialogNewHomework extends Component {
 
@@ -32,7 +32,9 @@ class ModalDialogNewHomework extends Component {
                         {a4: false}
                     ]
                 }
-            ]
+            ],
+            errorText: [],
+            errorState: false
         };
     }
 
@@ -59,13 +61,13 @@ class ModalDialogNewHomework extends Component {
     };*/
 
     handleCreate = () => {
-        let textPrintedOut = "";
+        let errorTextCurrent = [];
 
         let testHomeworkTitleMissing = this.state.homeworkTitle;
         let updatedState = [...this.state.exercisesData];
 
         if (testHomeworkTitleMissing === "") {
-            textPrintedOut += "For this homework the title is missing!\n";
+            errorTextCurrent.push("For this homework the title is missing!");
         };
 
         let testExerciseTitleMissing = this.state.exercisesData.map(
@@ -84,26 +86,30 @@ class ModalDialogNewHomework extends Component {
 
         for(let i = 0; i<testExerciseTitleMissing.length;i++) {
             if (testExerciseTitleMissing[i] === true) {
-                textPrintedOut += "For Exercise " + (i + 1) + " the title is missing!\n";
+                errorTextCurrent.push("For exercise " + (i + 1) + " the title is missing!");
             }
             updatedState[i].exerciseTitleError = testExerciseTitleMissing[i];
         }
 
         for(let i = 0; i<testRightSolutionMissing.length;i++) {
             if (testRightSolutionMissing[i] === true) {
-                textPrintedOut += "For Exercise " + (i + 1) + " the right solution is missing!\n";
+                errorTextCurrent.push("For exercise " + (i + 1) + " the right solution is missing!");
             }
+            updatedState[i].rightSolutionError = testRightSolutionMissing[i];
         }
 
         for(let i = 0; i<testSolutionPossibilitiesMissing.length;i++) {
             for(let a = 0; a<testSolutionPossibilitiesMissing[i].length;a++) {
                 if(testSolutionPossibilitiesMissing[i][a] === true) {
-                    textPrintedOut += "For Exercise " + (i + 1) + " answer " + (a + 1) + " is missing!\n";
+                    errorTextCurrent.push("For exercise " + (i + 1) + " answer " + (a + 1) + " is missing!");
                 }
                 Object.assign(updatedState[i].solutionPossibilitiesError[a])["a"+(a+1)] = testSolutionPossibilitiesMissing[i][a];
             }
         }
-        this.setState({exercisesData: updatedState, homeworkTitleError: (testHomeworkTitleMissing === "")});
+        this.setState({exercisesData: updatedState, homeworkTitleError: (testHomeworkTitleMissing === ""), errorText: errorTextCurrent, errorState: (errorTextCurrent.length !== 0)});
+        if(errorTextCurrent.length === 0) {
+            this.handleCancel();
+        }
     };
 
     changeRightSolution = (id) => (event) => {
@@ -151,6 +157,10 @@ class ModalDialogNewHomework extends Component {
                 {a4: false}
             ]});
         this.setState({exercisesData: c});
+    };
+
+    handleErrorMessageRead = () => {
+        this.setState({errorState: false});
     };
 
     render () {
@@ -217,6 +227,10 @@ class ModalDialogNewHomework extends Component {
                 </DialogActions>
                     </Grid>
                 </Dialog>
+                <ErrorComponent
+                    errorOutputText={this.state.errorText}
+                    visible={this.state.errorState}
+                    errorMessageRead={this.handleErrorMessageRead}/>
             </div>
         )
     }
