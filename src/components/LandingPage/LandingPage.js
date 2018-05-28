@@ -1,4 +1,5 @@
 import React from 'react';
+import {Switch} from 'react-router-dom';
 
 import Footer from '../Footer/Footer';
 import LogInButton from '../User/LogInButton';
@@ -29,7 +30,7 @@ export default class LandingPage extends React.Component {
 
     // Please check all these methods as i believe they don't do anything :D
 
-    onHandleChangeUsername(){
+    onHandleChangeUsername() {
         this.setState({
             username: "username"
         });
@@ -58,40 +59,57 @@ export default class LandingPage extends React.Component {
     render() {
         const images = [
             {
-                url: '/static/images/grid-list/breakfast.jpg',
+                url: './img/login.jpg',
                 title: 'LogIn',
-                width: '40%',
+                width: '100%',
             },
             {
-                url: '/static/images/grid-list/burgers.jpg',
+                url: './img/register.jpg',
                 title: 'Register',
-                width: '30%',
+                width: '100%',
+            },
+            {
+                url: './img/elearning.jpg',
             }
         ];
 
-        if (UserService.isAuthenticated()){
-            window.location ='/myclasses/';
+        if (UserService.isAuthenticated()) {
+            window.location = '/myclasses/';
         }
 
-        if (this.state.modalDialogClass === "logIn") {
-            return (
-                <div>
-                    <h1>Welcome to High5-Learning</h1>
-                    <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog} visible={this.state.modalDialogVisibility}/>
-                    <div className="buttonDiv">
-                        <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
-                        <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
-                    </div>
-                    <section>
-                        <Footer/>
-                    </section>
-                </div>
-            );
-        }
         return (
-            <div>
-                <h1>Welcome to High5-Learning</h1>
-                <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog} visible={this.state.modalDialogVisibility}/>
+            <div className="landingPage" style={{backgroundImage: `url(${images[2].url})`,}}>
+                <div className="heading">
+                    <h1>Welcome to High5-Learning</h1>
+                </div>
+                <div className="content">
+
+                    <Switch>
+                        {(this.state.modalDialogClass === "logIn") ?
+                            <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
+                                   visible={this.state.modalDialogVisibility}/> :
+                            <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
+                                      visible={this.state.modalDialogVisibility}/>
+                        }
+                    </Switch>
+                    <p>
+                        High-Five Learning is an e-learning platform to help teachers to manage and evaluate homework
+                        with gained insights about students’ performance.
+                    </p>
+                    <br/><br/><br/><br/><br/>
+                    <h2> How do we achieve this?</h2>
+                    <p>
+                        <ul>
+                            <li>Modern, intuitive e-learning platform</li>
+                            <li>Creation of virtual classes</li>
+                            <li>Teacherspublish multiple choice homework</li>
+                            <li>Instant feedback to teachers from students</li>
+                            <li>Statistics for teachers about homework</li>
+                            <li>Reusability of classes</li>
+
+                        </ul>
+                    </p>
+                </div>
                 <div className="buttonDiv">
                     <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
                     <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
@@ -102,4 +120,5 @@ export default class LandingPage extends React.Component {
             </div>
         );
     }
+
 }

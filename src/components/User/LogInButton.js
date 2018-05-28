@@ -9,6 +9,7 @@ const styles = theme => ({
         minWidth: 300,
         float: 'left',
         clear: 'none',
+
     },
     image: {
         position: 'relative',
