@@ -12,12 +12,8 @@ class CreateExercise extends Component {
         super(props);
 
         this.state = {
-            value: ""
+            id: this.props.id
         }
-    };
-
-    change = (event) => {
-        this.setState({value: event.target.value})
     };
 
     render () {
@@ -27,52 +23,59 @@ class CreateExercise extends Component {
                     <TextField
                         label={"Exercise " + this.props.id}
                         helperText="Required"
-                        required={"true"}
+                        required={true}
                         multiline
-                        fullWidth={"true"}
+                        fullWidth={true}
                     />
                 </DialogContent>
                 <DialogContent>
                     <RadioGroup
-                        value={this.state.value}
-                        onChange={this.change}
+                        value={this.props.value}
+                        onChange={this.props.changeRadio(this.state.id)}
                         row={true}>
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
                                 multiline
+                                onChange={this.props.changeAnswers(this.state.id, 1)}
                                 label="Answer 1"
                                 helperText="Required"
-                                required={"true"}
+                                required={true}
                             />}
-                            value={"a1"}
+                            value={"1"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
                                 label="Answer 2"
+                                onChange={this.props.changeAnswers(this.state.id, 2)}
+                                multiline
                                 helperText="Required"
-                                required={"true"}
+                                required={true}
                             />}
-                            value={"a2"}
+                            value={"2"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
+                                onChange={this.props.changeAnswers(this.state.id, 3)}
+                                multiline
                                 label="Answer 3"
                                 helperText="Required"
-                                required={"true"}
+                                required={true}
                             />}
-                            value={"a3"}
+                            value={"3"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
+                                onChange={this.props.changeAnswers(this.state.id, 4)}
+                                multiline
                                 label="Answer 4"
                                 helperText="Required"
-                                required={"true"}
+                                required={true}
                             />}
-                            value={"a4"}
+                            value={"4"}
                         />
                     </RadioGroup>
                 </DialogContent>

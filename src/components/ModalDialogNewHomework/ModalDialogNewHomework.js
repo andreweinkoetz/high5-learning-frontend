@@ -17,34 +17,67 @@ class ModalDialogNewHomework extends Component {
 
         this.state = {
             visible: true,
-            exercises: [
+            exercisesID: [
                 {id: '1'}
             ],
-            numberOfExercises: 1
+            numberOfExercises: 1,
+            exercisesRightSolutions: [
+                {id: '1', rightSolution: ""}
+            ],
+            exercisesSolutionPossibilities: [
+                {id: '1', solutionPossibilities: [
+                        {a1: ""},
+                        {a2: ""},
+                        {a3: ""},
+                        {a4: ""}
+                    ]}
+            ]
         };
     }
 
-    disappear = () => {
+    handleCancel = () => {
         this.setState({visible: false})
     };
 
+    changeRightSolution = (id) => (event) => {
+        let r = [...this.state.exercisesRightSolutions];
+        let i = r.find(e => e.id === id);
+        i.rightSolution = event.target.value;
+        this.setState({exercisesRightSolutions: r})
+    };
+
+    changeSolutionPossibilities = (id, answerID) => (event) => {
+        let r = [...this.state.exercisesSolutionPossibilities];
+        let i = r.find(e => e.id === id);
+        let s = i.solutionPossibilities[answerID-1];
+        let b = "a"+answerID;
+        s[b] = event.target.value;
+        this.setState({exercisesSolutionPossibilities: r});
+        console.log(r);
+    };
+
     addExercise = () => {
-        let c = [...this.state.exercises];
+        let c = [...this.state.exercisesID];
         let n = this.state.numberOfExercises;
         n = n + 1;
         c.push({id: n});
-        this.setState({numberOfExercises: n, exercises: c});
+        this.setState({numberOfExercises: n, exercisesID: c});
     }
 
     render () {
 
-        let exercises = this.state.exercises
-            .map(exc => {
-                    return (
-                        <CreateExercise key={exc.id} id={exc.id}/>
-                    )
-                }
-            )
+        let exercises = this.state.exercisesID.map(exc => {
+                return (
+                    <CreateExercise
+                        key={exc.id}
+                        id={exc.id}
+                        changeRadio={this.changeRightSolution}
+                        changeAnswers={this.changeSolutionPossibilities}
+                        value={this.state.exercisesRightSolutions.find(e => e.id === exc.id).rightSolution}
+                    />
+                )
+            }
+        )
 
         return (
             <div>
@@ -61,7 +94,8 @@ class ModalDialogNewHomework extends Component {
                         required={true}
                         fullWidth={true}
                         autoFocus={true}
-                    /><div style={{maxHeight:'500px', marginBottom: '20px'}}>
+                    />
+                        <div style={{maxHeight:'500px', marginBottom: '20px'}}>
                         {exercises}
                     </div>
                     </DialogContent>
@@ -84,7 +118,7 @@ class ModalDialogNewHomework extends Component {
                     <Button
                         color={"secondary"}
                         variant={"raised"}
-                        onClick={this.disappear}
+                        onClick={this.handleCancel}
                     >Cancel</Button>
                 </DialogActions>
                     </Grid>
