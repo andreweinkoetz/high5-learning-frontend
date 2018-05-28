@@ -22,6 +22,8 @@ class CreateExercise extends Component {
                 <DialogContent>
                     <TextField
                         label={"Exercise " + this.props.id}
+                        onChange={this.props.changeTitle(this.state.id)}
+                        error={this.props.errorExerciseTitle}
                         helperText="Required"
                         required={true}
                         multiline
@@ -38,6 +40,7 @@ class CreateExercise extends Component {
                             label={<TextField
                                 multiline
                                 onChange={this.props.changeAnswers(this.state.id, 1)}
+                                error={Object.values(this.props.errorExerciseSolutionPossibilities[0])[0]}
                                 label="Answer 1"
                                 helperText="Required"
                                 required={true}
@@ -49,6 +52,7 @@ class CreateExercise extends Component {
                             label={<TextField
                                 label="Answer 2"
                                 onChange={this.props.changeAnswers(this.state.id, 2)}
+                                error={Object.values(this.props.errorExerciseSolutionPossibilities[1])[0]}
                                 multiline
                                 helperText="Required"
                                 required={true}
@@ -59,6 +63,7 @@ class CreateExercise extends Component {
                             control={<Radio/>}
                             label={<TextField
                                 onChange={this.props.changeAnswers(this.state.id, 3)}
+                                error={Object.values(this.props.errorExerciseSolutionPossibilities[2])[0]}
                                 multiline
                                 label="Answer 3"
                                 helperText="Required"
@@ -70,6 +75,7 @@ class CreateExercise extends Component {
                             control={<Radio/>}
                             label={<TextField
                                 onChange={this.props.changeAnswers(this.state.id, 4)}
+                                error={Object.values(this.props.errorExerciseSolutionPossibilities[3])[0]}
                                 multiline
                                 label="Answer 4"
                                 helperText="Required"
