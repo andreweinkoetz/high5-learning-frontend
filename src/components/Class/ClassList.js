@@ -19,6 +19,6 @@ const ClassList = (props) => {
                 })}
             </div>
     );
-}
+};
 
 export default ClassList;

@@ -18,13 +18,8 @@ export default class Class extends Component {
             description: props.description,
             url: props.url,
             password: props.password
-        }
+        };
 
-        this.panelClicked = this.panelClicked.bind(this);
-    }
-
-    panelClicked(){
-        alert('Clicked!');
     }
 
     render() {

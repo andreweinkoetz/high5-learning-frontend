@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -8,84 +8,51 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 import './ModalDialogNewClass.css';
 
-class ModalDialogNewClass extends Component {
+const ModalDialogNewClass = (props) => {
 
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            visible: true,
-            title: "",
-            description: "",
-            error: false
-        };
-    };
-
-    handleCancel = () => {
-        this.setState({visible: false});
-    };
-
-    handleSubmit = () => {
-        if (this.state.title === "") {
-            this.setState({error:true});
-        }
-        else {
-            this.setState({error:false});
-            this.setState({visible: false});
-        }
-    };
-
-    handleTitleChange = (event) => {
-        this.setState({title: event.target.value})
-    }
-
-    handleDescriptionChange = (event) => {
-        this.setState({description: event.target.value});
-    }
-
-    render () {
-
-        return (
-            <div>
-                <Dialog
-                    disableBackdropClick
-                    disableEscapeKeyDown
-                    open={this.state.visible}
-                >
-                    <DialogTitle>Create new class</DialogTitle>
-                    <DialogContent>
+    return (
+        <div>
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                open={props.visible}
+            >
+                <DialogTitle>Create new class</DialogTitle>
+                <DialogContent>
                     <TextField
-                        error={this.state.error}
-                        onChange={this.handleTitleChange}
+                        error={props.error}
+                        onChange={props.handleTitleChange}
                         label="Title"
                         helperText="Required"
+                        value={props.title}
                         multiline
                         required={true}
                     />
-                    </DialogContent>
-                    <DialogContent>
+                </DialogContent>
+                <DialogContent>
                     <TextField
-                        onChange={this.handleDescriptionChange}
+                        onChange={props.handleDescriptionChange}
                         label="Description"
+                        value={props.description}
                         multiline
                     />
-                    </DialogContent>
+                </DialogContent>
                 <DialogActions>
                     <Button
                         color={"primary"}
                         variant={"raised"}
-                        onClick={this.handleSubmit}
+                        onClick={props.handleSubmit}
                     >Create Class</Button>
                     <Button
                         color={"secondary"}
                         variant={"raised"}
-                        onClick={this.handleCancel}
+                        onClick={props.toggle}
                     >Cancel</Button>
                 </DialogActions>
-                </Dialog>
-            </div>
-        )
-    }
-}
+            </Dialog>
+        </div>
+    )
+};
 
 export default ModalDialogNewClass;

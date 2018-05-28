@@ -3,10 +3,11 @@ import HttpService from './HttpService';
 export default class ClassService {
 
     static baseUrl() {
-        return HttpService.apiURL() + "/classes";
+        return HttpService.apiURL() + "/classes/";
     }
 
-    static getClasses(){
+
+    static getClassesOfUser(){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}`, function(data) {
                 resolve(data);
@@ -18,11 +19,6 @@ export default class ClassService {
     }
 
     static addNewClass(classToAdd){
-
-       /* const newClass = {
-            title: "Chemistry",
-            description: "Easy level intro for IT students"
-        }*/
 
         return new Promise((resolve, reject) => {
             HttpService.post(`${ClassService.baseUrl()}`, classToAdd,

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -9,20 +10,23 @@ import Grid from '@material-ui/core/Grid';
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import UserService from "../../services/UserService";
 
-export default class Page extends React.Component {
+class Page extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            title: ''
-        }
+            title: '',
+            isAuthenticated: UserService.isAuthenticated()
+        };
 
         this.logout = this.logout.bind(this);
     }
 
-    logout(){
+    logout() {
         UserService.logout();
+        this.props.history.push('/');
+        window.location.reload();
     }
 
     componentDidMount() {
@@ -37,13 +41,12 @@ export default class Page extends React.Component {
             distDiv: {
                 marginBottom: '40px'
             }
-        }
+        };
 
 
         return (
             <div>
-                <Header title={this.state.title} logoutFn={this.logout} />
-
+                <Header title={this.state.title} logoutFn={this.logout}/>
                 <Grid container spacing={32} alignItems={'flex-start'} justify={'flex-start'}>
                     <Grid item xs={12}>
                         <Breadcrumb sites={["home", "newpage", "lastpage"]}/>
@@ -64,3 +67,5 @@ export default class Page extends React.Component {
         );
     }
 }
+
+export default withRouter(Page);

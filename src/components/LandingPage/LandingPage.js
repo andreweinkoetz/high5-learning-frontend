@@ -1,5 +1,4 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
 
 import Footer from '../Footer/Footer';
 import LogInButton from '../User/LogInButton';
@@ -7,7 +6,6 @@ import LogIn from '../User/ModalDialogLogIn';
 import Register from '../User/ModalDialogRegister'
 import './LandingPage.css';
 import UserService from "../../services/UserService";
-import {ClassListView} from "../../views/ClassListView";
 
 /*
 Landing Page. Appears if you are not logged in only.
@@ -29,7 +27,9 @@ export default class LandingPage extends React.Component {
         this.onHandleChangeUsername = this.onHandleChangeUsername.bind(this);
     }
 
-    onHandleChangeUsername(username){
+    // Please check all these methods as i believe they don't do anything :D
+
+    onHandleChangeUsername(){
         this.setState({
             username: "username"
         });
@@ -70,7 +70,7 @@ export default class LandingPage extends React.Component {
         ];
 
         if (UserService.isAuthenticated()){
-            return (<Redirect to="myclasses/"/>);
+            window.location ='/myclasses/';
         }
 
         if (this.state.modalDialogClass === "logIn") {

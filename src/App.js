@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue'
+import blue from '@material-ui/core/colors/blue';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 
@@ -42,7 +43,8 @@ class App extends Component {
 
         const theme = createMuiTheme({
             palette: {
-                primary: blue
+                primary: blue,
+                secondary: blueGrey
             }
 
         });
@@ -59,8 +61,8 @@ class App extends Component {
                 <Router>
                     <Switch>
                         {UserService.isAuthenticated() ?
-                            this.state.routes.map((route, i) => (<Page><Route key={i} {...route}/></Page>)) :
-                            <Route component={LandingPage} path={'/'} exact={true}/>
+                            this.state.routes.map((route, i) => (<Page key={i}><Route key={i} {...route}/></Page>)) :
+                            <Route component={LandingPage} path={'/'}/>
                         }
                     </Switch>
                 </Router>
