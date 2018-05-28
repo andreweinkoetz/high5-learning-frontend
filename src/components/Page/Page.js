@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import UserService from "../../services/UserService";
 
+
 class Page extends React.Component {
 
     constructor(props) {
@@ -25,8 +26,7 @@ class Page extends React.Component {
 
     logout() {
         UserService.logout();
-        this.props.history.push('/');
-        window.location.reload();
+        window.location.replace(window.location.origin);
     }
 
     componentDidMount() {
