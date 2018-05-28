@@ -6,31 +6,38 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
 
-import ClassList from '../components/Class/ClassList';
-import ClassService from '../services/ClassService';
-import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass'
+import HomeworkService from "../services/HomeworkService";
+import ModalDialogNewHomework from '../components/ModalDialogNewHomework/ModalDialogNewHomework';
 
 
-export default class ClassListView extends React.Component {
+export default class ClassDetailView extends React.Component {
 
 
     constructor(props) {
         super(props);
 
+
         this.state = {
             loading: false,
             showModal: false,
             errorModal: false,
-            classToAdd: {
+            homework: [],
+            homeworkToAdd: {
                 title: '',
-                description: ''
+                exercises: [{
+                    question: '',
+                    answers: ['','','',''],
+                    rightSolution: -1,
+                }]
             },
-            classes: []
+            currentClass: {
+                title: '',
+                id: ''
+            }
         };
 
-        this.addNewClass = this.addNewClass.bind(this);
+        this.addNewHomework = this.addNewHomework.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleSubmitModal = this.handleSubmitModal.bind(this);
     }
@@ -40,10 +47,14 @@ export default class ClassListView extends React.Component {
             loading: true
         });
 
-        ClassService.getClassesOfUser().then((data) => {
+        HomeworkService.getHomeworkOfClass(this.props.match.params.id).then((data) => {
             this.setState({
-                classes: [...data],
-                loading: false
+                homework: [...data],
+                loading: false,
+                currentClass: {
+                    title: this.props.location.state.title,
+                    id: this.props.match.params.id
+                }
             });
         }).catch((e) => {
             console.error(e);
@@ -58,34 +69,27 @@ export default class ClassListView extends React.Component {
 
     handleSubmitModal() {
 
-        const classToAdd = {...this.state.classToAdd};
+        const homeworkToAdd = {...this.state.homeworkToAdd};
 
-        if (classToAdd.title === '') {
+        if (homeworkToAdd.title === '') {
             this.setState({modalError: true});
         } else {
-            this.addNewClass(classToAdd);
+            this.addNewHomework(homeworkToAdd);
         }
     }
 
     handleTitleChange(event) {
-        const newClass = {...this.state.classToAdd};
-        newClass.title = event.target.value;
-        this.setState({classToAdd: newClass});
+        const newHomework = {...this.state.homeworkToAdd};
+        newHomework.title = event.target.value;
+        this.setState({homeworkToAdd: newHomework});
     }
 
-    handleDescriptionChange(event) {
-        const newClass = {...this.state.classToAdd};
-        newClass.description = event.target.value;
-        this.setState({classToAdd: newClass});
-    }
+    addNewHomework(homeworkToAdd) {
 
+        HomeworkService.addNewHomework(homeworkToAdd).then((newHomwork) => {
+                const newHomework = [...this.state.homework, newHomwork];
 
-    addNewClass(classToAdd) {
-
-        ClassService.addNewClass(classToAdd).then((newClass) => {
-                const newClasses = [...this.state.classes, newClass];
-
-                this.setState({classes: newClasses});
+                this.setState({homework: newHomework});
                 this.toggleModal();
 
             }
@@ -100,18 +104,10 @@ export default class ClassListView extends React.Component {
 
         return (
             <div>
-                <ModalDialogNewClass visible={this.state.showModal}
-                                     handleTitleChange={this.handleTitleChange}
-                                     handleDescriptionChange={this.handleDescriptionChange}
-                                     handleSubmit={this.handleSubmitModal}
-                                     toggle={this.toggleModal}
-                                     error={this.state.modalError}
-                                     title={this.state.classToAdd.title}
-                                     description={this.state.classToAdd.description}
-                />
+                <ModalDialogNewHomework visible={this.state.showModal} handleCancel={this.toggleModal}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
-                        <Typography variant={'title'}>My classes</Typography>
+                        <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6}>
                         <Grid container spacing={0} align={'right'}>
@@ -119,7 +115,7 @@ export default class ClassListView extends React.Component {
                                 <Hidden only={'xs'}>
                                     <Button variant="raised" color="primary" onClick={this.toggleModal}>
                                         <AddIcon/>
-                                        Add new class</Button>
+                                        Add new homework</Button>
                                 </Hidden>
                                 <Hidden smUp>
                                     <Button variant="fab" color="primary" aria-label="add" onClick={this.toggleModal}>
@@ -133,7 +129,7 @@ export default class ClassListView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><ClassList classes={this.state.classes}/></Grid>
+                    <Grid item xs={12}>{this.state.homework}</Grid>
                 </Grid>
 
             </div>

@@ -25,7 +25,13 @@ export default class Class extends Component {
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Link to={'myclasses/'+this.state.id}><Typography>{this.state.title}</Typography></Link>
+                    <Link to={
+                        {
+                            pathname: `/myclasses/${this.state.id}`,
+                            state:
+                                { title: this.state.title}
+                        }
+                    }><Typography>{this.state.title}</Typography></Link>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>{this.state.description}<br/>

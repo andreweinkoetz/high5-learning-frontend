@@ -16,7 +16,6 @@ class ModalDialogNewHomework extends Component {
         super(props);
 
         this.state = {
-            visible: true,
             homeworkTitle: "",
             homeworkTitleError: false,
             exercisesData: [
@@ -36,11 +35,11 @@ class ModalDialogNewHomework extends Component {
             errorText: [],
             errorState: false
         };
+
     }
 
-    handleCancel = () => {
-        this.setState({visible: false})
-    };
+
+
 
     /*handleCreate = () => { // in case you want to find out in general whether something is missing
         let testRightSolutionMissing = false;
@@ -68,8 +67,7 @@ class ModalDialogNewHomework extends Component {
 
         if (testHomeworkTitleMissing === "") {
             errorTextCurrent.push("For this homework the title is missing!");
-        };
-
+        }
         let testExerciseTitleMissing = this.state.exercisesData.map(
             e => (e.exerciseTitle === "")
         );
@@ -108,7 +106,7 @@ class ModalDialogNewHomework extends Component {
         }
         this.setState({exercisesData: updatedState, homeworkTitleError: (testHomeworkTitleMissing === ""), errorText: errorTextCurrent, errorState: (errorTextCurrent.length !== 0)});
         if(errorTextCurrent.length === 0) {
-            this.handleCancel();
+            this.props.handleCancel();
         }
     };
 
@@ -179,14 +177,14 @@ class ModalDialogNewHomework extends Component {
                     />
                 )
             }
-        )
+        );
 
         return (
             <div>
                 <Dialog
                     disableBackdropClick
                     disableEscapeKeyDown
-                    open={this.state.visible}
+                    open={this.props.visible}
                 >
                     <DialogTitle>Create new homework</DialogTitle>
                     <DialogContent>
@@ -222,7 +220,7 @@ class ModalDialogNewHomework extends Component {
                     <Button
                         color={"secondary"}
                         variant={"raised"}
-                        onClick={this.handleCancel}
+                        onClick={this.props.handleCancel}
                     >Cancel</Button>
                 </DialogActions>
                     </Grid>
