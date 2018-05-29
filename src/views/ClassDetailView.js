@@ -29,11 +29,11 @@ export default class ClassDetailView extends React.Component {
             errorStateDeleteExercise: false,
             homeworkToAddErrors: {
                 title: false,
-                exercises: [{id: "1", question: false, answers: [ {a1: false}, {a2: false}, {a3: false}, {a4: false}], rightSolution: false}]
+                exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
             },
 
             homeworkToAdd:
-                {title: "", exercises: [{id: "1", question: "", answers: [{a1: ""}, {a2: ""}, {a3: ""}, {a4: ""}], rightSolution: ""}]},
+                {title: "", exercises: [{id: "1", question: "", answers: ["","","",""], rightSolution: ""}]},
             currentClass: {
                 title: '',
                 id: ''
@@ -99,10 +99,10 @@ export default class ClassDetailView extends React.Component {
 
         for(let i = 0; i<newHomeworkToAdd.exercises.length;i++) {
             for(let a = 0; a<newHomeworkToAdd.exercises[i].answers.length;a++) {
-                if((newHomeworkToAdd.exercises[i].answers[a])["a"+(a+1)] === "") {
+                if(newHomeworkToAdd.exercises[i].answers[a] === "") {
                     newErrorText.push("For exercise " + (i + 1) + " answer " + (a + 1) + " is missing!");
                 }
-                Object.assign(newHomeworkErrors.exercises[i].answers[a])["a"+(a+1)] = ((newHomeworkToAdd.exercises[i].answers[a])["a"+(a+1)] === "");
+                newHomeworkErrors.exercises[i].answers[a] = (newHomeworkToAdd.exercises[i].answers[a] === "");
             }
         }
 
@@ -162,12 +162,10 @@ export default class ClassDetailView extends React.Component {
         let newHomework = {...this.state.homeworkToAdd};
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
-        let exerciseIDAnswers = exerciseIDData.answers[answerID-1];
-        let aID = "a"+answerID;
-        exerciseIDAnswers[aID] = event.target.value;
+        exerciseIDData.answers[answerID] = event.target.value;
         if (event.target.value !== "") {
             let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
-            Object.assign(exerciseIDErrorData.answers[answerID-1])[aID] = false;
+            exerciseIDErrorData.answers[answerID] = false;
         }
         this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
     };
@@ -179,8 +177,8 @@ export default class ClassDetailView extends React.Component {
         let newHomeworkErrorExercises = newHomeworkErrors.exercises;
         let newExerciseID = newHomeworkExercises.length;
         newExerciseID = "" + (newExerciseID + 1);
-        newHomeworkExercises.push({id: newExerciseID, question: '', answers: [{a1: ""}, {a2: ""}, {a3: ""}, {a4: ""}], rightSolution: ""});
-        newHomeworkErrorExercises.push({id: newExerciseID, question: false, answers: [ {a1: false}, {a2: false}, {a3: false}, {a4: false}], rightSolution: false});
+        newHomeworkExercises.push({id: newExerciseID, question: '', answers: ["", "", "", ""], rightSolution: ""});
+        newHomeworkErrorExercises.push({id: newExerciseID, question: false, answers: [false, false, false, false], rightSolution: false});
         this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
     };
 

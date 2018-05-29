@@ -19,8 +19,6 @@ class CreateExercise extends Component {
         }
     };
 
-
-
     render () {
         return (
             <div>
@@ -45,12 +43,12 @@ class CreateExercise extends Component {
                             control={<Radio/>}
                             label={<TextField
                                 multiline
-                                onChange={this.props.changeAnswers(this.state.id, 1)}
-                                error={Object.values(this.props.errorExerciseAnswers[0])[0]}
+                                onChange={this.props.changeAnswers(this.state.id, 0)}
+                                error={this.props.errorExerciseAnswers[0]}
                                 label="Answer 1"
                                 helperText="Required"
                                 required={true}
-                                value={Object.values(this.props.answersValues[0])[0]}
+                                value={this.props.answersValues[0]}
                             />}
                             value={"1"}
                         />
@@ -58,38 +56,38 @@ class CreateExercise extends Component {
                             control={<Radio/>}
                             label={<TextField
                                 label="Answer 2"
-                                onChange={this.props.changeAnswers(this.state.id, 2)}
-                                error={Object.values(this.props.errorExerciseAnswers[1])[0]}
+                                onChange={this.props.changeAnswers(this.state.id, 1)}
+                                error={this.props.errorExerciseAnswers[1]}
                                 multiline
                                 helperText="Required"
                                 required={true}
-                                value={Object.values(this.props.answersValues[1])[0]}
+                                value={this.props.answersValues[1]}
                             />}
                             value={"2"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
-                                onChange={this.props.changeAnswers(this.state.id, 3)}
-                                error={Object.values(this.props.errorExerciseAnswers[2])[0]}
+                                onChange={this.props.changeAnswers(this.state.id, 2)}
+                                error={this.props.errorExerciseAnswers[2]}
                                 multiline
                                 label="Answer 3"
                                 helperText="Required"
                                 required={true}
-                                value={Object.values(this.props.answersValues[2])[0]}
+                                value={this.props.answersValues[2]}
                             />}
                             value={"3"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
-                                onChange={this.props.changeAnswers(this.state.id, 4)}
-                                error={Object.values(this.props.errorExerciseAnswers[3])[0]}
+                                onChange={this.props.changeAnswers(this.state.id, 3)}
+                                error={this.props.errorExerciseAnswers[3]}
                                 multiline
                                 label="Answer 4"
                                 helperText="Required"
                                 required={true}
-                                value={Object.values(this.props.answersValues[3])[0]}
+                                value={this.props.answersValues[3]}
                             />}
                             value={"4"}
                         />
