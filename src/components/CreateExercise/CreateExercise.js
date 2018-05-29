@@ -27,26 +27,26 @@ class CreateExercise extends Component {
                 <DialogContent>
                     <TextField
                         label={"Exercise " + this.props.id}
-                        onChange={this.props.changeTitle(this.state.id)}
-                        error={this.props.errorExerciseTitle}
+                        onChange={this.props.changeQuestion(this.state.id)}
+                        error={this.props.errorExerciseQuestion}
                         helperText="Required"
                         required={true}
                         multiline
                         fullWidth={true}
-                        value={this.props.titleValue}
+                        value={this.props.questionValue}
                     />
                 </DialogContent>
                 <DialogContent>
                     <RadioGroup
-                        value={this.props.value}
-                        onChange={this.props.changeRadio(this.state.id)}
+                        value={this.props.radioValue}
+                        onChange={this.props.changeRadioValue(this.state.id)}
                         row={true}>
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
                                 multiline
                                 onChange={this.props.changeAnswers(this.state.id, 1)}
-                                error={Object.values(this.props.errorExerciseSolutionPossibilities[0])[0]}
+                                error={Object.values(this.props.errorExerciseAnswers[0])[0]}
                                 label="Answer 1"
                                 helperText="Required"
                                 required={true}
@@ -59,7 +59,7 @@ class CreateExercise extends Component {
                             label={<TextField
                                 label="Answer 2"
                                 onChange={this.props.changeAnswers(this.state.id, 2)}
-                                error={Object.values(this.props.errorExerciseSolutionPossibilities[1])[0]}
+                                error={Object.values(this.props.errorExerciseAnswers[1])[0]}
                                 multiline
                                 helperText="Required"
                                 required={true}
@@ -71,7 +71,7 @@ class CreateExercise extends Component {
                             control={<Radio/>}
                             label={<TextField
                                 onChange={this.props.changeAnswers(this.state.id, 3)}
-                                error={Object.values(this.props.errorExerciseSolutionPossibilities[2])[0]}
+                                error={Object.values(this.props.errorExerciseAnswers[2])[0]}
                                 multiline
                                 label="Answer 3"
                                 helperText="Required"
@@ -84,7 +84,7 @@ class CreateExercise extends Component {
                             control={<Radio/>}
                             label={<TextField
                                 onChange={this.props.changeAnswers(this.state.id, 4)}
-                                error={Object.values(this.props.errorExerciseSolutionPossibilities[3])[0]}
+                                error={Object.values(this.props.errorExerciseAnswers[3])[0]}
                                 multiline
                                 label="Answer 4"
                                 helperText="Required"
@@ -100,7 +100,7 @@ class CreateExercise extends Component {
                         <Button
                             color={"secondary"}
                             variant={"raised"}
-                            onClick={() => this.props.deleteExercise(this.state.id)}
+                            onClick={() => this.props.handleDeleteExercise(this.state.id)}
                         >Delete exercise {this.state.id}</Button>
                     </DialogActions>
                 </Grid>
