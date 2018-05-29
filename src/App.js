@@ -14,6 +14,9 @@ import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNew
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
 
+import ExerciseList from './components/ExerciseList/ExerciseList'
+import {HomeworkTest} from "./components/ExerciseList/HomeworkTest";
+
 
 class App extends Component {
 
@@ -36,7 +39,7 @@ class App extends Component {
                 },
 
                 {component: ClassDetailView, path: '/myclasses/:id', exact: true},
-                {component: ExerciseChoices, path: '/exercises', exact: true},
+                {component: HomeworkTest, path: '/homework', exact: true},
                 {component: ModalDialogNewHomework, path: '/modal', exact: true},
                 {component: ModalDialogNewClass, path: '/modalC', exact: true}
             ]
@@ -57,13 +60,12 @@ class App extends Component {
 
         let routes;
 
-        if(UserService.isAuthenticated()){
+        if (UserService.isAuthenticated()) {
             routes = <Page>{this.state.routes.map((route, i) => (
                 <Route key={i} {...route}/>))}</Page>;
         } else {
             routes = <Route component={LandingPage} path={'/'}/>;
         }
-
 
 
         return (
@@ -75,7 +77,6 @@ class App extends Component {
 
             </MuiThemeProvider>
         );
-
 
     }
 }

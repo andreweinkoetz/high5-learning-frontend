@@ -1,32 +1,68 @@
 import React from 'react';
+import Radio from '@material-ui/core/Radio';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+
+import './ExerciseChoices.css';
 
 export class ExerciseChoices extends React.Component {
 
-    render(){
-        return(
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: props.id,
+            question: props.question,
+            answers: props.answers
+        };
+
+    }
+
+    render() {
+        return (
             <div>
-                {/*<form>
-                    <fieldset>
-                        <input type="radio" id="1" />
-                        <label for="1"> {props.choices[0].solution}</label>
+                <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                        <Typography className={"questionExercise"}>{this.state.question}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
 
-                        <input type="radio" id="2" />
-                        <label for="2"> {props.choices[1].solution}</label>
+                        <FormControl>
+                            <FormLabel>Choose the correct answer:</FormLabel>
 
-                        <input type="radio" id="3" />
-                        <label for="3"> {props.choices[2].solution}</label>
+                            <RadioGroup
+                                //onChange={this.props.changeRadio(this.state.id)}
+                                row="true"
+                            >
+                                <FormControlLabel value={this.state.answers[0]} control={<Radio/>}
+                                                  label={this.state.answers[0]}/>
 
-                        <input type="radio" id="4" />
-                        <label htmlFor="4"> {props.choices[3].solution}</label>
-                    </fieldset>
-                </form>*/}
-            </div>
+                                <FormControlLabel value={this.state.answers[1]} control={<Radio/>}
+                                                  label={this.state.answers[1]}/>
+                            </RadioGroup>
+                            <RadioGroup
+                                //onChange={this.props.changeRadio(this.state.id)}
+                                row="true"
+                            >
+                                <FormControlLabel value={this.state.answers[2]} control={<Radio/>}
+                                                  label={this.state.answers[2]}/>
 
-        );
+                                <FormControlLabel value={this.state.answers[3]} control={<Radio/>}
+                                                  label={this.state.answers[3]}/>
+
+                            </RadioGroup>
+                        </FormControl>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+
+            </div>);
     }
-    }
-
-
-
-
+}
 
