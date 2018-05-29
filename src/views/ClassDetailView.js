@@ -33,7 +33,7 @@ export default class ClassDetailView extends React.Component {
             },
 
             homeworkToAdd:
-                {title: "", exercises: [{id: "1", question: "", answers: ["","","",""], rightSolution: ""}]},
+                {title: "", exercises: [{id: "1", question: "", answers: ["","","",""], rightSolution: -1}]},
             currentClass: {
                 title: '',
                 id: ''
@@ -91,7 +91,7 @@ export default class ClassDetailView extends React.Component {
         }
 
         for(let i = 0; i<newHomeworkToAdd.exercises.length;i++) {
-            if (newHomeworkToAdd.exercises[i].rightSolution === "") {
+            if (newHomeworkToAdd.exercises[i].rightSolution === -1) {
                 newErrorText.push("For exercise " + (i + 1) + " the right solution is missing!");
             }
             newHomeworkErrors.exercises[i].rightSolution = (newHomeworkToAdd.exercises[i].rightSolution === "");
@@ -153,7 +153,7 @@ export default class ClassDetailView extends React.Component {
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
-        exerciseIDData.rightSolution = event.target.value;
+        exerciseIDData.rightSolution = Number(event.target.value);
         exerciseIDErrorData.rightSolution = true;
         this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
     };
@@ -177,7 +177,7 @@ export default class ClassDetailView extends React.Component {
         let newHomeworkErrorExercises = newHomeworkErrors.exercises;
         let newExerciseID = newHomeworkExercises.length;
         newExerciseID = "" + (newExerciseID + 1);
-        newHomeworkExercises.push({id: newExerciseID, question: '', answers: ["", "", "", ""], rightSolution: ""});
+        newHomeworkExercises.push({id: newExerciseID, question: '', answers: ["", "", "", ""], rightSolution: -1});
         newHomeworkErrorExercises.push({id: newExerciseID, question: false, answers: [false, false, false, false], rightSolution: false});
         this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
     };

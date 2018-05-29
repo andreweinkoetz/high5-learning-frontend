@@ -36,7 +36,7 @@ class CreateExercise extends Component {
                 </DialogContent>
                 <DialogContent>
                     <RadioGroup
-                        value={this.props.radioValue}
+                        value={String(this.props.radioValue)}
                         onChange={this.props.changeRadioValue(this.state.id)}
                         row={true}>
                         <FormControlLabel
@@ -50,7 +50,7 @@ class CreateExercise extends Component {
                                 required={true}
                                 value={this.props.answersValues[0]}
                             />}
-                            value={"1"}
+                            value={"0"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
@@ -63,7 +63,7 @@ class CreateExercise extends Component {
                                 required={true}
                                 value={this.props.answersValues[1]}
                             />}
-                            value={"2"}
+                            value={"1"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
@@ -76,7 +76,7 @@ class CreateExercise extends Component {
                                 required={true}
                                 value={this.props.answersValues[2]}
                             />}
-                            value={"3"}
+                            value={"2"}
                         />
                         <FormControlLabel
                             control={<Radio/>}
@@ -89,7 +89,7 @@ class CreateExercise extends Component {
                                 required={true}
                                 value={this.props.answersValues[3]}
                             />}
-                            value={"4"}
+                            value={"3"}
                         />
                     </RadioGroup>
                 </DialogContent>
