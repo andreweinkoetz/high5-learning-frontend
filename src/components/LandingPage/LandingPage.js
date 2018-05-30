@@ -98,8 +98,8 @@ export default class LandingPage extends React.Component {
                     {/* short slogan and nice backgroud picture for the first page */}
                     <div className="content-page1">
                         <h1>WE LOVE LEARNING</h1>
-                        <p>“Anyone who stops learning is old, whether at twenty or eighty. Anyone who keeps learning stays young.”
-                            <br/>― Henry Ford</p>
+                        <p>“Education is the most powerful weapon which you can use to change the world.”
+                            <br/>― Nelson Mandela</p>
                     </div>
                     {/* titel of the landing page style={{backgroundImage: `url(${images[2].url})`,}}*/}
                     <div className="content-title">
