@@ -8,7 +8,8 @@ import AddIcon from '@material-ui/icons/Add';
 
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
-import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass'
+import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
+import ErrorNoTitleClassComponent from '../components/ErrorNoTitleClassComponent/ErrorNoTitleClassComponent';
 
 
 export default class ClassListView extends React.Component {
@@ -21,6 +22,7 @@ export default class ClassListView extends React.Component {
             loading: false,
             showModal: false,
             errorModal: false,
+            errorNoTitle: false,
             classToAdd: {
                 title: '',
                 description: ''
@@ -48,36 +50,39 @@ export default class ClassListView extends React.Component {
         }).catch((e) => {
             console.error(e);
         });
-    }
+    };
 
 
     toggleModal() {
         const oldState = this.state.showModal;
         this.setState({showModal: !oldState});
-    }
+    };
 
     handleSubmitModal() {
 
         const classToAdd = {...this.state.classToAdd};
 
         if (classToAdd.title === '') {
-            this.setState({modalError: true});
+            this.setState({modalError: true, errorNoTitle: true});
         } else {
             this.addNewClass(classToAdd);
         }
-    }
+    };
 
     handleTitleChange(event) {
         const newClass = {...this.state.classToAdd};
         newClass.title = event.target.value;
+        if (event.target.value !== "") {
+            this.setState({modalError: false});
+        }
         this.setState({classToAdd: newClass});
-    }
+    };
 
     handleDescriptionChange(event) {
         const newClass = {...this.state.classToAdd};
         newClass.description = event.target.value;
         this.setState({classToAdd: newClass});
-    }
+    };
 
 
     addNewClass(classToAdd) {
@@ -90,6 +95,11 @@ export default class ClassListView extends React.Component {
 
             }
         ).catch(e => alert(e));
+    };
+
+    handleNoTitleErrorMessageRead = () => {
+        const oldErrorState = this.state.errorNoTitle;
+        this.setState({errorNoTitle: !oldErrorState});
     }
 
 
@@ -109,6 +119,9 @@ export default class ClassListView extends React.Component {
                                      title={this.state.classToAdd.title}
                                      description={this.state.classToAdd.description}
                 />
+                <ErrorNoTitleClassComponent
+                    errorNoTitleRead={this.handleNoTitleErrorMessageRead}
+                    visible={this.state.errorNoTitle}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
