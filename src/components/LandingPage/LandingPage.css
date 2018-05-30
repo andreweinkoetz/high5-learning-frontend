@@ -1,47 +1,121 @@
+.body {
+
+}
+#root {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
 .landingPage {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 20px;
-    margin: 0;
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
-.heading {
-    padding: 20px;
-    text-align: center;
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%)
-}
-.content {
-    padding: 20px;
-    text-align: center;
-    position: absolute;
-    top: 40%;
-    left: 50%;
+.head-line {
+    position: fixed;
+    top: 60px;
+    padding: 0;
+    right: 0;
+    width: 100%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    width: 30%;
+    background: rgba(0,0,0,0.15);
 }
-.content h2 {
-    padding: 0;
+.icon {
+    margin-right: 20px;
+}
+.heading {
+    padding: 20px 20px 0 20px;
+    margin-left: 80px;
+    font-size: 60px;
+    line-height: 0.7;
+    color: #FFFFFF;
+    opacity: 0.7;
+}
+.content {
+    float: left;
+    clear: both;
+    width: 100%;
+    height: 100%;
     margin: 0;
+    padding: 0;
+}
+.content-page1 {
+    margin-top: 0;
+    width: 100%;
+    height:70vh;
+    padding-top: 30vh;
+    text-align: center;
+    background-color: #BBDEFB;
+    color: white;
+}
+.content-page1 h1 {
+    font-size: 90px;
+}
+.content-page1 p {
+    padding-top: 40px;
+    font-size: 35px;
+    font-weight: bold;
+}
+.content-title{
+    float: left;
+    clear: both;
+    width: 100%;
+    height:20vh;
+    text-align: center;
+    background: linear-gradient(to right,  #FFEBEE, #FFCDD2, #EF9A9A, #EF9A9A, #FFCDD2,  #FFEBEE);
+}
+.content-page2 {
+    float: left;
+    clear: both;
+    width: 100%;
+    height:100vh;
+    text-align: center;
+    background: linear-gradient(to bottom, #E57373, #EF9A9A, #FFCDD2,  #FFEBEE);
+}
+.content-page3 {
+    float: left;
+    clear: both;
+    width: 100%;
+    height:100vh;
+    text-align: center;
+    background-color: #FAFAFA;
+}
+.content-page4 {
+    float: left;
+    clear: both;
+    width: 100%;
+    height:100vh;
+    text-align: center;
 }
 .buttonDiv {
-    padding: 20px;
     text-align: center;
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%)
+    position: fixed;
+    top: 80vh;
+    left: 0;
+    width: 100%;
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+    display:-webkit-box;
 }
 .modalDialog {
 
 }
 h1, h2, p, ul, li {
-    font-family: sans-serif;
+    font-family: "Segoe UI Light";
+}
+p{
+    font-size: 30px;
+}
+ul li {
+    font-size: 30px;
+}
+h1 {
+    font-size: 80px;
 }

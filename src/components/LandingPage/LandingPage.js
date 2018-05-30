@@ -9,13 +9,16 @@ import './LandingPage.css';
 import UserService from "../../services/UserService";
 
 /*
-Landing Page. Appears if you are not logged in only.
+Landing Page. Appears only if you are not logged-in.
  */
 export default class LandingPage extends React.Component {
 
     constructor(props) {
         super(props);
 
+        // username is just the trigger state to load myclasses view
+        // modalDialogClass tells the render function which modal dialog to load
+        // modalDialogVisibility tells the render if the modal dialogs should be visible
         this.state = {
             modalDialogVisibility: false,
             modalDialogClass: "register",
@@ -27,8 +30,6 @@ export default class LandingPage extends React.Component {
         this.onClickCancelModalDialog = this.onClickCancelModalDialog.bind(this);
         this.onHandleChangeUsername = this.onHandleChangeUsername.bind(this);
     }
-
-    // Please check all these methods as i believe they don't do anything :D
 
     onHandleChangeUsername() {
         this.setState({
@@ -50,6 +51,7 @@ export default class LandingPage extends React.Component {
         });
     }
 
+    // onClick method of the cancel buttons of the modal dialogues
     onClickCancelModalDialog() {
         this.setState({
             modalDialogVisibility: false
@@ -70,6 +72,9 @@ export default class LandingPage extends React.Component {
             },
             {
                 url: './img/elearning.jpg',
+            },
+            {
+                url: './img/high-five.svg',
             }
         ];
 
@@ -79,10 +84,6 @@ export default class LandingPage extends React.Component {
 
         return (
             <div className="landingPage">
-                {/* transparent absolute div presenting brand name & logo */}
-                <div className="heading">
-                    <h1>HIGH-FIVE LEARNING</h1>
-                </div>
                 {/* modal dialog */}
                 <Switch>
                     {(this.state.modalDialogClass === "logIn") ?
@@ -95,11 +96,13 @@ export default class LandingPage extends React.Component {
                 {/* one pager content */}
                 <div className="content">
                     {/* short slogan and nice backgroud picture for the first page */}
-                    <div className="content-page1" style={{backgroundImage: `url(${images[2].url})`,}}>
+                    <div className="content-page1">
                         <h1>WE LOVE LEARNING</h1>
+                        <p>“Anyone who stops learning is old, whether at twenty or eighty. Anyone who keeps learning stays young.”
+                            <br/>― Henry Ford</p>
                     </div>
-                    {/* titel of the landing page */}
-                    <div className="content-titel">
+                    {/* titel of the landing page style={{backgroundImage: `url(${images[2].url})`,}}*/}
+                    <div className="content-title">
                         <h1>MAIN PAGE</h1>
                     </div>
                     {/* about high 5 learning, our story */}
@@ -139,6 +142,13 @@ export default class LandingPage extends React.Component {
 
                             </ul>
                         </div>
+                    </div>
+                </div>
+                {/* transparent absolute div presenting brand name & logo */}
+                <div className="head-line">
+                    <div className="heading">
+                        <h1><img className="icon" src={images[3].url} alt="High Five Icon" height="60"
+                                 width="60"/> HIGH-FIVE LEARNING</h1>
                     </div>
                 </div>
                 {/* absolute div presenting login and register options */}

@@ -6,10 +6,11 @@ import Typography from '@material-ui/core/Typography';
 // this was not included, why? https://material-ui.com/getting-started/installation/
 const styles = theme => ({
     root: {
-        minWidth: 300,
+        minWidth: 400,
         float: 'left',
         clear: 'none',
-
+        marginLeft: '10px',
+        marginRight: '10px',
     },
     image: {
         position: 'relative',
