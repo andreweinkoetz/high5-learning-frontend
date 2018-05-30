@@ -55,7 +55,9 @@ export default class ClassListView extends React.Component {
 
     toggleModal() {
         const oldState = this.state.showModal;
-        this.setState({showModal: !oldState});
+        const errorStateWhenClickingAdd = false; // needed so that the old state of a canceled class creation isn't shown in the modal dialog
+        const classToAddWhenClickingAdd = {title: '', description: ''};
+        this.setState({showModal: !oldState, modalError: errorStateWhenClickingAdd, classToAdd: classToAddWhenClickingAdd});
     };
 
     handleSubmitModal() {

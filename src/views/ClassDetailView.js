@@ -21,7 +21,6 @@ export default class ClassDetailView extends React.Component {
         this.state = {
             loading: false,
             showModal: false,
-            errorModal: false,
             homework: [],
 
             errorText: [],
@@ -67,7 +66,9 @@ export default class ClassDetailView extends React.Component {
 
     toggleModal() {
         const oldState = this.state.showModal;
-        this.setState({showModal: !oldState});
+        const homeworkToAddErrorsWhenClickingAdd = {title: false, exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]}; // this is needed so that the user sees no previous info from a canceled homework creation
+        const homeworkToAddWhenClickingAdd = {title: "", exercises: [{id: "1", question: "", answers: ["","","",""], rightSolution: ""}]};
+        this.setState({showModal: !oldState, homeworkToAdd: homeworkToAddWhenClickingAdd, homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd});
     }
 
     handleSubmitModal() {
