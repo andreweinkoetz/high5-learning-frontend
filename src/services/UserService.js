@@ -39,6 +39,50 @@ export default class UserService {
         });
     }
 
+    // this function verifies that
+    // the current user is member of the class he wants to access
+    // use function isMemberOfClassChecker when you receive the promise
+    // resolve your answer
+    static isMemberOfClass(classId){
+        if(!this.isAuthenticated()){
+            throw new Error("No user logged in");
+        }
+        const userId = this.getCurrentUser().id;
+        return new Promise((resolve, reject) => {
+            HttpService.post(`${UserService.baseURL()}/member/`+classId, {
+                user: userId
+            }, function(data) {
+                resolve(data);
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    // this function resolves the answer of the backend
+    // if the backend returns -1, the user is not member
+    // else, the user is a member of the class
+    static isMemberOfClassChecker(data){
+        return !(data.classes === -1);
+    }
+
+    static createMembership(classId){
+        if(!this.isAuthenticated()){
+            throw new Error("No user logged in");
+        }
+        const userId = this.getCurrentUser().id;
+        return new Promise((resolve, reject) => {
+            HttpService.post(`${UserService.baseURL()}/member/`, {
+                user: userId,
+                class: classId
+            }, function(data) {
+                resolve(data);
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
     static logout(){
         window.localStorage.removeItem('jwtToken');
     }
