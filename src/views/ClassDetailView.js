@@ -6,10 +6,12 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
 
-import HomeworkService from "../services/HomeworkService";
 import ModalDialogNewHomework from '../components/ModalDialogNewHomework/ModalDialogNewHomework';
 import ErrorDeleteExerciseComponent from '../components/ErrorDeleteExerciseComponent/ErrorDeleteExerciseComponent';
 import ErrorComponent from '../components/ErrorComponent/ErrorComponent';
+import HomeworkList from '../components/Homework/HomeworkList';
+import ClassService from "../services/ClassService";
+import HomeworkService from '../services/HomeworkService';
 
 export default class ClassDetailView extends React.Component {
 
@@ -32,10 +34,10 @@ export default class ClassDetailView extends React.Component {
             },
 
             homeworkToAdd:
-                {title: "", exercises: [{id: "1", question: "", answers: ["","","",""], rightSolution: ""}]},
+                {title: "", exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}]},
             currentClass: {
-                title: '',
-                id: ''
+                title: this.props.location.state.title,
+                id: this.props.match.params.id
             }
         };
 
@@ -50,14 +52,10 @@ export default class ClassDetailView extends React.Component {
             loading: true
         });
 
-        HomeworkService.getHomeworkOfClass(this.props.match.params.id).then((data) => {
+        ClassService.getHomeworkOfClass(this.props.match.params.id).then((data) => {
             this.setState({
-                homework: [...data],
-                loading: false,
-                currentClass: {
-                    title: this.props.location.state.title,
-                    id: this.props.match.params.id
-                }
+                homework: [...data.homework],
+                loading: false
             });
         }).catch((e) => {
             console.error(e);
@@ -66,9 +64,19 @@ export default class ClassDetailView extends React.Component {
 
     toggleModal() {
         const oldState = this.state.showModal;
-        const homeworkToAddErrorsWhenClickingAdd = {title: false, exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]}; // this is needed so that the user sees no previous info from a canceled homework creation
-        const homeworkToAddWhenClickingAdd = {title: "", exercises: [{id: "1", question: "", answers: ["","","",""], rightSolution: ""}]};
-        this.setState({showModal: !oldState, homeworkToAdd: homeworkToAddWhenClickingAdd, homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd});
+        const homeworkToAddErrorsWhenClickingAdd = {
+            title: false,
+            exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
+        }; // this is needed so that the user sees no previous info from a canceled homework creation
+        const homeworkToAddWhenClickingAdd = {
+            title: "",
+            exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}]
+        };
+        this.setState({
+            showModal: !oldState,
+            homeworkToAdd: homeworkToAddWhenClickingAdd,
+            homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd
+        });
     }
 
     handleSubmitModal() {
@@ -84,23 +92,23 @@ export default class ClassDetailView extends React.Component {
             newErrorText.push("For this homework the title is missing!");
         }
 
-        for(let i = 0; i<newHomeworkToAdd.exercises.length;i++) {
+        for (let i = 0; i < newHomeworkToAdd.exercises.length; i++) {
             if (newHomeworkToAdd.exercises[i].question === "") {
                 newErrorText.push("For exercise " + (i + 1) + " the question is missing!");
             }
             newHomeworkErrors.exercises[i].question = (newHomeworkToAdd.exercises[i].question === "");
         }
 
-        for(let i = 0; i<newHomeworkToAdd.exercises.length;i++) {
+        for (let i = 0; i < newHomeworkToAdd.exercises.length; i++) {
             if (newHomeworkToAdd.exercises[i].rightSolution === "") {
                 newErrorText.push("For exercise " + (i + 1) + " the right solution is missing!");
             }
             newHomeworkErrors.exercises[i].rightSolution = (newHomeworkToAdd.exercises[i].rightSolution === "");
         }
 
-        for(let i = 0; i<newHomeworkToAdd.exercises.length;i++) {
-            for(let a = 0; a<newHomeworkToAdd.exercises[i].answers.length;a++) {
-                if(newHomeworkToAdd.exercises[i].answers[a] === "") {
+        for (let i = 0; i < newHomeworkToAdd.exercises.length; i++) {
+            for (let a = 0; a < newHomeworkToAdd.exercises[i].answers.length; a++) {
+                if (newHomeworkToAdd.exercises[i].answers[a] === "") {
                     newErrorText.push("For exercise " + (i + 1) + " answer " + (a + 1) + " is missing!");
                 }
                 newHomeworkErrors.exercises[i].answers[a] = (newHomeworkToAdd.exercises[i].answers[a] === "");
@@ -127,10 +135,11 @@ export default class ClassDetailView extends React.Component {
 
     addNewHomework(homeworkToAdd) {
 
-        HomeworkService.addNewHomework(homeworkToAdd).then((newHomwork) => {
-                const newHomework = [...this.state.homework, newHomwork];
+        HomeworkService.addNewHomework(this.state.currentClass.id, homeworkToAdd).then((newHomework) => {
+                const updatedHomework = [...this.state.homework];
+                updatedHomework.push(newHomework);
 
-                this.setState({homework: newHomework});
+                this.setState({homework: updatedHomework});
                 this.toggleModal();
 
             }
@@ -179,7 +188,12 @@ export default class ClassDetailView extends React.Component {
         let newExerciseID = newHomeworkExercises.length;
         newExerciseID = "" + (newExerciseID + 1);
         newHomeworkExercises.push({id: newExerciseID, question: '', answers: ["", "", "", ""], rightSolution: ""});
-        newHomeworkErrorExercises.push({id: newExerciseID, question: false, answers: [false, false, false, false], rightSolution: false});
+        newHomeworkErrorExercises.push({
+            id: newExerciseID,
+            question: false,
+            answers: [false, false, false, false],
+            rightSolution: false
+        });
         this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
     };
 
@@ -260,7 +274,7 @@ export default class ClassDetailView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}>{this.state.homework}</Grid>
+                    <Grid item xs={12}><HomeworkList homework={this.state.homework} /> </Grid>
                 </Grid>
 
             </div>

@@ -18,6 +18,18 @@ export default class ClassService {
 
     }
 
+
+    static getHomeworkOfClass(classId){
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${ClassService.baseUrl()}` + classId, function(data) {
+                resolve(data);
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+
+    }
+
     static addNewClass(classToAdd){
 
         return new Promise((resolve, reject) => {

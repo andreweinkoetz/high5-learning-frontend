@@ -7,14 +7,12 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import Page from './components/Page/Page'
 import ClassListView from './views/ClassListView';
-import {ExerciseChoices} from './components/ExerciseChoice/ExerciseChoices';
 import UserService from './services/UserService';
 import ModalDialogNewHomework from "./components/ModalDialogNewHomework/ModalDialogNewHomework";
 import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNewClass";
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
 
-import ExerciseList from './components/ExerciseList/ExerciseList'
 import {HomeworkTest} from "./components/ExerciseList/HomeworkTest";
 
 
