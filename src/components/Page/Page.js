@@ -18,7 +18,8 @@ class Page extends React.Component {
 
         this.state = {
             title: '',
-            isAuthenticated: UserService.isAuthenticated()
+            isAuthenticated: UserService.isAuthenticated(),
+            navBarCollapsed: false
         };
 
         this.logout = this.logout.bind(this);
@@ -33,7 +34,12 @@ class Page extends React.Component {
         this.setState({
             title: document.title
         });
-    }
+    };
+
+    handleClick = () => {
+        const oldStateCollapsed = this.state.navBarCollapsed;
+        this.setState({navBarCollapsed: !oldStateCollapsed});
+    };
 
     render() {
 
@@ -53,7 +59,9 @@ class Page extends React.Component {
                     </Grid>
                     <Grid item sm={4} md={2}>
                         <Hidden only={'xs'}>
-                            <NavBar/>
+                            <NavBar
+                            collapsed={this.state.navBarCollapsed}
+                            clicked={this.handleClick}/>
                         </Hidden>
                     </Grid>
                     <Grid item xs={10} sm={7} md={9}>

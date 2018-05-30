@@ -3,43 +3,49 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from "@material-ui/core/es/Divider/Divider";
 import ListItemText from "@material-ui/core/es/ListItemText/ListItemText";
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import IconAccessible from '@material-ui/icons/Accessibility'
-import Phone1 from '@material-ui/icons/PhoneIphone';
 
 const NavBar = (props) => {
 
-    return (<div><List component="nav">
+    return (<div>
+        <List>
         <ListItem button>
-            <ListItemIcon>
-                <IconAccessible/>
-            </ListItemIcon>
-            <ListItemText primary="Link"/>
+            <ListItemText primary="Menu"/>
         </ListItem>
+            <Divider/>
         <ListItem button>
-            <ListItemIcon>
-                <IconAccessible/>
-            </ListItemIcon>
-            <ListItemText primary="Link"/>
+            <ListItemText primary="My classes"/>
         </ListItem>
-    </List>
         <Divider/>
-        <List component="nav">
-            <ListItem button>
-                <ListItemText primary="Link"/>
+            <ListItem button onClick={props.clicked}>
+                <ListItemText primary="My homework"/>
                 <ListItemIcon>
-                    <Phone1/>
+                    {props.collapsed ? <ExpandMore/> : <ExpandLess/>}
                 </ListItemIcon>
             </ListItem>
-            <ListItem button component="a" href="#simple-list">
-                <ListItemText primary="Link"/>
-                <ListItemIcon>
-                    <Phone1/>
-                </ListItemIcon>
+            <Collapse in={props.collapsed}>
+                <List>
+                    <ListItem button>
+                        <ListItemText inset primary="Add new homework"/>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemText inset primary="Enable deleting homework"/>
+                    </ListItem>
+                </List>
+            </Collapse>
+            <Divider/>
+            <ListItem button>
+                <ListItemText primary="My settings"/>
+            </ListItem>
+            <Divider/>
+            <ListItem button>
+                <ListItemText primary="My profile"/>
             </ListItem>
         </List>
     </div>);
-
-}
+};
 
 export default NavBar;
