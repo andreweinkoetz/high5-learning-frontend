@@ -6,29 +6,18 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
 
-export default class Homework extends Component {
+const Homework = (props) => {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            id: props.id,
-            title: props.title
-        };
-
-    }
-
-    render() {
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Link to={
                         {
-                            pathname: `/homework/${this.state.id}`,
+                            pathname: `/homework/${props.id}`,
                             state:
-                                { title: this.state.title}
+                                { title: props.title}
                         }
-                    }><Typography>{this.state.title}</Typography></Link>
+                    }><Typography>{props.title}</Typography></Link>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
@@ -39,5 +28,7 @@ export default class Homework extends Component {
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         );
-    }
-}
+
+};
+
+export default Homework;

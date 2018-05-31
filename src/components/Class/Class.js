@@ -6,40 +6,28 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
 
-export default class Class extends Component {
+const Class = (props) => {
 
-    constructor(props) {
-        super(props);
+    return (
+        <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                <Link to={
+                    {
+                        pathname: `/myclasses/${props.id}`,
+                        state:
+                            {title: props.title}
+                    }
+                }><Typography>{props.title}</Typography></Link>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+                <Typography>{props.description}<br/>
+                    URL: <a href={props.url}>{props.url}</a><br/>
+                    Password: {props.password}<br/>
+                </Typography>
+            </ExpansionPanelDetails>
+        </ExpansionPanel>
+    );
 
-        this.state = {
-            id: props.id,
-            title: props.title,
-            description: props.description,
-            url: props.url,
-            password: props.password
-        };
+};
 
-    }
-
-    render() {
-        return (
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Link to={
-                        {
-                            pathname: `/myclasses/${this.state.id}`,
-                            state:
-                                { title: this.state.title}
-                        }
-                    }><Typography>{this.state.title}</Typography></Link>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <Typography>{this.state.description}<br/>
-                        URL: <a href={this.state.url}>{this.state.url}</a><br/>
-                    Password: {this.state.password}<br/>
-                    </Typography>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-        );
-    }
-}
+export default Class;
