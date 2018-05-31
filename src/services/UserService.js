@@ -49,7 +49,7 @@ export default class UserService {
         }
         const userId = this.getCurrentUser().id;
         return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/member/`+classId, {
+            HttpService.get(`${UserService.baseURL()}/member/`+classId, {
                 user: userId
             }, function(data) {
                 resolve(data);
