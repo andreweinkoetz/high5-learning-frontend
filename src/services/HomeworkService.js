@@ -6,6 +6,16 @@ export default class HomeworkService {
         return HttpService.apiURL() + "/homework/";
     }
 
+    static getHomeworkDetail(homeworkId){
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${HomeworkService.baseUrl()}` + homeworkId,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+    }
 
     static addNewHomework(classId, homeworkToAdd){
 

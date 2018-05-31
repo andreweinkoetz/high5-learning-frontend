@@ -13,7 +13,7 @@ import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNew
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
 
-import {HomeworkTest} from "./components/ExerciseList/HomeworkTest";
+import HomeworkDetailView from './views/HomeworkDetailView';
 
 
 class App extends Component {
@@ -37,7 +37,7 @@ class App extends Component {
                 },
 
                 {component: ClassDetailView, path: '/myclasses/:id', exact: true},
-                {component: HomeworkTest, path: '/homework', exact: true},
+                {component: HomeworkDetailView, path: '/homework/:id', exact: true},
                 {component: ModalDialogNewHomework, path: '/modal', exact: true},
                 {component: ModalDialogNewClass, path: '/modalC', exact: true}
             ]
