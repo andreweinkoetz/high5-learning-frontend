@@ -2,6 +2,10 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import Save from "@material-ui/icons/Save";
+import {Link} from 'react-router-dom';
 
 import ExerciseList from "../components/Exercise/ExerciseList";
 import HomeworkService from '../services/HomeworkService';
@@ -41,9 +45,6 @@ export default class HomeworkDetailView extends React.Component {
         })
     };
 
-    handleSubmit() {
-
-    };
 
     handleSelection(event) {
 
@@ -65,6 +66,15 @@ export default class HomeworkDetailView extends React.Component {
         });
     }
 
+    //window.history.back(1): one step back in history
+    handleBack() {
+        window.history.back(1);
+    };
+
+    handleSubmit() {
+
+    };
+
 
     render() {
 
@@ -84,7 +94,22 @@ export default class HomeworkDetailView extends React.Component {
                     <Grid item xs={12}><ExerciseList selectedValues={this.state.selectedValues}
                                                      handleSelection={this.handleSelection}
                                                      exercises={this.state.exercises}/></Grid>
+                    <Grid item xs={12}>
+                        <Grid container align="center" spacing={8}>
+                            <Grid item xs={6}>
+                                <Button onClick={this.handleBack} size="large" variant="raised"
+                                        color="secondary">Back</Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button onClick={this.handleSubmit} size="medium" variant="raised"
+                                        color="primary">Submit<Icon>send</Icon></Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+
                 </Grid>
+
 
             </div>
         );
