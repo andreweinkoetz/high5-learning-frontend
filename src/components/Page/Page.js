@@ -55,7 +55,7 @@ class Page extends React.Component {
                 <Header title={this.state.title} logoutFn={this.logout}/>
                 <Grid container spacing={32} alignItems={'flex-start'} justify={'flex-start'}>
                     <Grid item xs={12}>
-                        <Breadcrumb sites={["home", "newpage", "lastpage"]}/>
+                        <Breadcrumb/>
                     </Grid>
                     <Grid item sm={4} md={2}>
                         <Hidden only={'xs'}>

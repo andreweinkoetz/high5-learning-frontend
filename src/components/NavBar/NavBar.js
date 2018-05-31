@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from "@material-ui/core/es/Divider/Divider";
@@ -12,13 +13,12 @@ const NavBar = (props) => {
 
     return (<div>
         <List>
-        <ListItem button>
-            <ListItemText primary="Menu"/>
-        </ListItem>
-            <Divider/>
-        <ListItem button>
-            <ListItemText primary="My classes"/>
-        </ListItem>
+            <Link
+                to="/myclasses"
+                style={{textDecoration: 'none'}}
+            ><ListItem button>
+                <ListItemText primary="My classes"/></ListItem>
+            </Link>
         <Divider/>
             <ListItem button onClick={props.clicked}>
                 <ListItemText primary="My homework"/>
