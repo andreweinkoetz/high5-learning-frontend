@@ -36,10 +36,9 @@ class Page extends React.Component {
     componentDidMount() {
         let currentPath = String(window.location.href);
         currentPath = currentPath.substring("http://localhost:3000".length);
-        const newBreadCrumbs = this.getUrlParts(currentPath);
+        this.getUrlParts(currentPath);
         this.setState({
-            title: document.title,
-            breadCrumbs:  newBreadCrumbs
+            title: document.title
         });
     };
 
@@ -57,12 +56,12 @@ class Page extends React.Component {
     }
 
     getUrlParts(currentPath) {
-        let navigation = [];
+        let newBreadCrumbs = [];
         currentPath = currentPath.substring("/".length);
         const urlParts = currentPath.split("/");
         let i = 0;
         if (urlParts[0] === "myclasses") {
-            navigation.push("My classes");
+            newBreadCrumbs.push({urlPart: "My classes", urlPartFull:"/"+urlParts[0]});
             if (urlParts.length > 1) {
                 const userId = UserService.getCurrentUser().id;
                 let classe;
@@ -70,21 +69,15 @@ class Page extends React.Component {
                     classe = [...data];
                     let correspondingClass = classe.find(i => i._id === urlParts[1]);
                     if (correspondingClass !== null) {
-                        navigation.push(correspondingClass.title);
-                        let n = navigation.map((k) => {
-                            return k + ">";
-                        });
-                        this.setState({breadcrumbs: n, breadcrumbsLoading: false});
+                        newBreadCrumbs.push({urlPart: correspondingClass.title, urlPartFull: "/"+urlParts[0]+"/"+urlParts[1]});
+                        this.setState({breadcrumbs: newBreadCrumbs, breadcrumbsLoading: false});
                     };
                 }).catch((e) => {
                     console.error(e);
                 });
             }
             else {
-                let n = navigation.map((k) => {
-                    return k + ">";
-                });
-                this.setState({breadcrumbs: n, breadcrumbsLoading: false});
+                this.setState({breadcrumbs: newBreadCrumbs, breadcrumbsLoading: false});
             }
         };
     }
