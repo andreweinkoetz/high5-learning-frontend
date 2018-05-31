@@ -12,6 +12,7 @@ import ErrorComponent from '../components/ErrorComponent/ErrorComponent';
 import HomeworkList from '../components/Homework/HomeworkList';
 import ClassService from "../services/ClassService";
 import HomeworkService from '../services/HomeworkService';
+import UserService from '../services/UserService';
 
 export default class ClassDetailView extends React.Component {
 
@@ -227,6 +228,33 @@ export default class ClassDetailView extends React.Component {
             return (<h2>Loading...</h2>);
         }
 
+        let addNewHomeworkButton;
+
+        if (UserService.isTeacher()) {
+            addNewHomeworkButton = <Grid item xs={6} sm={6} md={6}>
+                <Grid container spacing={0} align={'right'}>
+                    <Grid item xs={12}>
+                        <Hidden only={'xs'}>
+                            <Button variant="raised" color="primary" onClick={this.toggleModal}>
+                                <AddIcon/>
+                                Add new homework</Button>
+                        </Hidden>
+                        <Hidden smUp>
+                            <Button variant="fab" color="primary" aria-label="add" onClick={this.toggleModal}>
+                                <AddIcon/>
+                            </Button>
+                        </Hidden>
+
+                    </Grid>
+                </Grid>
+            </Grid>;
+        } else {
+            addNewHomeworkButton = <Grid item xs={6} sm={6} md={6}>
+                <Grid container spacing={0} align={'right'}>
+                </Grid>
+            </Grid>
+        }
+
         return (
             <div>
                 <ModalDialogNewHomework
@@ -254,27 +282,11 @@ export default class ClassDetailView extends React.Component {
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6}>
-                        <Grid container spacing={0} align={'right'}>
-                            <Grid item xs={12}>
-                                <Hidden only={'xs'}>
-                                    <Button variant="raised" color="primary" onClick={this.toggleModal}>
-                                        <AddIcon/>
-                                        Add new homework</Button>
-                                </Hidden>
-                                <Hidden smUp>
-                                    <Button variant="fab" color="primary" aria-label="add" onClick={this.toggleModal}>
-                                        <AddIcon/>
-                                    </Button>
-                                </Hidden>
-
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                    {addNewHomeworkButton}
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><HomeworkList homework={this.state.homework} /> </Grid>
+                    <Grid item xs={12}><HomeworkList homework={this.state.homework}/> </Grid>
                 </Grid>
 
             </div>

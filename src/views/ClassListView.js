@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
+import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
 import ErrorNoTitleClassComponent from '../components/ErrorNoTitleClassComponent/ErrorNoTitleClassComponent';
 
@@ -57,7 +58,11 @@ export default class ClassListView extends React.Component {
         const oldState = this.state.showModal;
         const errorStateWhenClickingAdd = false; // needed so that the old state of a canceled class creation isn't shown in the modal dialog
         const classToAddWhenClickingAdd = {title: '', description: ''};
-        this.setState({showModal: !oldState, modalError: errorStateWhenClickingAdd, classToAdd: classToAddWhenClickingAdd});
+        this.setState({
+            showModal: !oldState,
+            modalError: errorStateWhenClickingAdd,
+            classToAdd: classToAddWhenClickingAdd
+        });
     };
 
     handleSubmitModal() {
@@ -102,12 +107,40 @@ export default class ClassListView extends React.Component {
     handleNoTitleErrorMessageRead = () => {
         const oldErrorState = this.state.errorNoTitle;
         this.setState({errorNoTitle: !oldErrorState});
-    }
+    };
 
 
     render() {
         if (this.state.loading) {
             return (<h2>Loading...</h2>);
+        }
+
+        let addClassButton;
+
+        if (UserService.isTeacher()) {
+            addClassButton = <Grid item xs={6} sm={6} md={6}>
+                <Grid container spacing={0} align={'right'}>
+                    <Grid item xs={12}>
+                        <Hidden only={'xs'}>
+                            <Button variant="raised" color="primary" onClick={this.toggleModal}>
+                                <AddIcon/>
+                                Add new class</Button>
+                        </Hidden>
+                        <Hidden smUp>
+                            <Button variant="fab" color="primary" aria-label="add"
+                                    onClick={this.toggleModal}>
+                                <AddIcon/>
+                            </Button>
+                        </Hidden>
+
+                    </Grid>
+                </Grid>
+            </Grid>;
+        } else {
+            addClassButton = <Grid item xs={6} sm={6} md={6}>
+                <Grid container spacing={0} align={'right'}>
+                </Grid>
+            </Grid>;
         }
 
         return (
@@ -128,23 +161,7 @@ export default class ClassListView extends React.Component {
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6}>
-                        <Grid container spacing={0} align={'right'}>
-                            <Grid item xs={12}>
-                                <Hidden only={'xs'}>
-                                    <Button variant="raised" color="primary" onClick={this.toggleModal}>
-                                        <AddIcon/>
-                                        Add new class</Button>
-                                </Hidden>
-                                <Hidden smUp>
-                                    <Button variant="fab" color="primary" aria-label="add" onClick={this.toggleModal}>
-                                        <AddIcon/>
-                                    </Button>
-                                </Hidden>
-
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                    {addClassButton}
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
