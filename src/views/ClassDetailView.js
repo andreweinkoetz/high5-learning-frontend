@@ -13,6 +13,7 @@ import HomeworkList from '../components/Homework/HomeworkList';
 import ClassService from "../services/ClassService";
 import HomeworkService from '../services/HomeworkService';
 import UserService from '../services/UserService';
+import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
 export default class ClassDetailView extends React.Component {
 
@@ -70,7 +71,7 @@ export default class ClassDetailView extends React.Component {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.updateBreadcrumb([
             {
                 link: `/myclasses`,
@@ -244,9 +245,6 @@ export default class ClassDetailView extends React.Component {
     };
 
     render() {
-        if (this.state.loading) {
-            return (<h2>Loading...</h2>);
-        }
 
         let addNewHomeworkButton;
 
@@ -274,6 +272,7 @@ export default class ClassDetailView extends React.Component {
                 </Grid>
             </Grid>
         }
+
 
         return (
             <div>
@@ -306,7 +305,14 @@ export default class ClassDetailView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><HomeworkList classId={this.state.currentClass.id} classTitle={this.state.currentClass.title} homework={this.state.homework}/> </Grid>
+                    <Grid item xs={12}>
+                        {this.state.loading ? <div style={{textAlign: 'center', paddingTop:40}}><CircularProgress size={30}/>
+                                <Typography variant={'caption'}>Loading...</Typography>
+                                </div>
+                            : <HomeworkList classId={this.state.currentClass.id}
+                                            classTitle={this.state.currentClass.title}
+                                            homework={this.state.homework}/>}
+                    </Grid>
                 </Grid>
             </div>
         );

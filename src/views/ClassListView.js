@@ -11,6 +11,7 @@ import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
 import ErrorNoTitleClassComponent from '../components/ErrorNoTitleClassComponent/ErrorNoTitleClassComponent';
+import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
 
 export default class ClassListView extends React.Component {
@@ -121,9 +122,6 @@ export default class ClassListView extends React.Component {
 
 
     render() {
-        if (this.state.loading) {
-            return (<h2>Loading...</h2>);
-        }
 
         let addClassButton;
 
@@ -175,9 +173,12 @@ export default class ClassListView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><ClassList classes={this.state.classes}/></Grid>
+                    <Grid item xs={12}>
+                    {this.state.loading ? <div style={{textAlign:'center', paddingTop:40}}><CircularProgress size={30}/>
+                            <Typography variant={'caption'}>Loading...</Typography></div>
+                        : <ClassList classes={this.state.classes}/> }
                 </Grid>
-
+                </Grid>
             </div>
         );
     }

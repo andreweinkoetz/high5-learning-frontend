@@ -48,8 +48,7 @@ class App extends Component {
                     path: '/myclasses/:classTitle/homework/:title',
                     exact: true
                 },
-                //{component: ClassDetailView, path: '/myclasses/:id', exact: true},
-                //{component: HomeworkDetailView, path: '/myclasses/:classTitle/homework/:title', exact: true},
+
                 {component: ModalDialogNewHomework, path: '/modal', exact: true},
                 {component: ModalDialogNewClass, path: '/modalC', exact: true}
             ]

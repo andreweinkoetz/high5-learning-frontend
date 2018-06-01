@@ -7,6 +7,7 @@ import Icon from "@material-ui/core/Icon";
 
 import ExerciseList from "../components/Exercise/ExerciseList";
 import HomeworkService from '../services/HomeworkService';
+import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
 
 export default class HomeworkDetailView extends React.Component {
@@ -17,7 +18,7 @@ export default class HomeworkDetailView extends React.Component {
 
         this.state = {
             title: '',
-            id:'',
+            id: '',
             selectedValues: [],
             exercises: [],
             loading: false
@@ -46,7 +47,7 @@ export default class HomeworkDetailView extends React.Component {
         })
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.updateBreadcrumb([
             {
                 link: `/myclasses`,
@@ -91,10 +92,6 @@ export default class HomeworkDetailView extends React.Component {
 
     render() {
 
-        if (this.state.loading) {
-            return (<h2>Loading...</h2>);
-        }
-
         return (
             <div>
                 <Grid container spacing={16}>
@@ -104,9 +101,14 @@ export default class HomeworkDetailView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><ExerciseList selectedValues={this.state.selectedValues}
-                                                     handleSelection={this.handleSelection}
-                                                     exercises={this.state.exercises}/></Grid>
+                    <Grid item xs={12}>
+                        {this.state.loading ?
+                            <div style={{textAlign: 'center', paddingTop: 40, paddingBottom:40}}><CircularProgress size={30}/>
+                                <Typography variant={'caption'}>Loading...</Typography></div>
+                            : <ExerciseList selectedValues={this.state.selectedValues}
+                                            handleSelection={this.handleSelection}
+                                            exercises={this.state.exercises}/>}
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid container align="center" spacing={8}>
                             <Grid item xs={6}>
