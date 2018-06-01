@@ -68,7 +68,6 @@ export default class UserService {
             throw new Error("No user logged in");
         }
         const userId = this.getCurrentUser().id;
-        console.log(classId);
         return new Promise((resolve, reject) => {
             HttpService.post(`${UserService.baseURL()}/member/`, {
                 user: userId,

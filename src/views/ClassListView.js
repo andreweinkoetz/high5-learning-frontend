@@ -44,6 +44,8 @@ export default class ClassListView extends React.Component {
             loading: true
         });
 
+        console.log(document.referrer);
+
         ClassService.getClassesOfUser().then((data) => {
             this.setState({
                 classes: [...data],

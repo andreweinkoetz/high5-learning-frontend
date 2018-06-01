@@ -15,7 +15,7 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
         super(props);
 
         this.state = {
-            visible: true,
+            visible: false,
             showSuccessFailure: false,
             success: false,
             classPassword: "",
@@ -31,7 +31,7 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
             }
             else {
                 ClassService.getClassDetail(this.props.match.params.classId).then((c) => {
-                    this.setState({classPassword: c.password});
+                    this.setState({visible: true, classPassword: c.password});
                 })
             }
             }).catch((e) => {
