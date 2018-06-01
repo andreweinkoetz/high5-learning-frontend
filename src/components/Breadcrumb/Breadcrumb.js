@@ -15,6 +15,7 @@ const Breadcrumb = (props) => {
         {props.breadcrumbs.map((val, index) =>
             <Link
                 key={index}
+                style={{textDecoration: 'none', color: 'black'}}
                 to={
                     {
                         pathname: val.link,
