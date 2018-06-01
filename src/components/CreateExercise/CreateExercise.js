@@ -24,7 +24,7 @@ class CreateExercise extends Component {
             <div>
                 <DialogContent>
                     <TextField
-                        label={"Homework " + this.props.id}
+                        label={"Exercise " + this.props.id}
                         onChange={this.props.changeQuestion(this.state.id)}
                         error={this.props.errorExerciseQuestion}
                         helperText="Required"
