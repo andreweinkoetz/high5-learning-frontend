@@ -24,26 +24,51 @@ class App extends Component {
         this.state = {
             userId: UserService.getCurrentUser().id,
 
+            breadcrumbs: [{link: 'myclasses/'}],
+
             routes: [
                 {
-                    render: () => (<ClassListView/>),
+                    render: () => (<ClassListView {...props} updateBreadcrumb={this.updateBreadcrumb} />),
                     path: '/',
                     exact: true
                 },
                 {
-                    render: () => (<ClassListView/>),
+                    render: () => (<ClassListView {...props} updateBreadcrumb={this.updateBreadcrumb} />),
                     path: '/myclasses',
                     exact: true
                 },
 
-                {component: ClassDetailView, path: '/myclasses/:id', exact: true},
-                {component: HomeworkDetailView, path: '/homework/:id', exact: true},
+                {
+                    render: (props) => (<ClassDetailView {...props} updateBreadcrumb={this.updateBreadcrumb}/>),
+                    path: '/myclasses/:title',
+                    exact: true
+                },
+                {
+                    render: (props) => (<HomeworkDetailView {...props} updateBreadcrumb={this.updateBreadcrumb}/>),
+                    path: '/myclasses/:classTitle/homework/:title',
+                    exact: true
+                },
+                //{component: ClassDetailView, path: '/myclasses/:id', exact: true},
+                //{component: HomeworkDetailView, path: '/myclasses/:classTitle/homework/:title', exact: true},
                 {component: ModalDialogNewHomework, path: '/modal', exact: true},
                 {component: ModalDialogNewClass, path: '/modalC', exact: true}
             ]
 
-        }
+        };
 
+        this.updateBreadcrumb = this.updateBreadcrumb.bind(this);
+
+    }
+
+    updateBreadcrumb(value) {
+
+        let bc = [...value];
+
+        if(bc) {
+            this.setState({breadcrumbs: [...bc]})
+        } else {
+            this.setState({breadcrumbs: undefined})
+        }
     }
 
     render() {
@@ -59,7 +84,7 @@ class App extends Component {
         let routes;
 
         if (UserService.isAuthenticated()) {
-            routes = <Page>{this.state.routes.map((route, i) => (
+            routes = <Page breadcrumbs={this.state.breadcrumbs}>{this.state.routes.map((route, i) => (
                 <Route key={i} {...route}/>))}</Page>;
         } else {
             routes = <Route component={LandingPage} path={'/'}/>;

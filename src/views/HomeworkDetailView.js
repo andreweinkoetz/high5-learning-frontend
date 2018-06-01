@@ -4,8 +4,6 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
-import Save from "@material-ui/icons/Save";
-import {Link} from 'react-router-dom';
 
 import ExerciseList from "../components/Exercise/ExerciseList";
 import HomeworkService from '../services/HomeworkService';
@@ -18,8 +16,8 @@ export default class HomeworkDetailView extends React.Component {
         super(props);
 
         this.state = {
-            title: this.props.location.state.title,
-            id: this.props.match.params.id,
+            title: '',
+            id:'',
             selectedValues: [],
             exercises: [],
             loading: false
@@ -32,10 +30,13 @@ export default class HomeworkDetailView extends React.Component {
 
     componentWillMount() {
         this.setState({
-            loading: true
+            loading: true,
+            title: this.props.location.state.title,
+            id: this.props.location.state.id
         });
 
-        HomeworkService.getHomeworkDetail(this.state.id).then(homework => {
+
+        HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
             const homeworkExercises = [...homework.exercises];
 
             this.setState({
@@ -45,6 +46,23 @@ export default class HomeworkDetailView extends React.Component {
         })
     };
 
+    componentDidMount(){
+        this.props.updateBreadcrumb([
+            {
+                link: `/myclasses`,
+                linkName: 'My classes'
+            },
+            {
+                link: `/myclasses/${this.props.location.state.classTitle}/`,
+                linkName: this.props.location.state.classTitle,
+                id: this.props.location.state.classId
+            },
+            {
+                link: `homework/${this.props.location.state.title}`,
+                linkName: this.props.location.state.title,
+                id: this.props.location.state.id
+            }]);
+    }
 
     handleSelection(event) {
 
@@ -54,12 +72,7 @@ export default class HomeworkDetailView extends React.Component {
         const id = newValue[0];
         const val = newValue[1];
 
-        console.log(id);
-        console.log(val);
-
         newSelection[id] = val;
-
-        console.log(newSelection);
 
         this.setState({
             selectedValues: newSelection

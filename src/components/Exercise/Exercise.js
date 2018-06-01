@@ -8,14 +8,6 @@ import Grid from '@material-ui/core/Grid';
 
 const Exercise = (props) => {
 
-    const classes = {
-
-        formStyle: {
-            width: '50%'
-        }
-
-    };
-
     return (
         <div style={{margin: '10px'}}>
             <Paper elevation={4}>

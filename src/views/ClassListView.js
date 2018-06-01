@@ -51,7 +51,17 @@ export default class ClassListView extends React.Component {
         }).catch((e) => {
             console.error(e);
         });
+
     };
+
+    componentDidMount(){
+        this.props.updateBreadcrumb([
+            {
+                link: '/myclasses',
+                linkName: 'My classes'
+            }
+        ])
+    }
 
 
     toggleModal() {

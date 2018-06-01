@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import UserService from "../../services/UserService";
-import ClassService from "../../services/ClassService";
 
 
 class Page extends React.Component {
@@ -20,9 +19,7 @@ class Page extends React.Component {
         this.state = {
             title: '',
             isAuthenticated: UserService.isAuthenticated(),
-            navBarCollapsed: false,
-            breadcrumbs: [],
-            breadcrumbsLoading: true
+            navBarCollapsed: false
         };
 
         this.logout = this.logout.bind(this);
@@ -34,9 +31,6 @@ class Page extends React.Component {
     }
 
     componentDidMount() {
-        let currentPath = String(window.location.href);
-        currentPath = currentPath.substring("http://localhost:3000".length);
-        this.getUrlParts(currentPath);
         this.setState({
             title: document.title
         });
@@ -46,41 +40,6 @@ class Page extends React.Component {
         const oldStateCollapsed = this.state.navBarCollapsed;
         this.setState({navBarCollapsed: !oldStateCollapsed});
     };
-
-    componentDidUpdate(prevState) {
-        let currentPath = String(window.location.href);
-        currentPath = currentPath.substring("http://localhost:3000".length);
-        if (prevState.location.pathname !== currentPath) {
-            this.getUrlParts(currentPath);
-        }
-    }
-
-    getUrlParts(currentPath) {
-        let newBreadCrumbs = [];
-        currentPath = currentPath.substring("/".length);
-        const urlParts = currentPath.split("/");
-        let i = 0;
-        if (urlParts[0] === "myclasses") {
-            newBreadCrumbs.push({urlPart: "My classes", urlPartFull:"/"+urlParts[0]});
-            if (urlParts.length > 1) {
-                const userId = UserService.getCurrentUser().id;
-                let classe;
-                ClassService.getClassesOfUser().then((data) => {
-                    classe = [...data];
-                    let correspondingClass = classe.find(i => i._id === urlParts[1]);
-                    if (correspondingClass !== null) {
-                        newBreadCrumbs.push({urlPart: correspondingClass.title, urlPartFull: "/"+urlParts[0]+"/"+urlParts[1]});
-                        this.setState({breadcrumbs: newBreadCrumbs, breadcrumbsLoading: false});
-                    };
-                }).catch((e) => {
-                    console.error(e);
-                });
-            }
-            else {
-                this.setState({breadcrumbs: newBreadCrumbs, breadcrumbsLoading: false});
-            }
-        };
-    }
 
     render() {
 
@@ -96,7 +55,7 @@ class Page extends React.Component {
                 <Header title={this.state.title} logoutFn={this.logout}/>
                 <Grid container spacing={32} alignItems={'flex-start'} justify={'flex-start'}>
                     <Grid item xs={12}>
-                        {this.state.breadcrumbsLoading ? null : <Breadcrumb url={this.state.breadcrumbs}/>}
+                        {<Breadcrumb breadcrumbs={this.props.breadcrumbs}/>}
                     </Grid>
                     <Grid item sm={4} md={2}>
                         <Hidden only={'xs'}>

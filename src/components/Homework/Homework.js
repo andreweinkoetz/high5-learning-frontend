@@ -13,9 +13,14 @@ const Homework = (props) => {
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Link to={
                         {
-                            pathname: `/homework/${props.id}`,
+                            pathname: `/myclasses/${props.classTitle}/homework/${props.title}`,
                             state:
-                                { title: props.title}
+                                {
+                                    title: props.title,
+                                    id: props.id,
+                                    classId: props.classId,
+                                    classTitle: props.classTitle
+                                }
                         }
                     }><Typography>{props.title}</Typography></Link>
                 </ExpansionPanelSummary>

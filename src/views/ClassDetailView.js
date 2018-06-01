@@ -36,9 +36,10 @@ export default class ClassDetailView extends React.Component {
 
             homeworkToAdd:
                 {title: "", exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}]},
+
             currentClass: {
-                title: this.props.location.state.title,
-                id: this.props.match.params.id
+                title: '',
+                id: ''
             }
         };
 
@@ -46,14 +47,19 @@ export default class ClassDetailView extends React.Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleSubmitModal = this.handleSubmitModal.bind(this);
+
     }
 
     componentWillMount() {
         this.setState({
-            loading: true
+            loading: true,
+            currentClass: {
+                title: this.props.location.state.title,
+                id: this.props.location.state.id
+            }
         });
 
-        ClassService.getHomeworkOfClass(this.props.match.params.id).then((data) => {
+        ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
             this.setState({
                 homework: [...data.homework],
                 loading: false
@@ -61,6 +67,20 @@ export default class ClassDetailView extends React.Component {
         }).catch((e) => {
             console.error(e);
         });
+
+    }
+
+    componentDidMount(){
+        this.props.updateBreadcrumb([
+            {
+                link: `/myclasses`,
+                linkName: 'My classes'
+            },
+            {
+                link: `/myclasses/${this.props.location.state.title}`,
+                linkName: this.props.location.state.title,
+                id: this.props.location.state.id
+            }]);
     }
 
     toggleModal() {
@@ -286,9 +306,8 @@ export default class ClassDetailView extends React.Component {
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
-                    <Grid item xs={12}><HomeworkList homework={this.state.homework}/> </Grid>
+                    <Grid item xs={12}><HomeworkList classId={this.state.currentClass.id} classTitle={this.state.currentClass.title} homework={this.state.homework}/> </Grid>
                 </Grid>
-
             </div>
         );
     }
