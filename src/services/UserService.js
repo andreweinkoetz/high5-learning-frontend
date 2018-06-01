@@ -47,11 +47,8 @@ export default class UserService {
         if(!this.isAuthenticated()){
             throw new Error("No user logged in");
         }
-        const userId = this.getCurrentUser().id;
         return new Promise((resolve, reject) => {
-            HttpService.get(`${UserService.baseURL()}/member/`+classId, {
-                user: userId
-            }, function(data) {
+            HttpService.get(`${UserService.baseURL()}/member/`+classId, function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);
@@ -71,6 +68,7 @@ export default class UserService {
             throw new Error("No user logged in");
         }
         const userId = this.getCurrentUser().id;
+        console.log(classId);
         return new Promise((resolve, reject) => {
             HttpService.post(`${UserService.baseURL()}/member/`, {
                 user: userId,

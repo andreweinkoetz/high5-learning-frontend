@@ -12,7 +12,7 @@ const ClassList = (props) => {
 
                     return (
                         <Class key={obj._id} id={obj._id} title={obj.title} description={obj.description}
-                               url={config.baseUrlFrontend + '/myclasses/' + obj._id}
+                               url={config.baseUrlFrontend + '/goToClass/' + obj._id}
                                password={obj.password}/>
                     )
 

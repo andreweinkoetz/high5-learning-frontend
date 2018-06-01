@@ -1,4 +1,5 @@
 import HttpService from './HttpService';
+import HomeworkService from "./HomeworkService";
 
 export default class ClassService {
 
@@ -9,13 +10,25 @@ export default class ClassService {
 
     static getClassesOfUser(){
         return new Promise((resolve, reject) => {
-            HttpService.get(`${ClassService.baseUrl()}`, function(data) {
+            HttpService.get(`${ClassService.baseUrl()}`,
+                function(data) {
                 resolve(data);
             }, function(textStatus) {
                 reject(textStatus);
             });
         });
 
+    }
+
+    static getClassDetail(classId){
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${ClassService.baseUrl()}/details/` + classId,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
     }
 
 

@@ -12,6 +12,7 @@ import ModalDialogNewHomework from "./components/ModalDialogNewHomework/ModalDia
 import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNewClass";
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
+import ModalDialogRegisteringNewHomework from './components/ModalDialogRegisteringStudentToClass/ModalDialogRegisteringStudentToClass';
 
 import HomeworkDetailView from './views/HomeworkDetailView';
 
@@ -27,6 +28,7 @@ class App extends Component {
             breadcrumbs: [{link: 'myclasses/'}],
 
             routes: [
+                {component: ModalDialogRegisteringNewHomework, path: '/goToClass/:classId', exact: true},
                 {
                     render: () => (<ClassListView {...props} updateBreadcrumb={this.updateBreadcrumb} />),
                     path: '/',
