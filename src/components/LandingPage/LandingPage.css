@@ -74,6 +74,7 @@
     display:-webkit-box;
     color: #FFFFFF;
     background: linear-gradient(to right,  #FFEBEE, #FFCDD2, #EF9A9A, #EF9A9A, #FFCDD2,  #FFEBEE);
+    /*background: linear-gradient(to right,  #e8d5ae, #dd8838, #f7d9bd);*/
 }
 .content-page2 {
     float: left;
@@ -112,12 +113,26 @@
     top: 70vh;
     left: 0;
     width: 100%;
+    height: fit-content;
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+    display:-webkit-box;
+}
+.mobileButtonDiv{
+    text-align: center;
+    position: fixed;
+    top: 85vh;
+    left: 0;
+    width: 100%;
+    height: fit-content;
     -webkit-box-align:center;
     -webkit-box-pack:center;
     display:-webkit-box;
 }
 .modalDialog {
-
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+    display:-webkit-box;
 }
 h1, h2, p, ul, li {
     font-family: "Segoe UI Light";

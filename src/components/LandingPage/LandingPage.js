@@ -1,5 +1,6 @@
 import React from 'react';
 import {Switch} from 'react-router-dom';
+import Button from '@material-ui/core/Button';
 
 import Footer from '../Footer/Footer';
 import LogInButton from '../User/LogInButton';
@@ -22,14 +23,30 @@ export default class LandingPage extends React.Component {
         this.state = {
             modalDialogVisibility: false,
             modalDialogClass: "register",
-            username: ""
+            username: "",
+            width: window.innerWidth
         };
 
         this.onClickLogInButton = this.onClickLogInButton.bind(this);
         this.onClickRegisterButton = this.onClickRegisterButton.bind(this);
         this.onClickCancelModalDialog = this.onClickCancelModalDialog.bind(this);
         this.onHandleChangeUsername = this.onHandleChangeUsername.bind(this);
+        this.onHandleChangeWindowSize = this.onHandleChangeWindowSize.bind(this);
     }
+
+    componentWillMount() {
+        window.addEventListener('resize', this.onHandleChangeWindowSize);
+    }
+
+    // make sure to remove the listener
+    // when the component is not mounted anymore
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onHandleChangeWindowSize);
+    }
+
+    onHandleChangeWindowSize = () => {
+        this.setState({ width: window.innerWidth });
+    };
 
     onHandleChangeUsername() {
         this.setState({
@@ -59,6 +76,8 @@ export default class LandingPage extends React.Component {
     }
 
     render() {
+        const isMobile = (this.state.width <= 700);
+        console.log(isMobile);
         const images = [
             {
                 url: './img/login.jpg',
@@ -153,10 +172,27 @@ export default class LandingPage extends React.Component {
                     </div>
                 </div>
                 {/* absolute div presenting login and register options */}
-                <div className="buttonDiv">
-                    <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
-                    <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
-                </div>
+                <Switch>
+                    {(isMobile) ?
+                        <div className="mobileButtonDiv">
+                            <Button
+                                className="Button"
+                                color="primary"
+                                variant="raised"
+                                onClick={this.onClickLogInButton}>Log-In</Button>
+                            <Button
+                                className="Button"
+                                color="secondary"
+                                variant="raised"
+                                onClick={this.onClickRegisterButton}>Register</Button>
+                        </div>
+                        :
+                        <div className="buttonDiv">
+                            <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
+                            <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
+                        </div>
+                    }
+                </Switch>
                 {/* footer */}
                 <section>
                     <Footer/>
