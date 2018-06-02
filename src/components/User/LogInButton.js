@@ -6,15 +6,15 @@ import Typography from '@material-ui/core/Typography';
 // this was not included, why? https://material-ui.com/getting-started/installation/
 const styles = theme => ({
     root: {
-        minWidth: 400,
+        minWidth: 300,
         float: 'left',
         clear: 'none',
-        marginLeft: '10px',
-        marginRight: '10px',
+        marginLeft: '1vw',
+        marginRight: '1vw',
     },
     image: {
         position: 'relative',
-        height: 200,
+        height: 120,
         [theme.breakpoints.down('xs')]: {
             width: '100% !important', // Overrides inline-style
             height: 100,

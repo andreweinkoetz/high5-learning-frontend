@@ -109,12 +109,13 @@ export default class LandingPage extends React.Component {
                     <div className="content-page2">
                         <h1>PROFILE</h1>
                         <p>
-                            We love learning and believe in live long learning. Also, we love teachers with passion that
-                            care about their students. We think you deserve support with that! Let´s make the world a
-                            better place. High-Five Learning wants you and your students to succeed.
-                            Dive into e learning now. Engage your students with our platform that helps you to manage
+                            We believe in live long learning and we love teachers with passion.
+                            Let´s make the world a better place and support teachers in their mission.
+                            <br/>
+                            <b>High-Five Learning</b> wants you and your students to succeed.
+                            Dive into e-learning now. Engage your students with our platform that helps you to manage
                             and evaluate their homework and saves your time. Start gaining real insights about your
-                            students’ now! We want you all to succeed!
+                            students’ <b>now</b>! We want you all to succeed!
                         </p>
                     </div>
                     {/* about our produt / service */}
