@@ -19,7 +19,7 @@ export default class SubmissionService {
 
     static getSubmissionOfHomeworkOfStudent(homeworkId) {
         return new Promise((resolve, reject) => {
-            HttpService.get(`${SubmissionService.baseUrl()}/user/` + homeworkId, function (data) {
+            HttpService.get(`${SubmissionService.baseUrl()}user/` + homeworkId, function (data) {
                 resolve(data);
             }, function (textStatus) {
                 resolve(textStatus);
