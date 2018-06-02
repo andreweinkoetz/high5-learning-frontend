@@ -1,5 +1,4 @@
 import React from 'react';
-import {Switch} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 import Footer from '../Footer/Footer';
@@ -45,7 +44,7 @@ export default class LandingPage extends React.Component {
     }
 
     onHandleChangeWindowSize = () => {
-        this.setState({ width: window.innerWidth });
+        this.setState({width: window.innerWidth});
     };
 
     onHandleChangeUsername() {
@@ -80,20 +79,20 @@ export default class LandingPage extends React.Component {
         console.log(isMobile);
         const images = [
             {
-                url: './img/login.jpg',
+                url: `${window.location.origin}/img/login.jpg`,
                 title: 'LogIn',
                 width: '100%',
             },
             {
-                url: './img/register.jpg',
+                url: `${window.location.origin}/img/register.jpg`,
                 title: 'Register',
                 width: '100%',
             },
             {
-                url: './img/elearning.jpg',
+                url: `${window.location.origin}/img/elearning.jpg`,
             },
             {
-                url: './img/high-five.svg',
+                url: `${window.location.origin}/img/high-five.svg`,
             }
         ];
 
@@ -104,14 +103,13 @@ export default class LandingPage extends React.Component {
         return (
             <div className="landingPage">
                 {/* modal dialog */}
-                <Switch>
-                    {(this.state.modalDialogClass === "logIn") ?
-                        <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
-                               visible={this.state.modalDialogVisibility}/> :
-                        <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
-                                  visible={this.state.modalDialogVisibility}/>
-                    }
-                </Switch>
+
+                {(this.state.modalDialogClass === "logIn") ?
+                    <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
+                           visible={this.state.modalDialogVisibility}/> :
+                    <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
+                              visible={this.state.modalDialogVisibility}/>
+                }
                 {/* one pager content */}
                 <div className="content">
                     {/* short slogan and nice backgroud picture for the first page */}
@@ -172,27 +170,27 @@ export default class LandingPage extends React.Component {
                     </div>
                 </div>
                 {/* absolute div presenting login and register options */}
-                <Switch>
-                    {(isMobile) ?
-                        <div className="mobileButtonDiv">
-                            <Button
-                                className="Button"
-                                color="primary"
-                                variant="raised"
-                                onClick={this.onClickLogInButton}>Log-In</Button>
-                            <Button
-                                className="Button"
-                                color="secondary"
-                                variant="raised"
-                                onClick={this.onClickRegisterButton}>Register</Button>
-                        </div>
-                        :
-                        <div className="buttonDiv">
-                            <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
-                            <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
-                        </div>
-                    }
-                </Switch>
+
+                {(isMobile) ?
+                    <div className="mobileButtonDiv">
+                        <Button
+                            className="Button"
+                            color="primary"
+                            variant="raised"
+                            onClick={this.onClickLogInButton}>Log-In</Button>
+                        <Button
+                            className="Button"
+                            color="secondary"
+                            variant="raised"
+                            onClick={this.onClickRegisterButton}>Register</Button>
+                    </div>
+                    :
+                    <div className="buttonDiv">
+                        <LogInButton onClickCallback={this.onClickLogInButton} content={images[0]}/>
+                        <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
+                    </div>
+                }
+
                 {/* footer */}
                 <section>
                     <Footer/>
