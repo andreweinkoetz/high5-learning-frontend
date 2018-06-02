@@ -35,6 +35,7 @@ export default class HomeworkDetailView extends React.Component {
             isTeacher: false,
             selectedStudent: "All",
             studentsOfClass: [],
+            submitted: false,
 
             submissionToAdd: {
                 student: "",
@@ -60,6 +61,14 @@ export default class HomeworkDetailView extends React.Component {
             this.setState({isTeacher: true});
         }
 
+        //check if homework is already submitted by student
+        SubmissionService.getSubmissionOfHomeworkOfStudent(this.props.location.state.id).then(submission => {
+            if(submission.length === 0) {
+                this.setState({
+                    submitted: true
+                });
+            }
+        })
 
         HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
             const homeworkExercises = [...homework.exercises];
