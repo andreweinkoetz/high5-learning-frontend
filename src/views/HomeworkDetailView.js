@@ -36,7 +36,12 @@ export default class HomeworkDetailView extends React.Component {
             percentageCorrectAnswers: 100,
             isTeacher: false,
             selectedStudent: "All",
-            studentsOfClass:[]
+            studentsOfClass:[
+                "Hermann Grübel",
+                "Andre Weinkötz",
+                "Andre Landgraf",
+                "Martin Lindemann"
+            ]
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,8 +58,9 @@ export default class HomeworkDetailView extends React.Component {
 
         if (UserService.isTeacher()) {
             this.setState({isTeacher: true});
-        }
+        };
 
+        // here we have to load also all students of a class
 
         HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
             const homeworkExercises = [...homework.exercises];
@@ -117,6 +123,10 @@ export default class HomeworkDetailView extends React.Component {
 
     render() {
 
+        let students = this.state.studentsOfClass.map((student, index) => {
+                return (<MenuItem key={index} value={student}>{student}</MenuItem>)
+        });
+
         let statistics =
             <div>
             <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
@@ -125,11 +135,11 @@ export default class HomeworkDetailView extends React.Component {
                         <Typography variant={"subheading"}>Select aggregation level of students (Required)</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <FormControl style={{minWidth: '120px'}}>
+                        <FormControl style={{minWidth: '200px'}}>
                             {/* <InputLabel>Select student</InputLabel> */}
                             <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
                                 <MenuItem value={"All"}>All</MenuItem>
-                                <MenuItem value={"Test"}>Test</MenuItem>
+                                {students}
                             </Select>
                         </FormControl>
                     </Grid>
