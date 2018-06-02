@@ -36,7 +36,7 @@ export default class ClassDetailView extends React.Component {
             },
 
             homeworkToAdd:
-                {title: "", exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}]},
+                {title: "", exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}], assignedClass: ''},
 
             currentClass: {
                 title: '',
@@ -105,6 +105,7 @@ export default class ClassDetailView extends React.Component {
 
         let newHomeworkToAdd = {...this.state.homeworkToAdd};
 
+        newHomeworkToAdd.assignedClass = this.state.currentClass.id;
 
         let newErrorText = [];
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
