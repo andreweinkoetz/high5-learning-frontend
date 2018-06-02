@@ -9,13 +9,12 @@ import Paper from '@material-ui/core/Paper';
 import ExerciseList from "../components/Exercise/ExerciseList";
 import HomeworkService from '../services/HomeworkService';
 import UserService from '../services/UserService';
-import SubmissionService from '../services/SubmissionService';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
+import InputLabel from  '@material-ui/core/InputLabel';
 
 
 export default class HomeworkDetailView extends React.Component {
@@ -34,18 +33,11 @@ export default class HomeworkDetailView extends React.Component {
             percentageCorrectAnswers: 25,
             isTeacher: false,
             selectedStudent: "All",
-            studentsOfClass: [],
-
-            submissionToAdd: {
-                student: "",
-                homework: "",
-                exercises: []
-            }
+            studentsOfClass:[]
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
-        this.addNewSubmission = this.addNewSubmission.bind(this);
 
     }
 
@@ -109,41 +101,21 @@ export default class HomeworkDetailView extends React.Component {
         window.history.back(1);
     };
 
-
     handleSubmit() {
-        const homeworkId = this.state.id;
-        const userId = UserService.getCurrentUser().id;
-        const submissionToAdd = {...this.state.submissionToAdd};
-        submissionToAdd.exercises = this.state.selectedValues;
-        submissionToAdd.student = userId;
-        submissionToAdd.homework = this.state.id;
-        console.log(submissionToAdd);
-        this.addNewSubmission(submissionToAdd);
+
+    };
+
+    handleValueSelected = (event) => {
+        const newValueSelected = event.target.value;
+        console.log(event.target.value);
+        this.setState({selectedStudent: newValueSelected});
     };
 
 
+    render() {
 
-//calls SubmissionService and adds new submission to the database
-addNewSubmission(submissionToAdd)
-{
-    SubmissionService.addNewSubmission(submissionToAdd)
-        .then(submissionToAdd => console.log('test'))
-        .catch(e => alert(e));
-
-};
-
-handleValueSelected = (event) => {
-    const newValueSelected = event.target.value;
-    console.log(event.target.value);
-    this.setState({selectedStudent: newValueSelected});
-};
-
-
-render()
-{
-
-    let statistics =
-        <div>
+        let statistics =
+            <div>
             <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
                 <Grid container spacing={0} direction={"row"}>
                     <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
@@ -167,8 +139,7 @@ render()
                 </Grid>
                 <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
                     <Grid item xs={2} sm={2}>
-                        <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
-                            progress: </Typography>
+                        <Typography variant={"subheading"} style={{paddingLeft:'15px'}}>Overall progress: </Typography>
                     </Grid>
                     <Grid item xs={1} sm={1}>
                         <Typography variant={"body1"}>{this.state.progressOfStudents} %</Typography>
@@ -181,8 +152,7 @@ render()
                     </Grid>
                     <Grid item xs={1} sm={1}/>
                     <Grid item xs={2} sm={2}>
-                        <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
-                            answers: </Typography>
+                        <Typography variant={"subheading"} style={{paddingLeft:'15px'}}>Percentage of correct answers: </Typography>
                     </Grid>
                     <Grid item xs={1} sm={1}>
                         <Typography variant={"body1"}>{this.state.percentageCorrectAnswers} %</Typography>
@@ -195,45 +165,44 @@ render()
                     </Grid>
                 </Grid>
             </Paper>
-        </div>
+            </div>
 
-    let buttonsForStudents = <Grid item xs={12}>
-        <Grid container align="center" spacing={8}>
-            <Grid item xs={6}>
-                <Button onClick={this.handleBack} size="large" variant="raised"
-                        color="secondary">Back</Button>
-            </Grid>
-            <Grid item xs={6}>
-                <Button onClick={this.handleSubmit} size="medium" variant="raised"
-                        color="primary">Submit<Icon>send</Icon></Button>
+        let buttonsForStudents = <Grid item xs={12}>
+            <Grid container align="center" spacing={8}>
+                <Grid item xs={6}>
+                    <Button onClick={this.handleBack} size="large" variant="raised"
+                            color="secondary">Back</Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button onClick={this.handleSubmit} size="medium" variant="raised"
+                            color="primary">Submit<Icon>send</Icon></Button>
+                </Grid>
             </Grid>
         </Grid>
-    </Grid>
 
-    return (
-        <div>
-            <Grid container spacing={16}>
-                <Grid item xs={12}>
-                    <Typography variant={'title'}>Homework: {this.state.title}</Typography>
+        return (
+            <div>
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        <Typography variant={'title'}>Homework: {this.state.title}</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {this.state.isTeacher ? statistics : null}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {this.state.loading ?
+                            <div style={{textAlign: 'center', paddingTop: 40, paddingBottom:40}}><CircularProgress size={30}/>
+                                <Typography variant={'caption'}>Loading...</Typography></div>
+                            : <ExerciseList selectedValues={this.state.selectedValues}
+                                            handleSelection={this.handleSelection}
+                                            exercises={this.state.exercises}/>}
+                    </Grid>
+                        {this.state.isTeacher ? null : buttonsForStudents}
                 </Grid>
-                <Grid item xs={12}>
-                    {this.state.isTeacher ? statistics : null}
-                </Grid>
-                <Grid item xs={12}>
-                    <Divider/>
-                </Grid>
-                <Grid item xs={12}>
-                    {this.state.loading ?
-                        <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
-                            size={30}/>
-                            <Typography variant={'caption'}>Loading...</Typography></div>
-                        : <ExerciseList selectedValues={this.state.selectedValues}
-                                        handleSelection={this.handleSelection}
-                                        exercises={this.state.exercises}/>}
-                </Grid>
-                {this.state.isTeacher ? null : buttonsForStudents}
-            </Grid>
-        </div>
-    );
-}
+            </div>
+        );
+    }
 }
