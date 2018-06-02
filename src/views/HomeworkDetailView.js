@@ -6,6 +6,9 @@ import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import Paper from '@material-ui/core/Paper';
 
+import {Progress} from 'react-sweet-progress';
+import 'react-sweet-progress/lib/style.css';
+
 import ExerciseList from "../components/Exercise/ExerciseList";
 import HomeworkService from '../services/HomeworkService';
 import UserService from '../services/UserService';
@@ -30,7 +33,7 @@ export default class HomeworkDetailView extends React.Component {
             exercises: [],
             loading: false,
             progressOfStudents: 50,
-            percentageCorrectAnswers: 25,
+            percentageCorrectAnswers: 100,
             isTeacher: false,
             selectedStudent: "All",
             studentsOfClass:[]
@@ -119,7 +122,7 @@ export default class HomeworkDetailView extends React.Component {
             <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
                 <Grid container spacing={0} direction={"row"}>
                     <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                        <Typography variant={"subheading"}>Select: Aggregation level (Required)</Typography>
+                        <Typography variant={"subheading"}>Select aggregation level of students (Required)</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControl style={{minWidth: '120px'}}>
@@ -133,7 +136,7 @@ export default class HomeworkDetailView extends React.Component {
                 </Grid>
             </Paper>
             <Divider/>
-            <Paper elevation={4}>
+                {/*<Paper elevation={4}>
                 <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
                     <Typography variant={"subheading"}>Statistics</Typography>
                 </Grid>
@@ -162,6 +165,34 @@ export default class HomeworkDetailView extends React.Component {
                             variant={"determinate"}
                             value={this.state.percentageCorrectAnswers}
                             style={{paddingRight: '10px'}}/>
+                    </Grid>
+                </Grid>
+            </Paper>*/}
+            <Paper elevation={4}>
+                <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
+                    <Typography variant={"subheading"}>Statistics</Typography>
+                </Grid>
+                <Grid container spacing={0} style={{padding: '20px'}} alignItems={"center"} direction={"row"}>
+                    <Grid item xs={3} sm={3}>
+                        <Typography variant={"subheading"} style={{paddingLeft:'15px'}}>Overall progress: </Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1}>
+                        <Progress
+                            percent={this.state.progressOfStudents}
+                            width={90}
+                            status={"active"}
+                            type={"circle"}></Progress>
+                    </Grid>
+                    <Grid item xs={1} sm={1}/>
+                    <Grid item xs={4} sm={4}>
+                        <Typography variant={"subheading"} style={{paddingLeft:'15px'}}>Percentage of correct answers: </Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1}>
+                        <Progress
+                            percent={this.state.percentageCorrectAnswers}
+                            width={90}
+                            status={"active"}
+                            type={"circle"}></Progress>
                     </Grid>
                 </Grid>
             </Paper>
