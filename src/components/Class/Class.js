@@ -6,6 +6,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
 
+import UserService from "../../services/UserService";
+
 const Class = (props) => {
 
     return (
@@ -23,10 +25,11 @@ const Class = (props) => {
                 }><Typography>{props.title}</Typography></Link>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-                <Typography>{props.description}<br/>
+                {UserService.isTeacher() ? <Typography>{props.description}<br/>
                     URL: <a href={props.url}>{props.url}</a><br/>
                     Password: {props.password}<br/>
-                </Typography>
+                </Typography> : <Typography>{props.description}<br/>
+                </Typography>}
             </ExpansionPanelDetails>
         </ExpansionPanel>
     );
