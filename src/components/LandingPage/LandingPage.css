@@ -1,6 +1,7 @@
 .body {
 
 }
+
 #root {
     margin: 0;
     padding: 0;
@@ -8,6 +9,7 @@
     width: 100%;
     height: 100%;
 }
+
 .landingPage {
     position: absolute;
     top: 0;
@@ -17,6 +19,7 @@
     margin: 0;
     padding: 0;
 }
+
 .head-line {
     position: fixed;
     top: 7vh;
@@ -25,11 +28,15 @@
     width: 100%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.15);
+    background: rgba(0, 0, 0, 0.15);
 }
+
 .icon {
     margin-right: 0.5vw;
+    width: 4vw;
+    height: 4vw;
 }
+
 .heading {
     padding: 1vh 1vw 0 2vw;
     margin-left: 2vw;
@@ -38,6 +45,7 @@
     color: #FFFFFF;
     opacity: 0.7;
 }
+
 .content {
     float: left;
     clear: both;
@@ -46,43 +54,62 @@
     margin: 0;
     padding: 0;
 }
+
+.content section {
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.content section:first-of-type {
+    opacity: 1;
+    transition: all 0.3s;
+}
+
+.content section:hover {
+    opacity: 1;
+}
+
 .content-page1 {
     margin-top: 0;
     width: 100%;
-    height:90vh;
+    height: 90vh;
     padding-top: 20vh;
     text-align: center;
     background-color: #BBDEFB;
     color: white;
 }
+
 .content-page1 h1 {
     font-size: 4vw;
 }
+
 .content-page1 p {
     padding-top: 4vh;
     font-size: 2vw;
     font-weight: bold;
 }
-.content-title{
+
+.content-title {
     float: left;
     clear: both;
     width: 100%;
-    height:100vh;
+    height: 100vh;
     text-align: center;
-    -webkit-box-align:center;
-    -webkit-box-pack:center;
-    display:-webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -webkit-box;
     color: #FFFFFF;
-    background: linear-gradient(to right,  #FFEBEE, #FFCDD2, #EF9A9A, #EF9A9A, #FFCDD2,  #FFEBEE);
+    background: linear-gradient(to right, #FFEBEE, #FFCDD2, #EF9A9A, #EF9A9A, #FFCDD2, #FFEBEE);
     /*background: linear-gradient(to right,  #e8d5ae, #dd8838, #f7d9bd);*/
 }
+
 .content-page2 {
     float: left;
     clear: both;
     width: 100%;
-    height:100vh;
+    height: 100vh;
     text-align: center;
-    background: linear-gradient(to bottom, #FFCDD2,  #FFEBEE);
+    background: linear-gradient(to bottom, #FFCDD2, #FFEBEE);
 }
 
 .content-page2 p {
@@ -96,17 +123,19 @@
     float: left;
     clear: both;
     width: 100%;
-    height:100vh;
+    height: 100vh;
     text-align: center;
     background-color: #FAFAFA;
 }
+
 .content-page4 {
     float: left;
     clear: both;
     width: 100%;
-    height:100vh;
+    height: 100vh;
     text-align: center;
 }
+
 .buttonDiv {
     text-align: center;
     position: fixed;
@@ -114,36 +143,42 @@
     left: 0;
     width: 100%;
     height: fit-content;
-    -webkit-box-align:center;
-    -webkit-box-pack:center;
-    display:-webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -webkit-box;
 }
-.mobileButtonDiv{
+
+.mobileButtonDiv {
     text-align: center;
     position: fixed;
     top: 85vh;
     left: 0;
     width: 100%;
     height: fit-content;
-    -webkit-box-align:center;
-    -webkit-box-pack:center;
-    display:-webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -webkit-box;
 }
+
 .modalDialog {
-    -webkit-box-align:center;
-    -webkit-box-pack:center;
-    display:-webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -webkit-box;
 }
+
 h1, h2, p, ul, li {
     font-family: "Segoe UI Light";
 }
-p{
+
+p {
     font-size: 3vh;
 }
+
 ul li {
     font-size: 3vh;
     list-style: none;
 }
+
 h1 {
     font-size: 4vw;
 }

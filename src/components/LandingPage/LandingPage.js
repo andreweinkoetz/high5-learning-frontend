@@ -115,17 +115,17 @@ export default class LandingPage extends React.Component {
                 {/* one pager content */}
                 <div className="content">
                     {/* short slogan and nice backgroud picture for the first page */}
-                    <div className="content-page1">
+                    <section className="content-page1">
                         <h1>WE LOVE LEARNING</h1>
                         <p>“Education is the most powerful weapon which you can use to change the world.”
                             <br/>― Nelson Mandela</p>
-                    </div>
+                    </section>
                     {/* titel of the landing page style={{backgroundImage: `url(${images[2].url})`,}}*/}
-                    <div className="content-title">
+                    <section className="content-title">
                         <h1>MAIN PAGE</h1>
-                    </div>
+                    </section>
                     {/* about high 5 learning, our story */}
-                    <div className="content-page2">
+                    <section className="content-page2">
                         <h1>PROFILE</h1>
                         <p>
                             We believe in live long learning and we love teachers with passion.
@@ -136,9 +136,9 @@ export default class LandingPage extends React.Component {
                             and evaluate their homework and saves your time. Start gaining real insights about your
                             students’ <b>now</b>! We want you all to succeed!
                         </p>
-                    </div>
+                    </section>
                     {/* about our produt / service */}
-                    <div className="content-page3">
+                    <section className="content-page3">
                         <h1>WHAT WE OFFER</h1>
                         <ul>
                             <li>Modern, intuitive e-learning platform</li>
@@ -149,9 +149,9 @@ export default class LandingPage extends React.Component {
                             <li>Reusability of classes</li>
 
                         </ul>
-                    </div>
+                    </section>
                     {/* about our team / us */}
-                    <div className="content-page4">
+                    <section className="content-page4">
                         <h1>OUR TEAM</h1>
                         <div className="table-of-team">
                             <ul>
@@ -162,7 +162,7 @@ export default class LandingPage extends React.Component {
 
                             </ul>
                         </div>
-                    </div>
+                    </section>
                 </div>
                 {/* transparent absolute div presenting brand name & logo */}
                 <div className="head-line">
