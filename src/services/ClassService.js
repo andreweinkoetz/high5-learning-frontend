@@ -55,5 +55,30 @@ export default class ClassService {
 
     }
 
+    static updateClass(classToUpdate, classId){
+
+        return new Promise((resolve, reject) => {
+            HttpService.put(`${ClassService.baseUrl()}` + classId, classToUpdate,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+
+    }
+
+    static deleteClass(classId){
+
+        return new Promise((resolve, reject) => {
+            HttpService.delete(`${ClassService.baseUrl()}` + classId,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+
+    }
 
 }

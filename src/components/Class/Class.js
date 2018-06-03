@@ -1,5 +1,6 @@
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Button from '@material-ui/core/Button';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -28,6 +29,10 @@ const Class = (props) => {
                 {UserService.isTeacher() ? <Typography>{props.description}<br/>
                     URL: <a href={props.url}>{props.url}</a><br/>
                     Password: {props.password}<br/>
+                    <Button variant="raised" color="primary" onClick={() => props.updateClassInfo(props.id, props.title, props.description)}>
+                        Update class information</Button>
+                    <Button variant="raised" color="secondary" onClick={() => props.deleteClass(props.id)}>
+                        Delete class</Button>
                 </Typography> : <Typography>{props.description}<br/>
                 </Typography>}
             </ExpansionPanelDetails>

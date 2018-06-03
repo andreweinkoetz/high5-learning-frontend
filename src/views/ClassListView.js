@@ -31,7 +31,9 @@ export default class ClassListView extends React.Component {
                 title: '',
                 description: ''
             },
-            classes: []
+            classes: [],
+            updateClassWished: false,
+            idOfToBeUpdatedClass: ''
         };
 
         this.addNewClass = this.addNewClass.bind(this);
@@ -83,14 +85,37 @@ export default class ClassListView extends React.Component {
         });
     };
 
+    updateClass(classToUpdate) {
+
+        ClassService.updateClass(classToUpdate, this.state.idOfToBeUpdatedClass).then((updatedClass) => {
+
+            let newClasses = [...this.state.classes];
+
+            let classToUpdate = newClasses.find(e => e._id === updatedClass._id);
+
+            classToUpdate.title = updatedClass.title;
+            classToUpdate.description = updatedClass.description;
+
+            this.setState({classes: newClasses});
+            this.toggleModal();
+
+        }).catch(e => alert(e));
+
+    };
+
     handleSubmitModal() {
 
         const classToAdd = {...this.state.classToAdd};
 
-        if (classToAdd.title === '') {
-            this.setState({modalError: true, errorNoTitle: true});
-        } else {
-            this.addNewClass(classToAdd);
+        if(this.state.updateClassWished) {
+            this.updateClass(classToAdd);
+        }
+        else {
+            if (classToAdd.title === '') {
+                this.setState({modalError: true, errorNoTitle: true});
+            } else {
+                this.addNewClass(classToAdd);
+            }
         }
     };
 
@@ -127,6 +152,19 @@ export default class ClassListView extends React.Component {
         this.setState({errorNoTitle: !oldErrorState});
     };
 
+    handleUpdateClassInfoWished = (id, t, d) => {
+        const updatedClass = {title: t, description: d};
+        this.setState({classToAdd: updatedClass, showModal: true, updateClassWished: true, idOfToBeUpdatedClass: id});
+    };
+
+    handleDeleteClass = (id) => {
+
+        ClassService.deleteClass(id).then(() => {
+
+        }).catch(e => alert(e));
+
+    };
+
 
     render() {
 
@@ -147,7 +185,6 @@ export default class ClassListView extends React.Component {
                                 <AddIcon/>
                             </Button>
                         </Hidden>
-
                     </Grid>
                 </Grid>
             </Grid>;
@@ -166,8 +203,8 @@ export default class ClassListView extends React.Component {
                                      handleSubmit={this.handleSubmitModal}
                                      toggle={this.toggleModal}
                                      error={this.state.modalError}
-                                     title={this.state.classToAdd.title}
-                                     description={this.state.classToAdd.description}
+                                     values={this.state.classToAdd}
+                                     updateWished={this.state.updateClassWished}
                 />
                 <ErrorNoTitleClassComponent
                     errorNoTitleRead={this.handleNoTitleErrorMessageRead}
@@ -183,7 +220,10 @@ export default class ClassListView extends React.Component {
                     <Grid item xs={12}>
                     {this.state.loading ? <div style={{textAlign:'center', paddingTop:40}}><CircularProgress size={30}/>
                             <Typography variant={'caption'}>Loading...</Typography></div>
-                        : <ClassList classes={this.state.classes}/> }
+                        : <ClassList
+                            classes={this.state.classes}
+                            updateClassInfo={this.handleUpdateClassInfoWished}
+                            deleteClass={this.handleDeleteClass}/> }
                 </Grid>
                 </Grid>
             </div>

@@ -18,14 +18,14 @@ const ModalDialogNewClass = (props) => {
                 disableEscapeKeyDown
                 open={props.visible}
             >
-                <DialogTitle>Create new class</DialogTitle>
+                {props.updateWished ? <DialogTitle>Update class</DialogTitle> : <DialogTitle>Create new class</DialogTitle>}
                 <DialogContent>
                     <TextField
                         error={props.error}
                         onChange={props.handleTitleChange}
                         label="Title"
+                        value={props.values.title}
                         helperText="Required"
-                        value={props.title}
                         multiline
                         required={true}
                     />
@@ -33,17 +33,21 @@ const ModalDialogNewClass = (props) => {
                 <DialogContent>
                     <TextField
                         onChange={props.handleDescriptionChange}
+                        value={props.values.description}
                         label="Description"
-                        value={props.description}
                         multiline
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button
+                    {props.updateWished ? <Button
                         color={"primary"}
                         variant={"raised"}
                         onClick={props.handleSubmit}
-                    >Create Class</Button>
+                        >Update Class</Button> : <Button
+                        color={"primary"}
+                        variant={"raised"}
+                        onClick={props.handleSubmit}
+                    >Create Class</Button>}
                     <Button
                         color={"secondary"}
                         variant={"raised"}

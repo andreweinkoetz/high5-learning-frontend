@@ -121,7 +121,7 @@ export default class HttpService {
         });
     }
 
-    static remove(url, onSuccess, onError) {
+    static delete(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
         if (token) {
