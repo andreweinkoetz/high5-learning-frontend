@@ -95,8 +95,9 @@ export default class ClassListView extends React.Component {
 
             classToUpdate.title = updatedClass.title;
             classToUpdate.description = updatedClass.description;
+            classToUpdate.password = updatedClass.password;
 
-            this.setState({classes: newClasses});
+            this.setState({classes: newClasses, updateClassWished: false});
             this.toggleModal();
 
         }).catch(e => alert(e));
