@@ -2,12 +2,14 @@ import config from '../config';
 
 export default class HttpService {
 
-    static apiURL() {return config.backendUrl; }
+    static apiURL() {
+        return config.backendUrl;
+    }
 
     static get(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
 
@@ -15,31 +17,36 @@ export default class HttpService {
             method: 'GET',
             headers: header
         }).then((resp) => {
-            if(resp.ok) {
+            if (resp.ok) {
                 return resp.json();
             }
-            else if(this.checkIfUnauthorized(resp)) {
-                window.location = "/#login";
+            else if (this.checkIfUnauthorized(resp)) {
+                let res = this.addErrorMessageUnauthorized(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
+
+            } else if (this.checkIfForbidden(resp)) {
+                let res = this.addErrorMessageForbidden(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
             }
             else {
                 resp.json().then((json) => {
-                    onError(json.error);
+                    onError({code: resp.status, title: json.error, msg: json.message});
                 });
             }
         }).then((resp) => {
-            if(resp.hasOwnProperty('token')) {
+            if (resp.hasOwnProperty('token')) {
                 window.localStorage['jwtToken'] = resp.token;
             }
             onSuccess(resp);
-        }).catch((e) => {
-            onError(e.message);
+        }).catch(() => {
+            onError({code: 500, title: 'Server error', msg: 'Failed to contact backend'});
         });
     }
 
     static put(url, data, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
         header.append('Content-Type', 'application/json');
@@ -49,11 +56,16 @@ export default class HttpService {
             headers: header,
             body: JSON.stringify(data)
         }).then((resp) => {
-            if(resp.ok) {
+            if (resp.ok) {
                 return resp.json();
             }
-            else if(this.checkIfUnauthorized(resp)) {
-                window.location = "/#login";
+            else if (this.checkIfUnauthorized(resp)) {
+                let res = this.addErrorMessageUnauthorized(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
+
+            } else if (this.checkIfForbidden(resp)) {
+                let res = this.addErrorMessageForbidden(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
             }
             else {
                 resp.json().then((json) => {
@@ -61,7 +73,7 @@ export default class HttpService {
                 });
             }
         }).then((resp) => {
-            if(resp.hasOwnProperty('token')) {
+            if (resp.hasOwnProperty('token')) {
                 window.localStorage['jwtToken'] = resp.token;
             }
             onSuccess(resp);
@@ -73,7 +85,7 @@ export default class HttpService {
     static post(url, data, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
         header.append('Content-Type', 'application/json');
@@ -83,31 +95,36 @@ export default class HttpService {
             headers: header,
             body: JSON.stringify(data)
         }).then((resp) => {
-            if(resp.ok) {
+            if (resp.ok) {
                 return resp.json();
             }
-            else if(this.checkIfUnauthorized(resp)) {
-                window.location = "/#login";
+            else if (this.checkIfUnauthorized(resp)) {
+                let res = this.addErrorMessageUnauthorized(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
+
+            } else if (this.checkIfForbidden(resp)) {
+                let res = this.addErrorMessageForbidden(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
             }
             else {
                 resp.json().then((json) => {
-                    onError(json.error);
+                    onError({code: resp.status, title: json.error, msg: json.message});
                 });
             }
         }).then((resp) => {
-            if(resp.hasOwnProperty('token')) {
+            if (resp.hasOwnProperty('token')) {
                 window.localStorage['jwtToken'] = resp.token;
             }
             onSuccess(resp);
-        }).catch((e) => {
-            onError(e.message);
+        }).catch(() => {
+            onError({code: 500, title: 'Server error', msg: 'Failed to contact backend'});
         });
     }
 
     static remove(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
-        if(token) {
+        if (token) {
             header.append('Authorization', `JWT ${token}`);
         }
 
@@ -115,11 +132,16 @@ export default class HttpService {
             method: 'DELETE',
             headers: header
         }).then((resp) => {
-            if(resp.ok) {
+            if (resp.ok) {
                 return resp.json();
             }
-            else if(this.checkIfUnauthorized(resp)) {
-                window.location = "/#login";
+            else if (this.checkIfUnauthorized(resp)) {
+                let res = this.addErrorMessageUnauthorized(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
+
+            } else if (this.checkIfForbidden(resp)) {
+                let res = this.addErrorMessageForbidden(resp);
+                onError({code: resp.status, title: res.error, msg: res.message});
             }
             else {
                 resp.json().then((json) => {
@@ -129,15 +151,30 @@ export default class HttpService {
         }).then((resp) => {
             onSuccess(resp);
         }).catch((e) => {
-            onError(e.message);
+            onError(e);
         });
     }
 
     static checkIfUnauthorized(res) {
-        if(res.status === 401) {
-            return true;
-        }
-        return false;
+        return (res.status === 401);
+    }
+
+    static addErrorMessageUnauthorized(res) {
+        let resUpdate = {...res};
+        resUpdate["error"] = "Unauthorized";
+        resUpdate["message"] = "Please login or register.";
+        return resUpdate;
+    }
+
+    static checkIfForbidden(res) {
+        return (res.status === 403);
+    }
+
+    static addErrorMessageForbidden(res) {
+        let resUpdate = {...res};
+        res["error"] = "Forbidden";
+        res["message"] = "You are not allowed to use this feature.";
+        return resUpdate;
     }
 
 }

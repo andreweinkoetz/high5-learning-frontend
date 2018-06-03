@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -32,22 +32,11 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
             else {
                 ClassService.getClassDetail(this.props.match.params.classId).then((c) => {
                     this.setState({visible: true, classPassword: c.password});
-                })
+                }).catch(e => this.props.handleException(e))
             }
-            }).catch((e) => {
-                console.error(e);
+        }).catch((e) => {
+            this.props.handleException(e);
         });
-    };
-
-    handleSubmitModal() {
-
-        const classToAdd = {...this.state.classToAdd};
-
-        if (classToAdd.title === '') {
-            this.setState({modalError: true, errorNoTitle: true});
-        } else {
-            this.addNewClass(classToAdd);
-        }
     };
 
     handlePasswordChange = (event) => {
@@ -60,6 +49,7 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
 
     handleCancelClick = () => {
         this.setState({visible: false});
+        window.location='/myclasses';
     };
 
     handleSubmitClick = () => {
@@ -73,8 +63,8 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
                     else {
                         this.setState({showSuccessFailure: true});
                     }
-                })
-            })
+                }).catch(e => this.props.handleException(e))
+            }).catch(e => this.props.handleException(e))
         }
         else {
             this.setState({wrongPassword: true});
@@ -84,9 +74,9 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
     handleMessageRead = () => {
         this.setState({showSuccess: false, visible: false});
         window.location = '/myclasses/';
-    }
+    };
 
-    render () {
+    render() {
         return (
             <div>
                 <Dialog
@@ -126,6 +116,6 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
             </div>
         )
     }
-};
+}
 
 export default ModalDialogRegisteringNewStudentToClass;

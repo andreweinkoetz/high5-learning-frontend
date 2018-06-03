@@ -5,13 +5,15 @@ import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
+import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
 import ErrorNoTitleClassComponent from '../components/ErrorNoTitleClassComponent/ErrorNoTitleClassComponent';
-import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
+
+
 
 
 export default class ClassListView extends React.Component {
@@ -48,15 +50,14 @@ export default class ClassListView extends React.Component {
 
         if ((lastPath.substring(0,"goToClass".length)) === "goToClass") {
             window.location = document.referrer;
-        };
-
+        }
         ClassService.getClassesOfUser().then((data) => {
             this.setState({
                 classes: [...data],
                 loading: false
             });
         }).catch((e) => {
-            console.error(e);
+            this.props.handleException(e);
         });
 
     };
@@ -118,7 +119,7 @@ export default class ClassListView extends React.Component {
                 this.toggleModal();
 
             }
-        ).catch(e => alert(e));
+        ).catch(e => this.props.handleException(e));
     };
 
     handleNoTitleErrorMessageRead = () => {

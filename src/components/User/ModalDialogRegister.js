@@ -58,11 +58,10 @@ class ModalDialogRegister extends Component {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
             } else {
-                alert("Registration failed!");
+                this.props.handleException({code:400,title:'Registration failed', msg:'Registration failed, please check your username and password.'})
             }
         }).catch((e) => {
-            console.error(e);
-            alert("Registration failed: " + e);
+            this.props.handleException(e);
         });
         this.props.cancel();
     }

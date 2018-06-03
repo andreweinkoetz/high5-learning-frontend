@@ -12,8 +12,9 @@ import ModalDialogNewHomework from "./components/ModalDialogNewHomework/ModalDia
 import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNewClass";
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
-import ModalDialogRegisteringNewHomework from './components/ModalDialogRegisteringStudentToClass/ModalDialogRegisteringStudentToClass';
-
+import ModalDialogRegisteringStudentToClass
+    from './components/ModalDialogRegisteringStudentToClass/ModalDialogRegisteringStudentToClass';
+import Exception from './components/Exception/Exception';
 import HomeworkDetailView from './views/HomeworkDetailView';
 
 
@@ -23,30 +24,45 @@ class App extends Component {
         super(props);
 
         this.state = {
-            userId: UserService.getCurrentUser().id,
+
+            error: {
+                fired: false,
+                code: 0,
+                title: '',
+                msg: ''
+            },
 
             breadcrumbs: [{link: 'myclasses/'}],
 
             routes: [
-                {component: ModalDialogRegisteringNewHomework, path: '/goToClass/:classId', exact: true},
                 {
-                    render: () => (<ClassListView {...props} updateBreadcrumb={this.updateBreadcrumb} />),
+                    render: (props) => (
+                        <ModalDialogRegisteringStudentToClass {...props} handleException={this.handleException}/>),
+                    path: '/goToClass/:classId',
+                    exact: true
+                },
+                {
+                    render: () => (<ClassListView {...props} handleException={this.handleException}
+                                                  updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/',
                     exact: true
                 },
                 {
-                    render: () => (<ClassListView {...props} updateBreadcrumb={this.updateBreadcrumb} />),
+                    render: () => (<ClassListView {...props} handleException={this.handleException}
+                                                  updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses',
                     exact: true
                 },
 
                 {
-                    render: (props) => (<ClassDetailView {...props} updateBreadcrumb={this.updateBreadcrumb}/>),
+                    render: (props) => (<ClassDetailView {...props} handleException={this.handleException}
+                                                         updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses/:title',
                     exact: true
                 },
                 {
-                    render: (props) => (<HomeworkDetailView {...props} updateBreadcrumb={this.updateBreadcrumb}/>),
+                    render: (props) => (<HomeworkDetailView {...props} handleException={this.handleException}
+                                                            updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses/:classTitle/homework/:title',
                     exact: true
                 },
@@ -58,14 +74,19 @@ class App extends Component {
         };
 
         this.updateBreadcrumb = this.updateBreadcrumb.bind(this);
+        this.handleException = this.handleException.bind(this);
 
+    }
+
+    handleException(error) {
+        this.setState({error: {fired: true, title: error.title, code: error.code, msg: error.msg}})
     }
 
     updateBreadcrumb(value) {
 
         let bc = [...value];
 
-        if(bc) {
+        if (bc) {
             this.setState({breadcrumbs: [...bc]})
         } else {
             this.setState({breadcrumbs: undefined})
@@ -88,13 +109,22 @@ class App extends Component {
             routes = <Page breadcrumbs={this.state.breadcrumbs}>{this.state.routes.map((route, i) => (
                 <Route key={i} {...route}/>))}</Page>;
         } else {
-            routes = <Route component={LandingPage} path={'/'}/>;
+            routes = <Route
+                render={() => (<LandingPage {...this.props} handleException={this.handleException}/>)}
+                path={'/'}
+                />;
         }
 
 
         return (
             <MuiThemeProvider theme={theme}>
-
+                <Exception
+                    visible={this.state.error.fired}
+                    error={this.state.error}
+                    closeDialog={() => {
+                        this.setState({error: {fired: false}})
+                    }}
+                />
                 <Router>
                     {routes}
                 </Router>

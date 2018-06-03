@@ -66,7 +66,7 @@ export default class ClassDetailView extends React.Component {
                 loading: false
             });
         }).catch((e) => {
-            console.error(e);
+            this.props.handleException(e);
         });
 
     }
@@ -166,7 +166,7 @@ export default class ClassDetailView extends React.Component {
                 this.toggleModal();
 
             }
-        ).catch(e => alert(e));
+        ).catch(e => this.props.handleException(e));
     }
 
     handleExerciseTitleChange = (id) => (event) => {

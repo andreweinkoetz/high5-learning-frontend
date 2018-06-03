@@ -11,7 +11,7 @@ export default class SubmissionService {
             HttpService.get(`${SubmissionService.baseUrl()}` + homeworkId, function (data) {
                 resolve(data);
             }, function (textStatus) {
-                resolve(textStatus);
+                reject(textStatus);
             });
         })
     }
@@ -22,11 +22,10 @@ export default class SubmissionService {
             HttpService.get(`${SubmissionService.baseUrl()}user/` + homeworkId, function (data) {
                 resolve(data);
             }, function (textStatus) {
-                resolve(textStatus);
+                reject(textStatus);
             });
         })
     }
-
 
     static addNewSubmission(submissionToAdd) {
         return new Promise((resolve, reject) => {
@@ -34,7 +33,7 @@ export default class SubmissionService {
                 function (data) {
                     resolve(data);
                 }, function (textStatus) {
-                    resolve(textStatus);
+                    reject(textStatus);
                 });
         })
     }

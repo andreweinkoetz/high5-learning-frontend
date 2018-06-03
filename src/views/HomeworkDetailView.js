@@ -5,17 +5,17 @@ import Divider from "@material-ui/core/es/Divider/Divider";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import Paper from '@material-ui/core/Paper';
-
-import ExerciseList from "../components/Exercise/ExerciseList";
-import HomeworkService from '../services/HomeworkService';
-import UserService from '../services/UserService';
-import SubmissionService from '../services/SubmissionService';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
+
+import ExerciseList from "../components/Exercise/ExerciseList";
+import HomeworkService from '../services/HomeworkService';
+import UserService from '../services/UserService';
+import SubmissionService from '../services/SubmissionService';
+
 
 
 export default class HomeworkDetailView extends React.Component {
@@ -68,7 +68,7 @@ export default class HomeworkDetailView extends React.Component {
                     submitted: true
                 });
             }
-        })
+        }).catch(e => this.props.handleException(e));
 
         HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
             const homeworkExercises = [...homework.exercises];
@@ -77,7 +77,7 @@ export default class HomeworkDetailView extends React.Component {
                 exercises: homeworkExercises,
                 loading: false
             });
-        })
+        }).catch(e => this.props.handleException(e));
     };
 
     componentDidMount() {
@@ -92,7 +92,7 @@ export default class HomeworkDetailView extends React.Component {
                 id: this.props.location.state.classId
             },
             {
-                link: `homework/${this.props.location.state.title}`,
+                link: `${this.props.location.state.title}`,
                 linkName: this.props.location.state.title,
                 id: this.props.location.state.id
             }]);
@@ -126,7 +126,6 @@ export default class HomeworkDetailView extends React.Component {
         submissionToAdd.exercises = this.state.selectedValues;
         submissionToAdd.student = userId;
         submissionToAdd.homework = this.state.id;
-        console.log(submissionToAdd);
         this.addNewSubmission(submissionToAdd);
     };
 
@@ -143,7 +142,6 @@ addNewSubmission(submissionToAdd)
 
 handleValueSelected = (event) => {
     const newValueSelected = event.target.value;
-    console.log(event.target.value);
     this.setState({selectedStudent: newValueSelected});
 };
 
@@ -204,7 +202,7 @@ render()
                     </Grid>
                 </Grid>
             </Paper>
-        </div>
+        </div>;
 
     let buttonsForStudents = <Grid item xs={12}>
         <Grid container align="center" spacing={8}>
@@ -217,7 +215,7 @@ render()
                         color="primary">Submit<Icon>send</Icon></Button>
             </Grid>
         </Grid>
-    </Grid>
+    </Grid>;
 
     return (
         <div>

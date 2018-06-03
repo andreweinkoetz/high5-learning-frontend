@@ -1,5 +1,4 @@
 import HttpService from './HttpService';
-import HomeworkService from "./HomeworkService";
 
 export default class ClassService {
 
@@ -13,8 +12,8 @@ export default class ClassService {
             HttpService.get(`${ClassService.baseUrl()}`,
                 function(data) {
                 resolve(data);
-            }, function(textStatus) {
-                reject(textStatus);
+            }, function(error) {
+                reject(error);
             });
         });
 
@@ -25,8 +24,8 @@ export default class ClassService {
             HttpService.get(`${ClassService.baseUrl()}/details/` + classId,
                 function(data) {
                     resolve(data);
-                }, function(textStatus) {
-                    reject(textStatus);
+                }, function(error) {
+                    reject(error);
                 });
         });
     }
@@ -36,8 +35,8 @@ export default class ClassService {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}` + classId, function(data) {
                 resolve(data);
-            }, function(textStatus) {
-                reject(textStatus);
+            }, function(error) {
+                reject(error);
             });
         });
 
@@ -49,8 +48,8 @@ export default class ClassService {
             HttpService.post(`${ClassService.baseUrl()}`, classToAdd,
                 function(data) {
                 resolve(data);
-            }, function(textStatus) {
-                reject(textStatus);
+            }, function(error) {
+                reject(error);
             });
         });
 

@@ -76,7 +76,6 @@ export default class LandingPage extends React.Component {
 
     render() {
         const isMobile = (this.state.width <= 700);
-        console.log(isMobile);
         const images = [
             {
                 url: `${window.location.origin}/img/login.jpg`,
@@ -106,9 +105,9 @@ export default class LandingPage extends React.Component {
 
                 {(this.state.modalDialogClass === "logIn") ?
                     <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
-                           visible={this.state.modalDialogVisibility}/> :
+                           visible={this.state.modalDialogVisibility} handleException={this.props.handleException}/> :
                     <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
-                              visible={this.state.modalDialogVisibility}/>
+                              handleException={this.props.handleException} visible={this.state.modalDialogVisibility}/>
                 }
                 {/* one pager content */}
                 <div className="content">

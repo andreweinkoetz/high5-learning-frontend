@@ -40,11 +40,10 @@ class ModalDialogLogIn extends Component {
             if(UserService.isAuthenticated()){
                 this.props.onUsername(username);
             }else{
-                alert("LogIn failed!");
+                this.props.handleException({code:400,title:'Login failed',msg:'User could not be logged in, please check your username and password.'})
             }
         }).catch((e) => {
-            console.error(e);
-            alert("LogIn failed internally: "+e);
+            this.props.handleException(e);
         });
         this.props.cancel();
     }
