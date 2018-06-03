@@ -160,8 +160,11 @@ export default class ClassListView extends React.Component {
 
     handleDeleteClass = (id) => {
 
-        ClassService.deleteClass(id).then(() => {
-
+        ClassService.deleteClass(id).then((newClasses) => {
+            const nClasses = [...newClasses];
+            console.log(newClasses);
+            this.setState({classes: nClasses});
+            console.log(this.state.classes);
         }).catch(e => alert(e));
 
     };
