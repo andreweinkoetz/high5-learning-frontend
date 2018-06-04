@@ -12,10 +12,10 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import ExerciseList from "../components/Exercise/ExerciseList";
+import ExerciseListSolutionStudent from "../components/Exercise/ExerciseListSolutionStudent";
 import HomeworkService from '../services/HomeworkService';
 import UserService from '../services/UserService';
 import SubmissionService from '../services/SubmissionService';
-
 
 
 export default class HomeworkDetailView extends React.Component {
@@ -36,6 +36,7 @@ export default class HomeworkDetailView extends React.Component {
             selectedStudent: "All",
             studentsOfClass: [],
             submitted: false,
+            submittedValues: [],
 
             submissionToAdd: {
                 student: "",
@@ -63,10 +64,15 @@ export default class HomeworkDetailView extends React.Component {
 
         //check if homework is already submitted by student
         SubmissionService.getSubmissionOfHomeworkOfStudent(this.props.location.state.id).then(submission => {
-            if(submission.length === 0) {
+            if (submission.length !== 0) {
+                const submittedValues = [...submission[0].exercises];
+
                 this.setState({
-                    submitted: true
+                    submitted: true,
+                    submittedValues: submittedValues
+
                 });
+
             }
         }).catch(e => this.props.handleException(e));
 
@@ -127,120 +133,139 @@ export default class HomeworkDetailView extends React.Component {
         submissionToAdd.student = userId;
         submissionToAdd.homework = this.state.id;
         this.addNewSubmission(submissionToAdd);
+
+        //here setting state to rerender in order to get to student submission after pressing submit
+        this.setState({submitted: true});
     };
 
 
-
 //calls SubmissionService and adds new submission to the database
-addNewSubmission(submissionToAdd)
-{
-    SubmissionService.addNewSubmission(submissionToAdd)
-        .then(submissionToAdd => console.log('test'))
-        .catch(e => alert(e));
+    addNewSubmission(submissionToAdd) {
+        SubmissionService.addNewSubmission(submissionToAdd)
+            .then(submissionToAdd => console.log('test'))
+            .catch(e => alert(e));
 
-};
+    };
 
-handleValueSelected = (event) => {
-    const newValueSelected = event.target.value;
-    this.setState({selectedStudent: newValueSelected});
-};
+    handleValueSelected = (event) => {
+        const newValueSelected = event.target.value;
+        this.setState({selectedStudent: newValueSelected});
+    };
 
 
-render()
-{
+    render() {
+        console.log(`here in the rendering: ${this.state.submittedValues}`);
 
-    let statistics =
-        <div>
-            <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
-                <Grid container spacing={0} direction={"row"}>
-                    <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                        <Typography variant={"subheading"}>Select: Aggregation level (Required)</Typography>
+        let statistics =
+            <div>
+                <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
+                    <Grid container spacing={0} direction={"row"}>
+                        <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
+                            <Typography variant={"subheading"}>Select: Aggregation level (Required)</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl style={{minWidth: '120px'}}>
+                                {/* <InputLabel>Select student</InputLabel> */}
+                                <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
+                                    <MenuItem value={"All"}>All</MenuItem>
+                                    <MenuItem value={"Test"}>Test</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl style={{minWidth: '120px'}}>
-                            {/* <InputLabel>Select student</InputLabel> */}
-                            <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
-                                <MenuItem value={"All"}>All</MenuItem>
-                                <MenuItem value={"Test"}>Test</MenuItem>
-                            </Select>
-                        </FormControl>
+                </Paper>
+                <Divider/>
+                <Paper elevation={4}>
+                    <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
+                        <Typography variant={"subheading"}>Statistics</Typography>
                     </Grid>
+                    <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
+                        <Grid item xs={2} sm={2}>
+                            <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
+                                progress: </Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1}>
+                            <Typography variant={"body1"}>{this.state.progressOfStudents} %</Typography>
+                        </Grid>
+                        <Grid item xs={2} sm={2}>
+                            <LinearProgress
+                                variant={"determinate"}
+                                value={this.state.progressOfStudents}
+                                style={{paddingRight: '10px'}}/>
+                        </Grid>
+                        <Grid item xs={1} sm={1}/>
+                        <Grid item xs={2} sm={2}>
+                            <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
+                                answers: </Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1}>
+                            <Typography variant={"body1"}>{this.state.percentageCorrectAnswers} %</Typography>
+                        </Grid>
+                        <Grid item xs={2} sm={2}>
+                            <LinearProgress
+                                variant={"determinate"}
+                                value={this.state.percentageCorrectAnswers}
+                                style={{paddingRight: '10px'}}/>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </div>;
+
+        let buttonsForStudents = <Grid item xs={12}>
+            <Grid container align="center" spacing={8}>
+                <Grid item xs={6}>
+                    <Button onClick={this.handleBack} size="large" variant="raised"
+                            color="secondary">Back</Button>
                 </Grid>
-            </Paper>
-            <Divider/>
-            <Paper elevation={4}>
-                <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                    <Typography variant={"subheading"}>Statistics</Typography>
+                <Grid item xs={6}>
+                    <Button disabled={this.state.submitted ? true : false} onClick={this.handleSubmit} size="medium" variant="raised"
+                            color="primary">Submit<Icon>send</Icon></Button>
                 </Grid>
-                <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
-                    <Grid item xs={2} sm={2}>
-                        <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
-                            progress: </Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1}>
-                        <Typography variant={"body1"}>{this.state.progressOfStudents} %</Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2}>
-                        <LinearProgress
-                            variant={"determinate"}
-                            value={this.state.progressOfStudents}
-                            style={{paddingRight: '10px'}}/>
-                    </Grid>
-                    <Grid item xs={1} sm={1}/>
-                    <Grid item xs={2} sm={2}>
-                        <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
-                            answers: </Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1}>
-                        <Typography variant={"body1"}>{this.state.percentageCorrectAnswers} %</Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={2}>
-                        <LinearProgress
-                            variant={"determinate"}
-                            value={this.state.percentageCorrectAnswers}
-                            style={{paddingRight: '10px'}}/>
-                    </Grid>
-                </Grid>
-            </Paper>
-        </div>;
-
-    let buttonsForStudents = <Grid item xs={12}>
-        <Grid container align="center" spacing={8}>
-            <Grid item xs={6}>
-                <Button onClick={this.handleBack} size="large" variant="raised"
-                        color="secondary">Back</Button>
             </Grid>
-            <Grid item xs={6}>
-                <Button onClick={this.handleSubmit} size="medium" variant="raised"
-                        color="primary">Submit<Icon>send</Icon></Button>
-            </Grid>
-        </Grid>
-    </Grid>;
+        </Grid>;
 
-    return (
-        <div>
-            <Grid container spacing={16}>
-                <Grid item xs={12}>
-                    <Typography variant={'title'}>Homework: {this.state.title}</Typography>
+
+
+        var loading;
+        if (this.state.loading) {
+            loading = <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
+                size={30}/>
+                <Typography variant={'caption'}>Loading...</Typography></div>;
+        }
+
+        var notSubmitted;
+        if (!this.state.submitted) {
+            notSubmitted = <ExerciseList selectedValues={this.state.selectedValues}
+                                         handleSelection={this.handleSelection}
+                                         exercises={this.state.exercises}/>;
+        }
+
+        var submitted;
+        if (this.state.submitted) {
+            submitted = <ExerciseListSolutionStudent exercises={this.state.exercises}
+                                                     selectedChoice={this.state.submittedValues}/>
+        }
+
+        return (
+            <div>
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        <Typography variant={'title'}>Homework: {this.state.title}</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {this.state.isTeacher ? statistics : null}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {loading}
+                        {notSubmitted}
+                        {submitted}
+                    </Grid>
+                    {buttonsForStudents}
                 </Grid>
-                <Grid item xs={12}>
-                    {this.state.isTeacher ? statistics : null}
-                </Grid>
-                <Grid item xs={12}>
-                    <Divider/>
-                </Grid>
-                <Grid item xs={12}>
-                    {this.state.loading ?
-                        <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
-                            size={30}/>
-                            <Typography variant={'caption'}>Loading...</Typography></div>
-                        : <ExerciseList selectedValues={this.state.selectedValues}
-                                        handleSelection={this.handleSelection}
-                                        exercises={this.state.exercises}/>}
-                </Grid>
-                {this.state.isTeacher ? null : buttonsForStudents}
-            </Grid>
-        </div>
-    );
-}
+            </div>
+        );
+    }
 }
