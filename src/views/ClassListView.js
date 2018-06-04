@@ -48,11 +48,6 @@ export default class ClassListView extends React.Component {
             loading: true
         });
 
-        const lastPath = String(document.referrer).substring("http://localhost:3000/".length);
-
-        if ((lastPath.substring(0,"goToClass".length)) === "goToClass") {
-            window.location = document.referrer;
-        }
         ClassService.getClassesOfUser().then((data) => {
             this.setState({
                 classes: [...data],
