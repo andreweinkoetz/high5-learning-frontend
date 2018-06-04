@@ -36,6 +36,10 @@ class ModalDialogLogIn extends Component {
     handleSubmit(){
         const username = this.state.username;
         const password = this.state.password;
+        if(username === "" || password === ""){
+            this.props.handleException({code:400,title:'Login failed',msg:'Both Username and Password are required fields.'})
+            return;
+        }
         UserService.login(username, password).then((data) => {
             if(UserService.isAuthenticated()){
                 this.props.onUsername(username);
@@ -62,6 +66,7 @@ class ModalDialogLogIn extends Component {
                         <TextField
                             label="Username"
                             helperText="Required"
+                            required="True"
                             onChange={this.handleChangeUsername}
                         />
                     </DialogContent>
@@ -70,6 +75,7 @@ class ModalDialogLogIn extends Component {
                             label="Password"
                             type="password"
                             helperText="Required"
+                            required="True"
                             onChange={this.handleChangePassword}
                         />
                     </DialogContent>

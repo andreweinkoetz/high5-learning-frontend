@@ -51,9 +51,17 @@ class ModalDialogRegister extends Component {
     handleSubmit() {
         const username = this.state.username;
         const password = this.state.password;
+        if(username === "" || password === ""){
+            this.props.handleException({code:400,title:'Failed to register',msg:'Both Username and Password are required fields.'});
+            return;
+        }
         const type = this.state.type;
         let license = undefined;
         if (type === "Teacher") license = this.state.license;
+        if (type === "Teacher" && license === ""){
+            this.props.handleException({code:400,title:'Failed to register',msg:'Please type in a valid license code.'});
+            return;
+        }
         UserService.register(username, password, type, license).then((data) => {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
@@ -89,6 +97,8 @@ class ModalDialogRegister extends Component {
                         <TextField
                             label="Username"
                             helperText="Required"
+                            autoFocus="True"
+                            required="True"
                             onChange={this.handleChangeUsername}
                         />
                     </DialogContent>
@@ -97,6 +107,7 @@ class ModalDialogRegister extends Component {
                             label="Password"
                             type="password"
                             helperText="Required"
+                            required="True"
                             onChange={this.handleChangePassword}
                         />
                     </DialogContent>
