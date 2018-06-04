@@ -29,9 +29,9 @@ const Class = (props) => {
                 {UserService.isTeacher() ? <Typography>{props.description}<br/>
                     URL: <a href={props.url}>{props.url}</a><br/>
                     Password: {props.password}<br/>
-                    <Button variant="raised" color="primary" onClick={() => props.updateClassInfo(props.id, props.title, props.description)}>
+                    <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}} onClick={() => props.updateClassInfo(props.id, props.title, props.description)}>
                         Update class information</Button>
-                    <Button variant="raised" color="secondary" onClick={() => props.deleteClass(props.id)}>
+                    <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}} onClick={() => props.deleteClass(props.id)}>
                         Delete class</Button>
                 </Typography> : <Typography>{props.description}<br/>
                 </Typography>}
