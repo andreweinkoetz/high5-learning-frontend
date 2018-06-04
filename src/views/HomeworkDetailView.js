@@ -135,7 +135,10 @@ export default class HomeworkDetailView extends React.Component {
         this.addNewSubmission(submissionToAdd);
 
         //here setting state to rerender in order to get to student submission after pressing submit
-        this.setState({submitted: true});
+        this.setState({
+            submitted: true,
+            submittedValues: submissionToAdd.exercises
+        });
     };
 
 
