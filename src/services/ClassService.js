@@ -81,4 +81,17 @@ export default class ClassService {
 
     }
 
+    static getStudentsOfClass(classId){
+
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${ClassService.baseUrl()}students/` + classId,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+
+    }
+
 }
