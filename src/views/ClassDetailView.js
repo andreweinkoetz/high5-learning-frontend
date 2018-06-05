@@ -5,10 +5,12 @@ import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import ModalDialogNewHomework from '../components/ModalDialogNewHomework/ModalDialogNewHomework';
-import ErrorDeleteExerciseComponent from '../components/ErrorDeleteExerciseComponent/ErrorDeleteExerciseComponent';
-import ErrorComponent from '../components/ErrorComponent/ErrorComponent';
 import HomeworkList from '../components/Homework/HomeworkList';
 import ClassService from "../services/ClassService";
 import HomeworkService from '../services/HomeworkService';
@@ -26,10 +28,9 @@ export default class ClassDetailView extends React.Component {
             loading: false,
             showModal: false,
             homework: [],
-
+            ableToDeleteExercises: false,
             errorText: [],
-            errorStateFields: false,
-            errorStateDeleteExercise: false,
+            showErrorSnackbar: false,
             homeworkToAddErrors: {
                 title: false,
                 exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
@@ -97,7 +98,8 @@ export default class ClassDetailView extends React.Component {
         this.setState({
             showModal: !oldState,
             homeworkToAdd: homeworkToAddWhenClickingAdd,
-            homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd
+            homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd,
+            errorText: []
         });
     }
 
@@ -139,7 +141,7 @@ export default class ClassDetailView extends React.Component {
         }
 
         if (newErrorText.length !== 0) {
-            this.setState({errorStateFields: true, errorText: newErrorText, homeworkToAddErrors: newHomeworkErrors});
+            this.setState({showErrorSnackbar: true, errorText: newErrorText, homeworkToAddErrors: newHomeworkErrors});
         } else {
             this.setState({errorText: newErrorText});
             this.addNewHomework(newHomeworkToAdd);
@@ -150,10 +152,12 @@ export default class ClassDetailView extends React.Component {
         let newHomework = {...this.state.homeworkToAdd};
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         newHomework.title = event.target.value;
+        let oldErrorState = {...this.state.showErrorSnackbar};
         if (event.target.value !== "") {
             newHomeworkErrors.title = false;
+            oldErrorState = false;
         }
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: oldErrorState});
     }
 
     addNewHomework(homeworkToAdd) {
@@ -175,10 +179,12 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
         exerciseIDData.question = event.target.value;
+        let oldErrorState = {...this.state.showErrorSnackbar};
         if (event.target.value !== "") {
             exerciseIDErrorData.question = false;
+            oldErrorState = false;
         }
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: oldErrorState});
     };
 
     handleChangeRadioValue = (id) => (event) => {
@@ -188,7 +194,7 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
         exerciseIDData.rightSolution = event.target.value;
         exerciseIDErrorData.rightSolution = true;
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: false});
     };
 
     handleChangeAnswers = (id, answerID) => (event) => {
@@ -196,11 +202,13 @@ export default class ClassDetailView extends React.Component {
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         exerciseIDData.answers[answerID] = event.target.value;
+        let oldErrorState = {...this.state.showErrorSnackbar};
         if (event.target.value !== "") {
             let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
             exerciseIDErrorData.answers[answerID] = false;
+            oldErrorState = false;
         }
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: oldErrorState});
     };
 
     handleAddExercise = () => {
@@ -217,32 +225,28 @@ export default class ClassDetailView extends React.Component {
             answers: [false, false, false, false],
             rightSolution: false
         });
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, ableToDeleteExercises: true}); // when you add an exercise you are always able to delete an exercise
     };
 
     handleDeleteExercise = (id) => {
         let newHomework = {...this.state.homeworkToAdd};
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
-        if (newHomework.exercises.length === 1) {
-            this.setState({errorStateDeleteExercise: true});
+        newHomework.exercises.splice(id - 1, 1);
+        newHomeworkErrors.exercises.splice(id - 1, 1);
+        for (let i = (id - 1); i < newHomework.exercises.length; i++) {
+            newHomework.exercises[i].id = "" + (i + 1);
+            newHomeworkErrors.exercises[i].id = "" + (i + 1);
         }
-        else {
-            newHomework.exercises.splice(id - 1, 1);
-            newHomeworkErrors.exercises.splice(id - 1, 1);
-            for (let i = (id - 1); i < newHomework.exercises.length; i++) {
-                newHomework.exercises[i].id = "" + (i + 1);
-                newHomeworkErrors.exercises[i].id = "" + (i + 1);
-            }
-            this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
-        }
+        const lengthExercises = newHomework.exercises.length;
+        let oldAbleToDeleteState = {...this.state.ableToDeleteExercises};
+        if (lengthExercises < 2 ) {
+            oldAbleToDeleteState = false;
+        };
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, ableToDeleteExercises: oldAbleToDeleteState});
     };
 
-    handleDeleteExerciseErrorMessageRead = () => {
-        this.setState({errorStateDeleteExercise: false});
-    };
-
-    handleErrorMessageRead = () => {
-        this.setState({errorStateFields: false});
+    handleSnackBarClose = () => {
+        this.setState({showErrorSnackbar: false});
     };
 
     render() {
@@ -274,7 +278,6 @@ export default class ClassDetailView extends React.Component {
             </Grid>
         }
 
-
         return (
             <div>
                 <ModalDialogNewHomework
@@ -289,15 +292,27 @@ export default class ClassDetailView extends React.Component {
                     handleChangeRadioValue={this.handleChangeRadioValue}
                     handleChangeAnswers={this.handleChangeAnswers}
                     handleAddExercise={this.handleAddExercise}
-                    handleDeleteExercise={this.handleDeleteExercise}/>
-                <ErrorDeleteExerciseComponent
-                    visible={this.state.errorStateDeleteExercise}
-                    errorDeleteExerciseMessageRead={this.handleDeleteExerciseErrorMessageRead}
+                    handleDeleteExercise={this.handleDeleteExercise}
+                    ableToDeleteExercises={this.state.ableToDeleteExercises}/>
+                <Snackbar
+                    open={this.state.showErrorSnackbar}
+                    anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                    children={<SnackbarContent message={this.state.errorText.map(
+                        (e) => {
+                            return <li
+                                key={e}>
+                                {e}
+                            </li>
+                        }
+                    )}/>}
+                    action={[
+                        <IconButton
+                            color="inherit"
+                            onClick={this.handleSnackBarClose}>
+                                <CloseIcon/>
+                        </IconButton>
+                    ]}
                 />
-                <ErrorComponent
-                    errorOutputText={this.state.errorText}
-                    visible={this.state.errorStateFields}
-                    errorMessageRead={this.handleErrorMessageRead}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>

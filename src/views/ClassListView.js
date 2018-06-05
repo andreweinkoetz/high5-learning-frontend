@@ -6,18 +6,16 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
-import ErrorNoTitleClassComponent from '../components/ErrorNoTitleClassComponent/ErrorNoTitleClassComponent';
-
-
-
 
 export default class ClassListView extends React.Component {
-
 
     constructor(props) {
         super(props);
@@ -25,8 +23,7 @@ export default class ClassListView extends React.Component {
         this.state = {
             loading: false,
             showModal: false,
-            errorModal: false,
-            errorNoTitle: false,
+            showErrorSnackbar: false,
             classToAdd: {
                 title: '',
                 description: ''
@@ -75,7 +72,7 @@ export default class ClassListView extends React.Component {
         const classToAddWhenClickingAdd = {title: '', description: ''};
         this.setState({
             showModal: !oldState,
-            modalError: errorStateWhenClickingAdd,
+            showErrorSnackbar: errorStateWhenClickingAdd,
             classToAdd: classToAddWhenClickingAdd
         });
     };
@@ -108,7 +105,7 @@ export default class ClassListView extends React.Component {
         }
         else {
             if (classToAdd.title === '') {
-                this.setState({modalError: true, errorNoTitle: true});
+                this.setState({showErrorSnackbar: true});
             } else {
                 this.addNewClass(classToAdd);
             }
@@ -119,7 +116,7 @@ export default class ClassListView extends React.Component {
         const newClass = {...this.state.classToAdd};
         newClass.title = event.target.value;
         if (event.target.value !== "") {
-            this.setState({modalError: false});
+            this.setState({showErrorSnackbar: false});
         }
         this.setState({classToAdd: newClass});
     };
@@ -141,11 +138,6 @@ export default class ClassListView extends React.Component {
 
             }
         ).catch(e => this.props.handleException(e));
-    };
-
-    handleNoTitleErrorMessageRead = () => {
-        const oldErrorState = this.state.errorNoTitle;
-        this.setState({errorNoTitle: !oldErrorState});
     };
 
     handleUpdateClassInfoWished = (id, t, d) => {
@@ -201,13 +193,22 @@ export default class ClassListView extends React.Component {
                                      handleDescriptionChange={this.handleDescriptionChange}
                                      handleSubmit={this.handleSubmitModal}
                                      toggle={this.toggleModal}
-                                     error={this.state.modalError}
+                                     error={this.state.showErrorSnackbar}
                                      values={this.state.classToAdd}
                                      updateWished={this.state.updateClassWished}
                 />
-                <ErrorNoTitleClassComponent
-                    errorNoTitleRead={this.handleNoTitleErrorMessageRead}
-                    visible={this.state.errorNoTitle}/>
+                <Snackbar
+                    open={this.state.showErrorSnackbar}
+                    anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                    message={"Your class must have a title!"}
+                    action={[
+                        <IconButton
+                            color="inherit"
+                            onClick={this.handleSnackBarClose}>
+                            <CloseIcon/>
+                        </IconButton>
+                    ]}
+                />
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
