@@ -1,4 +1,5 @@
 import HttpService from './HttpService';
+import ClassService from "./ClassService";
 
 export default class HomeworkService {
 
@@ -21,6 +22,19 @@ export default class HomeworkService {
 
         return new Promise((resolve, reject) => {
             HttpService.post(`${HomeworkService.baseUrl()}` + classId, homeworkToAdd,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+
+    }
+
+    static deleteHomework(homeworkId){
+
+        return new Promise((resolve, reject) => {
+            HttpService.delete(`${HomeworkService.baseUrl()}` + homeworkId,
                 function(data) {
                     resolve(data);
                 }, function(textStatus) {

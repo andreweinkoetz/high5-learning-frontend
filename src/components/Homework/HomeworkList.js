@@ -9,7 +9,15 @@ const HomeworkList = (props) => {
     return (
         <div>
             {props.homework.map((obj) => {
-                return (<Homework key={obj._id} id={obj._id} classId={props.classId} classTitle={props.classTitle} title={obj.title}></Homework>)
+                return (<Homework
+                    key={obj._id}
+                    id={obj._id} c
+                    lassId={props.classId}
+                    classTitle={props.classTitle}
+                    title={obj.title}
+                    updateHomeworkTitle={props.updateHomeworkTitle}
+                    deleteHomework={props.deleteHomework}>
+                </Homework>)
             })}
         </div>
     );

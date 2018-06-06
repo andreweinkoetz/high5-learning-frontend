@@ -269,6 +269,17 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
+    handleDeleteHomework = (id) => {
+        HomeworkService.deleteHomework(id)
+            .then((data) => {
+                this.setState({
+                    homework: [...data.homework],
+                    loading: false
+                });
+            })
+            .catch(e => this.props.handleException(e));
+    };
+
     render() {
 
         let addNewHomeworkButton;
@@ -329,7 +340,10 @@ export default class ClassDetailView extends React.Component {
                             </div>
                             : <HomeworkList classId={this.state.currentClass.id}
                                             classTitle={this.state.currentClass.title}
-                                            homework={this.state.homework}/>}
+                                            homework={this.state.homework}
+                                            deleteHomework={this.handleDeleteHomework}
+                                            updateHomeworkTitle={this.handleUpdateHomeworkTitle}
+                            />}
                     </Grid>
                 </Grid>
             </div>

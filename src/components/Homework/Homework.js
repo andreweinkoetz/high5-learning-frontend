@@ -5,6 +5,9 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+
+import UserService from '../../services/UserService';
 
 const Homework = (props) => {
 
@@ -25,11 +28,16 @@ const Homework = (props) => {
                     }><Typography>{props.title}</Typography></Link>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
+                    {UserService.isTeacher() ?
                     <Typography>
                         Statistics of homework<br/>
                         Here will be some statistics<br/>
                         Here will be some statistics<br/>
-                    </Typography>
+                         <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}} onClick={() => props.updateHomeworkTitle(props.id, props.title)}>
+                            Update homework title</Button>
+                        <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}} onClick={() => props.deleteHomework(props.id)}>
+                            Delete homework</Button>
+                    </Typography>: null}
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         );

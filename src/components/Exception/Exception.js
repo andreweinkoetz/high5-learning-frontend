@@ -75,7 +75,7 @@ function ExceptionContent(props) {
                 <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
                     <span className={classes.messageContent}>{props.error.title}{variant === 'error' ? ` (${props.error.code})` : null}<br/>
-                    {props.error.msg.split(',').map(x => <div>{x}<br/></div>)}
+                    {props.error.msg.split(',').map(x => <div key={x}>{x}<br/></div>)}
                     </span>
         </span>
             }
