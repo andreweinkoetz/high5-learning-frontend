@@ -11,6 +11,7 @@ import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
+import SchoolService from "../services/SchoolService";
 
 export default class ClassListView extends React.Component {
 
@@ -20,20 +21,18 @@ export default class ClassListView extends React.Component {
         this.state = {
             loading: false,
             showModal: false,
-            showErrorSnackbar: false,
             classToAdd: {
                 title: '',
                 description: ''
             },
             classes: [],
             updateClassWished: false,
-            idOfToBeUpdatedClass: ''
+            idOfToBeUpdatedClass: '',
+            studentsOfSchool: []
         };
 
         this.addNewClass = this.addNewClass.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleSubmitModal = this.handleSubmitModal.bind(this);
     }
 
@@ -50,6 +49,10 @@ export default class ClassListView extends React.Component {
         }).catch((e) => {
             this.props.handleException(e);
         });
+
+        SchoolService.getStudentsOfSchool("no").then(data =>{
+            this.setState({studentsOfSchool: data});
+        })
 
     };
 
@@ -93,9 +96,7 @@ export default class ClassListView extends React.Component {
 
     };
 
-    handleSubmitModal() {
-
-        const classToAdd = {...this.state.classToAdd};
+    handleSubmitModal(classToAdd) {
 
         if (this.state.updateClassWished) {
             this.updateClass(classToAdd);
@@ -112,21 +113,6 @@ export default class ClassListView extends React.Component {
                 this.addNewClass(classToAdd);
             }
         }
-    };
-
-    handleTitleChange(event) {
-        const newClass = {...this.state.classToAdd};
-        newClass.title = event.target.value;
-        if (event.target.value !== "") {
-            this.setState({errorState: false});
-        }
-        this.setState({classToAdd: newClass});
-    };
-
-    handleDescriptionChange(event) {
-        const newClass = {...this.state.classToAdd};
-        newClass.description = event.target.value;
-        this.setState({classToAdd: newClass});
     };
 
 
@@ -194,9 +180,10 @@ export default class ClassListView extends React.Component {
                                      handleDescriptionChange={this.handleDescriptionChange}
                                      handleSubmit={this.handleSubmitModal}
                                      toggle={this.toggleModal}
-                                     error={this.state.showErrorSnackbar}
                                      values={this.state.classToAdd}
+                                     studentsOfSchool={this.state.studentsOfSchool}
                                      updateWished={this.state.updateClassWished}
+                                     handleException={this.props.handleException}
                 />
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>

@@ -75,7 +75,7 @@ function ExceptionContent(props) {
                 <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
                     <span className={classes.messageContent}>{props.error.title}{variant === 'error' ? ` (${props.error.code})` : null}<br/>
-                    {props.error.msg.split(',').map(x => <div key={x}>{x}<br/></div>)}
+                    {props.error.msg.split(',').map((val,k) => <div key={k}>{val}<br key={k}/></div>)}
                     </span>
         </span>
             }
@@ -108,8 +108,6 @@ const ExceptionContentWrapper = withStyles(styles)(ExceptionContent);
 function Exception(props) {
 
     const variant = props.error.variant ? props.error.variant : 'error';
-
-    console.log(props.error.msg);
 
     return <Snackbar
         anchorOrigin={{
