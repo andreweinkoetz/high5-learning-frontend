@@ -9,6 +9,7 @@ const HomeworkList = (props) => {
     return (
         <div>
             {props.homework.map((obj) => {
+                console.log(obj.visible);
                 return (<Homework
                     key={obj._id}
                     id={obj._id} c
@@ -16,7 +17,10 @@ const HomeworkList = (props) => {
                     classTitle={props.classTitle}
                     title={obj.title}
                     updateHomeworkTitle={props.updateHomeworkTitle}
-                    deleteHomework={props.deleteHomework}>
+                    deleteHomework={props.deleteHomework}
+                    homeworkVisible={obj.visible}
+                    makeHomeworkInvisible={props.makeHomeworkInvisible}
+                    makeHomeworkVisible={props.makeHomeworkVisible}>
                 </Homework>)
             })}
         </div>

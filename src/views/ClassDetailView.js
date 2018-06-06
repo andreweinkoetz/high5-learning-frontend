@@ -36,7 +36,8 @@ export default class ClassDetailView extends React.Component {
                 {
                     title: "",
                     exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
-                    assignedClass: ''
+                    assignedClass: '',
+                    visible: false
                 },
 
             currentClass: {
@@ -93,7 +94,9 @@ export default class ClassDetailView extends React.Component {
         }; // this is needed so that the user sees no previous info from a canceled homework creation
         const homeworkToAddWhenClickingAdd = {
             title: "",
-            exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}]
+            exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
+            assignedClass: "",
+            visible: false
         };
         this.setState({
             showModal: !oldState,
@@ -280,6 +283,18 @@ export default class ClassDetailView extends React.Component {
             .catch(e => this.props.handleException(e));
     };
 
+    handleMakeHomeworkVisible = (id) => {
+        const desiredVisibilityStatus = true;
+        HomeworkService.changeVisibilityStatus(id, desiredVisibilityStatus)
+            .then((data) => {
+                this.setState({
+                    homework: [...data.homework],
+                    loading: false
+                });
+            })
+            .catch(e => console.log(e));
+    }
+
     render() {
 
         let addNewHomeworkButton;
@@ -343,6 +358,8 @@ export default class ClassDetailView extends React.Component {
                                             homework={this.state.homework}
                                             deleteHomework={this.handleDeleteHomework}
                                             updateHomeworkTitle={this.handleUpdateHomeworkTitle}
+                                            makeHomeworkInvisible={this.handleMakeHomeworkInvisble}
+                                            makeHomeworkVisible={this.handleMakeHomeworkVisible}
                             />}
                     </Grid>
                 </Grid>

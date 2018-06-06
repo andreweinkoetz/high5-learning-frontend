@@ -44,5 +44,18 @@ export default class HomeworkService {
 
     }
 
+    static changeVisibilityStatus(homeworkId, desiredVisibilityStatus) {
+
+        return new Promise((resolve, reject) => {
+            HttpService.put(`${HomeworkService.baseUrl()}visibility/` + homeworkId, {desiredVisibilityStatus},
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+
+    }
+
 
 }
