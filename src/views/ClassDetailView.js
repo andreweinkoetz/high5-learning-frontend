@@ -5,10 +5,6 @@ import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
 import ModalDialogNewHomework from '../components/ModalDialogNewHomework/ModalDialogNewHomework';
 import HomeworkList from '../components/Homework/HomeworkList';
@@ -30,14 +26,18 @@ export default class ClassDetailView extends React.Component {
             homework: [],
             ableToDeleteExercises: false,
             errorText: [],
-            showErrorSnackbar: false,
+            errorState: false,
             homeworkToAddErrors: {
                 title: false,
                 exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
             },
 
             homeworkToAdd:
-                {title: "", exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}], assignedClass: ''},
+                {
+                    title: "",
+                    exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
+                    assignedClass: ''
+                },
 
             currentClass: {
                 title: '',
@@ -141,7 +141,11 @@ export default class ClassDetailView extends React.Component {
         }
 
         if (newErrorText.length !== 0) {
-            this.setState({showErrorSnackbar: true, errorText: newErrorText, homeworkToAddErrors: newHomeworkErrors});
+            this.props.handleException({
+                title: 'Some problems found',
+                msg: newErrorText.toString(),
+                variant: 'warning'
+            });
         } else {
             this.setState({errorText: newErrorText});
             this.addNewHomework(newHomeworkToAdd);
@@ -152,12 +156,16 @@ export default class ClassDetailView extends React.Component {
         let newHomework = {...this.state.homeworkToAdd};
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         newHomework.title = event.target.value;
-        let oldErrorState = {...this.state.showErrorSnackbar};
+        let oldErrorState = {...this.state.errorState};
         if (event.target.value !== "") {
             newHomeworkErrors.title = false;
             oldErrorState = false;
         }
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: oldErrorState});
+        this.setState({
+            homeworkToAdd: newHomework,
+            homeworkToAddErrors: newHomeworkErrors,
+            errorState: oldErrorState
+        });
     }
 
     addNewHomework(homeworkToAdd) {
@@ -179,12 +187,16 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
         exerciseIDData.question = event.target.value;
-        let oldErrorState = {...this.state.showErrorSnackbar};
+        let oldErrorState = {...this.state.errorState};
         if (event.target.value !== "") {
             exerciseIDErrorData.question = false;
             oldErrorState = false;
         }
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: oldErrorState});
+        this.setState({
+            homeworkToAdd: newHomework,
+            homeworkToAddErrors: newHomeworkErrors,
+            errorState: oldErrorState
+        });
     };
 
     handleChangeRadioValue = (id) => (event) => {
@@ -194,7 +206,7 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
         exerciseIDData.rightSolution = event.target.value;
         exerciseIDErrorData.rightSolution = true;
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: false});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, errorState: false});
     };
 
     handleChangeAnswers = (id, answerID) => (event) => {
@@ -202,13 +214,17 @@ export default class ClassDetailView extends React.Component {
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         exerciseIDData.answers[answerID] = event.target.value;
-        let oldErrorState = {...this.state.showErrorSnackbar};
+        let oldErrorState = {...this.state.errorState};
         if (event.target.value !== "") {
             let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
             exerciseIDErrorData.answers[answerID] = false;
             oldErrorState = false;
         }
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, showErrorSnackbar: oldErrorState});
+        this.setState({
+            homeworkToAdd: newHomework,
+            homeworkToAddErrors: newHomeworkErrors,
+            errorState: oldErrorState
+        });
     };
 
     handleAddExercise = () => {
@@ -225,7 +241,11 @@ export default class ClassDetailView extends React.Component {
             answers: [false, false, false, false],
             rightSolution: false
         });
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, ableToDeleteExercises: true}); // when you add an exercise you are always able to delete an exercise
+        this.setState({
+            homeworkToAdd: newHomework,
+            homeworkToAddErrors: newHomeworkErrors,
+            ableToDeleteExercises: true
+        }); // when you add an exercise you are always able to delete an exercise
     };
 
     handleDeleteExercise = (id) => {
@@ -239,14 +259,14 @@ export default class ClassDetailView extends React.Component {
         }
         const lengthExercises = newHomework.exercises.length;
         let oldAbleToDeleteState = {...this.state.ableToDeleteExercises};
-        if (lengthExercises < 2 ) {
+        if (lengthExercises < 2) {
             oldAbleToDeleteState = false;
-        };
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, ableToDeleteExercises: oldAbleToDeleteState});
-    };
-
-    handleSnackBarClose = () => {
-        this.setState({showErrorSnackbar: false});
+        }
+        this.setState({
+            homeworkToAdd: newHomework,
+            homeworkToAddErrors: newHomeworkErrors,
+            ableToDeleteExercises: oldAbleToDeleteState
+        });
     };
 
     render() {
@@ -294,25 +314,6 @@ export default class ClassDetailView extends React.Component {
                     handleAddExercise={this.handleAddExercise}
                     handleDeleteExercise={this.handleDeleteExercise}
                     ableToDeleteExercises={this.state.ableToDeleteExercises}/>
-                <Snackbar
-                    open={this.state.showErrorSnackbar}
-                    anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-                    children={<SnackbarContent message={this.state.errorText.map(
-                        (e) => {
-                            return <li
-                                key={e}>
-                                {e}
-                            </li>
-                        }
-                    )}/>}
-                    action={[
-                        <IconButton
-                            color="inherit"
-                            onClick={this.handleSnackBarClose}>
-                                <CloseIcon/>
-                        </IconButton>
-                    ]}
-                />
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>
@@ -322,9 +323,10 @@ export default class ClassDetailView extends React.Component {
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
-                        {this.state.loading ? <div style={{textAlign: 'center', paddingTop:40}}><CircularProgress size={30}/>
+                        {this.state.loading ?
+                            <div style={{textAlign: 'center', paddingTop: 40}}><CircularProgress size={30}/>
                                 <Typography variant={'caption'}>Loading...</Typography>
-                                </div>
+                            </div>
                             : <HomeworkList classId={this.state.currentClass.id}
                                             classTitle={this.state.currentClass.title}
                                             homework={this.state.homework}/>}

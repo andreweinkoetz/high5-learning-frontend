@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import SuccessFailureComponent from '../SuccessComponent/SuccessFailureComponent';
 import UserService from '../../services/UserService';
 import ClassService from '../../services/ClassService';
 
@@ -71,10 +70,6 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
         }
     };
 
-    handleMessageRead = () => {
-        this.setState({showSuccess: false, visible: false});
-        window.location = '/myclasses/';
-    };
 
     render() {
         return (
@@ -108,10 +103,6 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
                             onClick={this.handleCancelClick}
                         >Cancel</Button>
                     </DialogActions>
-                    <SuccessFailureComponent
-                        visible={this.state.showSuccessFailure}
-                        messageRead={this.handleMessageRead}
-                        success={this.state.success}/>
                 </Dialog>
             </div>
         )

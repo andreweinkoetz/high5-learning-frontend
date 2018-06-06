@@ -25,11 +25,12 @@ class App extends Component {
 
         this.state = {
 
+            errorFired: false,
             error: {
-                fired: false,
                 code: 0,
                 title: '',
-                msg: ''
+                msg: '',
+                variant: ''
             },
 
             breadcrumbs: [{link: 'myclasses/'}],
@@ -65,10 +66,7 @@ class App extends Component {
                                                             updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses/:classTitle/homework/:title',
                     exact: true
-                },
-
-                {component: ModalDialogNewHomework, path: '/modal', exact: true},
-                {component: ModalDialogNewClass, path: '/modalC', exact: true}
+                }
             ]
 
         };
@@ -79,7 +77,15 @@ class App extends Component {
     }
 
     handleException(error) {
-        this.setState({error: {fired: true, title: error.title, code: error.code, msg: error.msg}})
+        this.setState({
+            errorFired: true,
+            error: {
+                title: error.title,
+                code: error.code,
+                msg: error.msg,
+                variant: error.variant
+            }
+        })
     }
 
     updateBreadcrumb(value) {
@@ -112,17 +118,17 @@ class App extends Component {
             routes = <Route
                 render={() => (<LandingPage {...this.props} handleException={this.handleException}/>)}
                 path={'/'}
-                />;
+            />;
         }
 
 
         return (
             <MuiThemeProvider theme={theme}>
                 <Exception
-                    visible={this.state.error.fired}
+                    visible={this.state.errorFired}
                     error={this.state.error}
                     closeDialog={() => {
-                        this.setState({error: {fired: false}})
+                        this.setState({errorFired: false})
                     }}
                 />
                 <Router>

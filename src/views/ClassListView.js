@@ -6,9 +6,6 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import AddIcon from '@material-ui/icons/Add';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
@@ -56,7 +53,7 @@ export default class ClassListView extends React.Component {
 
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.updateBreadcrumb([
             {
                 link: '/myclasses',
@@ -72,7 +69,7 @@ export default class ClassListView extends React.Component {
         const classToAddWhenClickingAdd = {title: '', description: ''};
         this.setState({
             showModal: !oldState,
-            showErrorSnackbar: errorStateWhenClickingAdd,
+            errorState: errorStateWhenClickingAdd,
             classToAdd: classToAddWhenClickingAdd
         });
     };
@@ -92,7 +89,7 @@ export default class ClassListView extends React.Component {
             this.setState({classes: newClasses, updateClassWished: false});
             this.toggleModal();
 
-        }).catch(e => alert(e));
+        }).catch(e => this.props.handleException(e));
 
     };
 
@@ -100,12 +97,17 @@ export default class ClassListView extends React.Component {
 
         const classToAdd = {...this.state.classToAdd};
 
-        if(this.state.updateClassWished) {
+        if (this.state.updateClassWished) {
             this.updateClass(classToAdd);
         }
         else {
             if (classToAdd.title === '') {
-                this.setState({showErrorSnackbar: true});
+                this.props.handleException({
+                    title: 'No title',
+                    msg: 'Your class must have a title.',
+                    code: 12,
+                    variant: 'warning'
+                });
             } else {
                 this.addNewClass(classToAdd);
             }
@@ -116,7 +118,7 @@ export default class ClassListView extends React.Component {
         const newClass = {...this.state.classToAdd};
         newClass.title = event.target.value;
         if (event.target.value !== "") {
-            this.setState({showErrorSnackbar: false});
+            this.setState({errorState: false});
         }
         this.setState({classToAdd: newClass});
     };
@@ -152,7 +154,7 @@ export default class ClassListView extends React.Component {
             console.log(newClasses);
             this.setState({classes: nClasses});
             console.log(this.state.classes);
-        }).catch(e => alert(e));
+        }).catch(e => this.props.handleException(e));
 
     };
 
@@ -197,18 +199,6 @@ export default class ClassListView extends React.Component {
                                      values={this.state.classToAdd}
                                      updateWished={this.state.updateClassWished}
                 />
-                <Snackbar
-                    open={this.state.showErrorSnackbar}
-                    anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-                    message={"Your class must have a title!"}
-                    action={[
-                        <IconButton
-                            color="inherit"
-                            onClick={this.handleSnackBarClose}>
-                            <CloseIcon/>
-                        </IconButton>
-                    ]}
-                />
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
@@ -218,13 +208,14 @@ export default class ClassListView extends React.Component {
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
-                    {this.state.loading ? <div style={{textAlign:'center', paddingTop:40}}><CircularProgress size={30}/>
-                            <Typography variant={'caption'}>Loading...</Typography></div>
-                        : <ClassList
-                            classes={this.state.classes}
-                            updateClassInfo={this.handleUpdateClassInfoWished}
-                            deleteClass={this.handleDeleteClass}/> }
-                </Grid>
+                        {this.state.loading ?
+                            <div style={{textAlign: 'center', paddingTop: 40}}><CircularProgress size={30}/>
+                                <Typography variant={'caption'}>Loading...</Typography></div>
+                            : <ClassList
+                                classes={this.state.classes}
+                                updateClassInfo={this.handleUpdateClassInfoWished}
+                                deleteClass={this.handleDeleteClass}/>}
+                    </Grid>
                 </Grid>
             </div>
         );
