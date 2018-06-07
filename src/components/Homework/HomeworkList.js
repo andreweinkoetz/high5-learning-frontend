@@ -16,7 +16,11 @@ const HomeworkList = (props) => {
                     classTitle={props.classTitle}
                     title={obj.title}
                     updateHomeworkTitle={props.updateHomeworkTitle}
-                    deleteHomework={props.deleteHomework}>
+                    deleteHomework={props.deleteHomework}
+                    homeworkVisible={obj.visible}
+                    makeHomeworkInvisible={props.makeHomeworkInvisible}
+                    makeHomeworkVisible={props.makeHomeworkVisible}
+                    changeSwitch={props.changeSwitch}>
                 </Homework>)
             })}
         </div>
