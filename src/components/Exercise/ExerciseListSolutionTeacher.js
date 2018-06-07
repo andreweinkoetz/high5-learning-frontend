@@ -8,10 +8,11 @@ const ExerciseList = (props) => {
     return (
         <div>
             {props.exercises.map((obj, k) => {
-
+                console.log(props.percentage[k].answerPercentage);
                 return (
                     <ExerciseSolutionTeacher
-                        percentage={props.percentage[k]}
+                        percentage={props.percentage[k].answerPercentage}
+                        selectedStudent={props.selectedStudent}
                         rightSolution={obj.rightSolution}
                         key={obj._id}
                         id={obj._id}

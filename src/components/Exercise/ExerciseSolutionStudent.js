@@ -76,11 +76,13 @@ const Exercise = (props) => {
                                                           label={props.answers[3]}/>
                                     </RadioGroup>
                                 </Grid>
+
                                 <Grid item xs={1}>
                                     {props.rightSolution === 3 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
+
                                 <Grid item xs={1}>
                                 </Grid>
                             </Grid>

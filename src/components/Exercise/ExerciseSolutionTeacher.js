@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import './ExerciseSolutionStudent.css';
 
 const Exercise = (props) => {
+    console.log(props.selectedStudent);
 
     return (
         <div style={{margin: '10px'}}>
@@ -34,8 +35,8 @@ const Exercise = (props) => {
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
-                                <Grid item xs={1}>
-                                    0
+                                <Grid id="percentage" item xs={1}>
+                                    {(props.percentage[0] * 100).toFixed(0) + '%'}
                                 </Grid>
                                 <Grid item xs={4}>
                                     <RadioGroup name={'exercise-choices'} row
@@ -50,8 +51,8 @@ const Exercise = (props) => {
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
-                                <Grid item xs={1}>
-                                    {1}
+                                <Grid id="percentage" item xs={1}>
+                                    {(props.percentage[1] * 100).toFixed(0) + '%'}
                                 </Grid>
 
                                 <Grid item xs={4}>
@@ -67,8 +68,8 @@ const Exercise = (props) => {
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
-                                <Grid item xs={1}>
-                                    {2}
+                                <Grid id="percentage" item xs={1}>
+                                    {(props.percentage[2] * 100).toFixed(0) + '%'}
                                 </Grid>
 
                                 <Grid item xs={4}>
@@ -79,14 +80,17 @@ const Exercise = (props) => {
                                                           label={props.answers[3]}/>
                                     </RadioGroup>
                                 </Grid>
-                                <Grid item xs={1}>
+
+                                <Grid item id="percentage" xs={1}>
                                     {props.rightSolution === 3 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
+
                                 <Grid item xs={1}>
-                                    {3}
+                                    {(props.percentage[3] * 100).toFixed(0) + '%'}
                                 </Grid>
+
                             </Grid>
                         </Grid>
                     </Grid>

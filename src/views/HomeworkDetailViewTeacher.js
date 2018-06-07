@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -13,12 +12,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
 import HomeworkService from '../services/HomeworkService';
-import UserService from '../services/UserService';
 import SubmissionService from '../services/SubmissionService';
 import ClassService from '../services/ClassService';
 
 
-export default class HomeworkDetailView extends React.Component {
+export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     constructor(props) {
@@ -34,11 +32,8 @@ export default class HomeworkDetailView extends React.Component {
             numberOfStudentsSubmitted: 0,
             selectedStudent: "All",
             studentsOfClass: [],
-
             progressOfStudents: 50,
             percentageCorrectAnswers: 25,
-            selectedStudent: "All",
-            studentsOfClass: [],
             percentage: []
         };
 
@@ -63,7 +58,7 @@ export default class HomeworkDetailView extends React.Component {
 
             this.setState({
                 exercises: homeworkExercises,
-                loading: false
+
             });
         }).catch(e => this.props.handleException(e));
 
@@ -77,7 +72,8 @@ export default class HomeworkDetailView extends React.Component {
                 this.setState({
                     exerciseStatistics: exerciseStatistics,
                     numberOfStudentsSubmitted: 4,
-                    numberOfAssignedStudentsToClass: 8
+                    numberOfAssignedStudentsToClass: 8,
+                    loading: false
                 });
 
             });
@@ -123,7 +119,9 @@ export default class HomeworkDetailView extends React.Component {
 
     render() {
 
-        console.log(this.state.exerciseStatistics[0]);
+        if(this.state.loading) {
+            return <div>LOADING</div>
+        }
 
         let statistics =
             <div>
@@ -137,8 +135,8 @@ export default class HomeworkDetailView extends React.Component {
                                 <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
                                     <MenuItem value={"All"}>All</MenuItem>
                                     {
-                                        this.state.studentsOfClass.map((obj) => {
-                                            return (<MenuItem value={obj.studentId}>{obj.studentName}</MenuItem>)
+                                        this.state.studentsOfClass.map((obj, i) => {
+                                            return (<MenuItem key={i} value={obj.studentId}>{obj.studentName}</MenuItem>)
                                         }
                                     )}
                                 </Select>
@@ -206,7 +204,9 @@ export default class HomeworkDetailView extends React.Component {
 
         let result =
             <ExerciseListSolutionTeacher exercises={this.state.exercises}
-                                         percentage={this.state.exerciseStatistics}/>
+                                         percentage={this.state.exerciseStatistics}
+                                         selectedStudent={this.state.selectedStudent}
+            />
 
 
         return (
