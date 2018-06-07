@@ -12,7 +12,7 @@ const HomeworkList = (props) => {
                 return (<Homework
                     key={obj._id}
                     id={obj._id} c
-                    lassId={props.classId}
+                    classId={props.classId}
                     classTitle={props.classTitle}
                     title={obj.title}
                     updateHomeworkTitle={props.updateHomeworkTitle}
