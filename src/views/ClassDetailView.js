@@ -293,7 +293,31 @@ export default class ClassDetailView extends React.Component {
                 });
             })
             .catch(e => console.log(e));
-    }
+    };
+
+    handleMakeHomeworkInvisble = (id) => {
+        const desiredVisibilityStatus = false;
+        HomeworkService.changeVisibilityStatus(id, desiredVisibilityStatus)
+            .then((data) => {
+                this.setState({
+                    homework: [...data.homework],
+                    loading: false
+                });
+            })
+            .catch(e => console.log(e));
+    };
+
+    handleSwitchChange = (id) => (event) => {
+        const desiredVisibilityStatus = event.target.checked;
+        HomeworkService.changeVisibilityStatus(id, desiredVisibilityStatus)
+            .then((data) => {
+                this.setState({
+                    homework: [...data.homework],
+                    loading: false
+                });
+            })
+            .catch(e => console.log(e));
+    };
 
     render() {
 
@@ -360,6 +384,7 @@ export default class ClassDetailView extends React.Component {
                                             updateHomeworkTitle={this.handleUpdateHomeworkTitle}
                                             makeHomeworkInvisible={this.handleMakeHomeworkInvisble}
                                             makeHomeworkVisible={this.handleMakeHomeworkVisible}
+                                            changeSwitch={this.handleSwitchChange}
                             />}
                     </Grid>
                 </Grid>

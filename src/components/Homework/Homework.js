@@ -6,12 +6,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import UserService from '../../services/UserService';
 
 const Homework = (props) => {
 
-    let buttonStatusHomework = null;
+    /*let buttonStatusHomework = null;
     if (props.homeworkVisible) {
         buttonStatusHomework =
             <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}}
@@ -24,7 +26,7 @@ const Homework = (props) => {
                     onClick={() => props.makeHomeworkVisible(props.id)}>
                 Make homework visible to students</Button>
     };
-
+    */
 
     let buttonsForTeacher = <div/>;
     if (UserService.isTeacher()) {
@@ -39,7 +41,10 @@ const Homework = (props) => {
                 <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}}
                         onClick={() => props.deleteHomework(props.id)}>
                     Delete homework</Button>
-                {buttonStatusHomework}
+                <FormControlLabel
+                    style={{marginLeft: '10px'}}
+                    control={<Switch checked={props.homeworkVisible} onChange={props.changeSwitch(props.id)} color={"primary"}/>}
+                    label={props.homeworkVisible ? "Homework visible" : "Homework invisible"}/>
             </Typography>
     };
 
