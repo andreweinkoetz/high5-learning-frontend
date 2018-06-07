@@ -11,13 +11,9 @@ import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
-import ErrorNoTitleClassComponent from '../components/ErrorNoTitleClassComponent/ErrorNoTitleClassComponent';
-
-
-
+import SchoolService from "../services/SchoolService";
 
 export default class ClassListView extends React.Component {
-
 
     constructor(props) {
         super(props);
@@ -25,21 +21,18 @@ export default class ClassListView extends React.Component {
         this.state = {
             loading: false,
             showModal: false,
-            errorModal: false,
-            errorNoTitle: false,
             classToAdd: {
                 title: '',
                 description: ''
             },
             classes: [],
             updateClassWished: false,
-            idOfToBeUpdatedClass: ''
+            idOfToBeUpdatedClass: '',
+            studentsOfSchool: []
         };
 
         this.addNewClass = this.addNewClass.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleSubmitModal = this.handleSubmitModal.bind(this);
     }
 
@@ -57,9 +50,13 @@ export default class ClassListView extends React.Component {
             this.props.handleException(e);
         });
 
+        SchoolService.getStudentsOfSchool("no").then(data =>{
+            this.setState({studentsOfSchool: data});
+        })
+
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.updateBreadcrumb([
             {
                 link: '/myclasses',
@@ -75,7 +72,7 @@ export default class ClassListView extends React.Component {
         const classToAddWhenClickingAdd = {title: '', description: ''};
         this.setState({
             showModal: !oldState,
-            modalError: errorStateWhenClickingAdd,
+            errorState: errorStateWhenClickingAdd,
             classToAdd: classToAddWhenClickingAdd
         });
     };
@@ -95,39 +92,27 @@ export default class ClassListView extends React.Component {
             this.setState({classes: newClasses, updateClassWished: false});
             this.toggleModal();
 
-        }).catch(e => alert(e));
+        }).catch(e => this.props.handleException(e));
 
     };
 
-    handleSubmitModal() {
+    handleSubmitModal(classToAdd) {
 
-        const classToAdd = {...this.state.classToAdd};
-
-        if(this.state.updateClassWished) {
+        if (this.state.updateClassWished) {
             this.updateClass(classToAdd);
         }
         else {
             if (classToAdd.title === '') {
-                this.setState({modalError: true, errorNoTitle: true});
+                this.props.handleException({
+                    title: 'No title',
+                    msg: 'Your class must have a title.',
+                    code: 12,
+                    variant: 'warning'
+                });
             } else {
                 this.addNewClass(classToAdd);
             }
         }
-    };
-
-    handleTitleChange(event) {
-        const newClass = {...this.state.classToAdd};
-        newClass.title = event.target.value;
-        if (event.target.value !== "") {
-            this.setState({modalError: false});
-        }
-        this.setState({classToAdd: newClass});
-    };
-
-    handleDescriptionChange(event) {
-        const newClass = {...this.state.classToAdd};
-        newClass.description = event.target.value;
-        this.setState({classToAdd: newClass});
     };
 
 
@@ -143,11 +128,6 @@ export default class ClassListView extends React.Component {
         ).catch(e => this.props.handleException(e));
     };
 
-    handleNoTitleErrorMessageRead = () => {
-        const oldErrorState = this.state.errorNoTitle;
-        this.setState({errorNoTitle: !oldErrorState});
-    };
-
     handleUpdateClassInfoWished = (id, t, d) => {
         const updatedClass = {title: t, description: d};
         this.setState({classToAdd: updatedClass, showModal: true, updateClassWished: true, idOfToBeUpdatedClass: id});
@@ -157,10 +137,9 @@ export default class ClassListView extends React.Component {
 
         ClassService.deleteClass(id).then((newClasses) => {
             const nClasses = [...newClasses];
-            console.log(newClasses);
             this.setState({classes: nClasses});
             console.log(this.state.classes);
-        }).catch(e => alert(e));
+        }).catch(e => this.props.handleException(e));
 
     };
 
@@ -201,13 +180,11 @@ export default class ClassListView extends React.Component {
                                      handleDescriptionChange={this.handleDescriptionChange}
                                      handleSubmit={this.handleSubmitModal}
                                      toggle={this.toggleModal}
-                                     error={this.state.modalError}
                                      values={this.state.classToAdd}
+                                     studentsOfSchool={this.state.studentsOfSchool}
                                      updateWished={this.state.updateClassWished}
+                                     handleException={this.props.handleException}
                 />
-                <ErrorNoTitleClassComponent
-                    errorNoTitleRead={this.handleNoTitleErrorMessageRead}
-                    visible={this.state.errorNoTitle}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
@@ -217,13 +194,14 @@ export default class ClassListView extends React.Component {
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
-                    {this.state.loading ? <div style={{textAlign:'center', paddingTop:40}}><CircularProgress size={30}/>
-                            <Typography variant={'caption'}>Loading...</Typography></div>
-                        : <ClassList
-                            classes={this.state.classes}
-                            updateClassInfo={this.handleUpdateClassInfoWished}
-                            deleteClass={this.handleDeleteClass}/> }
-                </Grid>
+                        {this.state.loading ?
+                            <div style={{textAlign: 'center', paddingTop: 40}}><CircularProgress size={30}/>
+                                <Typography variant={'caption'}>Loading...</Typography></div>
+                            : <ClassList
+                                classes={this.state.classes}
+                                updateClassInfo={this.handleUpdateClassInfoWished}
+                                deleteClass={this.handleDeleteClass}/>}
+                    </Grid>
                 </Grid>
             </div>
         );

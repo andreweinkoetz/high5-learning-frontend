@@ -3,19 +3,19 @@ import AppBar from "@material-ui/core/es/AppBar/AppBar";
 import IconButton from "@material-ui/core/es/IconButton/IconButton";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Button from "@material-ui/core/es/Button/Button";
-import MenuIcon from '@material-ui/icons/Menu';
+import SchoolIcon from "@material-ui/icons/School";
 import {withStyles} from '@material-ui/core/styles';
 import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
 
 const styles = {
     headDiv: {
         flexGrow: 1,
-        marginBottom: 20
+        marginBottom: 90
     },
     flex: {
         flex: 1
     },
-    menuButton: {
+    homeButton: {
         marginLeft: -10,
         marginRight: 20
     },
@@ -28,11 +28,12 @@ function Header(props) {
     return (
 
         <div className={classes.headDiv}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                        <MenuIcon/>
+            <AppBar>
+                <Toolbar><div style={{marginRight:10}}>
+                    <IconButton className={classes.homeButton} color="inherit" aria-label="School" onClick={()=>{window.location.href = '/myclasses'}}>
+                        <SchoolIcon style={{fontSize:34}}/>
                     </IconButton>
+                </div>
                     <Typography variant="title" color="inherit" className={classes.flex}>
                         {document.title}
                     </Typography>

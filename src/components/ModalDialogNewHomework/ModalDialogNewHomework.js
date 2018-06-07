@@ -42,6 +42,7 @@ const ModalDialogNewHomework = (props) => {
                         handleDeleteExercise={props.handleDeleteExercise}
                         answersValues={props.exercises[exc.id-1].answers}
                         questionValue={props.exercises[exc.id-1].question}
+                        ableToDeleteExercises={props.ableToDeleteExercises}
                     />
                 )
             }

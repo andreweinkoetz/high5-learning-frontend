@@ -93,7 +93,7 @@ class CreateExercise extends Component {
                         />
                     </RadioGroup>
                 </DialogContent>
-                <Grid container justify={"center"}>
+                {this.props.ableToDeleteExercises ? <Grid container justify={"center"}>
                     <DialogActions>
                         <Button
                             color={"secondary"}
@@ -101,7 +101,7 @@ class CreateExercise extends Component {
                             onClick={() => this.props.handleDeleteExercise(this.state.id)}
                         >Delete exercise {this.state.id}</Button>
                     </DialogActions>
-                </Grid>
+                </Grid> : null}
             </div>
         )
     }
