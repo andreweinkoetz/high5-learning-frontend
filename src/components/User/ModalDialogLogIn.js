@@ -66,7 +66,7 @@ class ModalDialogLogIn extends Component {
                         <TextField
                             label="Username"
                             helperText="Required"
-                            required="True"
+                            required={true}
                             onChange={this.handleChangeUsername}
                         />
                     </DialogContent>
@@ -75,7 +75,7 @@ class ModalDialogLogIn extends Component {
                             label="Password"
                             type="password"
                             helperText="Required"
-                            required="True"
+                            required={true}
                             onChange={this.handleChangePassword}
                         />
                     </DialogContent>

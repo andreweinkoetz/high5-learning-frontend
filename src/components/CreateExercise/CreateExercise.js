@@ -65,6 +65,15 @@ class CreateExercise extends Component {
                             />}
                             value={"1"}
                         />
+                        {this.props.ableToDeleteExercises ? <Grid container justify={"center"}>
+                            <DialogActions>
+                                <Button
+                                    color={"secondary"}
+                                    variant={"raised"}
+                                    onClick={() => this.props.handleDeleteExercise(this.state.id)}
+                                >Delete exercise {this.state.id}</Button>
+                            </DialogActions>
+                        </Grid> : null}
                         <FormControlLabel
                             control={<Radio/>}
                             label={<TextField
@@ -93,15 +102,6 @@ class CreateExercise extends Component {
                         />
                     </RadioGroup>
                 </DialogContent>
-                {this.props.ableToDeleteExercises ? <Grid container justify={"center"}>
-                    <DialogActions>
-                        <Button
-                            color={"secondary"}
-                            variant={"raised"}
-                            onClick={() => this.props.handleDeleteExercise(this.state.id)}
-                        >Delete exercise {this.state.id}</Button>
-                    </DialogActions>
-                </Grid> : null}
             </div>
         )
     }

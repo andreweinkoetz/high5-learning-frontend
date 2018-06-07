@@ -97,8 +97,8 @@ class ModalDialogRegister extends Component {
                         <TextField
                             label="Username"
                             helperText="Required"
-                            autoFocus="True"
-                            required="True"
+                            autoFocus={true}
+                            required={true}
                             onChange={this.handleChangeUsername}
                         />
                     </DialogContent>
@@ -107,7 +107,7 @@ class ModalDialogRegister extends Component {
                             label="Password"
                             type="password"
                             helperText="Required"
-                            required="True"
+                            required={true}
                             onChange={this.handleChangePassword}
                         />
                     </DialogContent>
