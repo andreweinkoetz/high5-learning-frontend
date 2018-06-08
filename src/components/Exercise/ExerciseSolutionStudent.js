@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlLabel";
 import Grid from '@material-ui/core/Grid';
 
-import './ExerciseSolutionStudent.css';
+import './ExerciseSolution.css';
 
 const Exercise = (props) => {
 

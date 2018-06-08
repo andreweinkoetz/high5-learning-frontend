@@ -6,10 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import FormControlLabel from "@material-ui/core/es/FormControlLabel/FormControlLabel";
 import Grid from '@material-ui/core/Grid';
 
-import './ExerciseSolutionStudent.css';
+import './ExerciseSolution.css';
 
 const Exercise = (props) => {
-    console.log(props.selectedStudent);
 
     return (
         <div style={{margin: '10px'}}>
@@ -81,13 +80,13 @@ const Exercise = (props) => {
                                     </RadioGroup>
                                 </Grid>
 
-                                <Grid item id="percentage" xs={1}>
+                                <Grid item  xs={1}>
                                     {props.rightSolution === 3 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
 
-                                <Grid item xs={1}>
+                                <Grid id="percentage" item xs={1}>
                                     {(props.percentage[3] * 100).toFixed(0) + '%'}
                                 </Grid>
 

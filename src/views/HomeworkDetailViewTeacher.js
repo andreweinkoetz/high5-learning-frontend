@@ -34,7 +34,10 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             studentsOfClass: [],
             progressOfStudents: 50,
             percentageCorrectAnswers: 25,
-            percentage: []
+            percentage: [],
+            allSubmissions: [],
+            selectedSubmission: []
+
         };
 
         this.handleValueSelected = this.handleValueSelected.bind(this);
@@ -64,12 +67,13 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
         SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
             .then(submission => {
-                console.log(submission);
                 const exerciseStatistics = [...submission.exerciseStatistics];
+                const newSubmission = [...submission.submissions];
                 const numberOfStudentsSubmitted = submission.studentCount;
                 const numberOfAssignedStudentsToClass = submission.count;
 
                 this.setState({
+                    allSubmissions: newSubmission,
                     exerciseStatistics: exerciseStatistics,
                     numberOfStudentsSubmitted: 4,
                     numberOfAssignedStudentsToClass: 8,
@@ -112,16 +116,39 @@ export default class HomeworkDetailViewTeacher extends React.Component {
     };
 
     handleValueSelected = (event) => {
+        console.log(this.state.allSubmissions);
         const newValueSelected = event.target.value;
-        this.setState({selectedStudent: newValueSelected});
+        console.log(`Student-ID: ${event.target.value}`);
+        console.log(`newValueSelected: ${newValueSelected}`);
+        console.log(this.state.selectedSubmission);
+        if (event.target.value != 'All') {
+            const result = this.state.allSubmissions.filter(x => x.student == event.target.value);
+            this.setState({
+                selectedStudent: event.target.value,
+                selectedSubmission: result[0].exercises
+            });
+        }
+        else {
+            this.setState({
+                selectedStudent: event.target.value,
+                selectedSubmission: []
+            });
+        }
+
     };
 
 
-    render() {
 
-        if(this.state.loading) {
+    render() {
+        console.log(this.state.studentsOfClass)
+
+        if (this.state.loading) {
             return <div>LOADING</div>
         }
+
+        let AllSubmissionMenuItem;
+        this.state.allSubmissions.length === 0 ? AllSubmissionMenuItem =  <MenuItem disabled value={"All"}>All</MenuItem>
+            :  AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>
 
         let statistics =
             <div>
@@ -133,12 +160,19 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         <Grid item xs={12} sm={6}>
                             <FormControl style={{minWidth: '120px'}}>
                                 <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
-                                    <MenuItem value={"All"}>All</MenuItem>
-                                    {
-                                        this.state.studentsOfClass.map((obj, i) => {
-                                            return (<MenuItem key={i} value={obj.studentId}>{obj.studentName}</MenuItem>)
-                                        }
-                                    )}
+
+                                    /* AllSubmissionMenuItem --> disabled if no submission */
+                                    {AllSubmissionMenuItem}
+
+                                    {this.state.studentsOfClass.map((obj, i) => {
+                                                return (
+                                                    /* check if student has submitted a solution - if not disable */
+                                                    this.state.allSubmissions.filter(x => x.student == obj.studentId).length === 0
+                                                    ? <MenuItem disabled key={i} value={obj.studentId}>{obj.studentName}</MenuItem>
+                                                    : <MenuItem key={i}
+                                                                value={obj.studentId}>{obj.studentName}</MenuItem>);
+                                            }
+                                        )}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -206,6 +240,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             <ExerciseListSolutionTeacher exercises={this.state.exercises}
                                          percentage={this.state.exerciseStatistics}
                                          selectedStudent={this.state.selectedStudent}
+                                         selectedChoice={this.state.selectedSubmission}
             />
 
 
