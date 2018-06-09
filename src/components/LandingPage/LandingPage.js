@@ -193,11 +193,6 @@ export default class LandingPage extends React.Component {
                         <LogInButton onClickCallback={this.onClickRegisterButton} content={images[1]}/>
                     </div>
                 }
-
-                {/* footer */}
-                <section>
-                    <Footer/>
-                </section>
             </div>
         );
     }

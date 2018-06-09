@@ -55,6 +55,13 @@ class ModalDialogRegister extends Component {
             this.props.handleException({code:400,title:'Failed to register',msg:'Both Username and Password are required fields.'});
             return;
         }
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (!re.test(username) ) {
+            this.props.handleException({code:400, title:'Failed to register',msg:'Username has to be a vaid email address. Please type in a valid email address.'});
+            return;
+        }
+
         const type = this.state.type;
         let license = undefined;
         if (type === "Teacher") license = this.state.license;
@@ -90,13 +97,14 @@ class ModalDialogRegister extends Component {
                     disableBackdropClick
                     disableEscapeKeyDown
                     className={"modalDialog"}
-                    open="true"
+                    open={true}
                 >
                     <DialogTitle>Register</DialogTitle>
                     <DialogContent>
                         <TextField
                             label="Username"
                             helperText="Required"
+                            type="email"
                             autoFocus={true}
                             required={true}
                             onChange={this.handleChangeUsername}

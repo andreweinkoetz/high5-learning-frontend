@@ -59,13 +59,14 @@ class ModalDialogLogIn extends Component {
                     disableBackdropClick
                     disableEscapeKeyDown
                     className={"modalDialog"}
-                    open="true"
+                    open={true}
                 >
                     <DialogTitle>LogIn</DialogTitle>
                     <DialogContent>
                         <TextField
                             label="Username"
                             helperText="Required"
+                            type="email"
                             required={true}
                             onChange={this.handleChangeUsername}
                         />
