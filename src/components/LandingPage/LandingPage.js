@@ -141,28 +141,20 @@ export default class LandingPage extends React.Component {
                     {/* about our produt / service */}
                     <section className="content-page3">
                         <h1>WHAT WE OFFER</h1>
-                        <ul>
-                            <li>Modern, intuitive e-learning platform</li>
-                            <li>Creation of virtual classes</li>
-                            <li>Teacherspublish multiple choice homework</li>
-                            <li>Instant feedback to teachers from students</li>
-                            <li>Statistics for teachers about homework</li>
-                            <li>Reusability of classes</li>
-
-                        </ul>
+                        <p>Modern, intuitive e-learning platform</p>
+                        <p>Creation of virtual classes</p>
+                        <p>Teacherspublish multiple choice homework</p>
+                        <p>Instant feedback to teachers from students</p>
+                        <p>Statistics for teachers about homework</p>
+                        <p>Reusability of classes</p>
                     </section>
                     {/* about our team / us */}
                     <section className="content-page4">
                         <h1>OUR TEAM</h1>
-                        <div className="table-of-team">
-                            <ul>
-                                <li>Andre</li>
-                                <li>Andre</li>
-                                <li>Hermann</li>
-                                <li>Martin</li>
-
-                            </ul>
-                        </div>
+                        <p>Andre</p>
+                        <p>Andre</p>
+                        <p>Hermann</p>
+                        <p>Martin</p>
                     </section>
                 </div>
                 {/* transparent absolute div presenting brand name & logo */}
