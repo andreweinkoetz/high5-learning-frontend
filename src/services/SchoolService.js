@@ -7,7 +7,20 @@ export default class SchoolService {
     }
 
 
-    static getSchoolOfUser(){
+    static getSchoolOfUser(userid){
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${SchoolService.baseUrl()}`+userid,
+                function(data) {
+                    resolve(data);
+                }, function(error) {
+                    reject(error);
+                });
+        });
+
+    }
+
+
+    static getAllSchools(){
         return new Promise((resolve, reject) => {
             HttpService.get(`${SchoolService.baseUrl()}`,
                 function(data) {

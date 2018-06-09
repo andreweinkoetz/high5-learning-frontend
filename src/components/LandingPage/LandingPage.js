@@ -1,12 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-import Footer from '../Footer/Footer';
 import LogInButton from '../User/LogInButton';
 import LogIn from '../User/ModalDialogLogIn';
 import Register from '../User/ModalDialogRegister'
 import './LandingPage.css';
 import UserService from "../../services/UserService";
+import SchoolService from "../../services/SchoolService";
 
 /*
 Landing Page. Appears only if you are not logged-in.
@@ -22,7 +22,8 @@ export default class LandingPage extends React.Component {
         this.state = {
             modalDialogClass: "",
             username: "",
-            width: window.innerWidth
+            width: window.innerWidth,
+            schools: []
         };
 
         this.onClickLogInButton = this.onClickLogInButton.bind(this);
@@ -33,6 +34,14 @@ export default class LandingPage extends React.Component {
     }
 
     componentWillMount() {
+        SchoolService.getAllSchools().then((schools) => {
+            this.setState({
+                schools: schools
+            });
+        }).catch(error => {
+            this.props.handleException(error);
+        });
+
         window.addEventListener('resize', this.onHandleChangeWindowSize);
     }
 
@@ -108,7 +117,8 @@ export default class LandingPage extends React.Component {
                         case "register":
                             return <Register className="modal-dialog" onUsername={this.onHandleChangeUsername}
                                              cancel={this.onClickCancelModalDialog}
-                                             handleException={this.props.handleException}/>;
+                                             handleException={this.props.handleException}
+                                             schools={this.state.schools}/>;
                         case "":
                             return;
                     }

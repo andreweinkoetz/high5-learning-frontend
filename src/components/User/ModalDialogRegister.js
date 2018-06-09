@@ -6,9 +6,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import {FormControlLabel, RadioGroup, Radio} from '@material-ui/core';
 import DialogActions from '@material-ui/core/DialogActions';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
+
 
 import './ModalDialog.css';
 import UserService from "../../services/UserService";
+import config from "../../config";
 
 class ModalDialogRegister extends Component {
 
@@ -19,12 +26,14 @@ class ModalDialogRegister extends Component {
             password: "",
             username: "",
             type: "Student",
+            school: "",
             license: ""
         };
 
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangeLicense = this.handleChangeLicense.bind(this);
+        this.handleChangeSchool = this.handleChangeSchool.bind(this);
         this.handleChangeType = this.handleChangeType.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,6 +45,10 @@ class ModalDialogRegister extends Component {
 
     handleChangeUsername(event) {
         this.setState({username: event.target.value});
+    }
+
+    handleChangeSchool(event) {
+        this.setState({school: event.target.value});
     }
 
     handleChangeLicense(event) {
@@ -51,11 +64,21 @@ class ModalDialogRegister extends Component {
     handleSubmit() {
         const username = this.state.username;
         const password = this.state.password;
+        const school = this.state.school;
         if (username === "" || password === "") {
             this.props.handleException({
                 code: 400,
                 title: 'Failed to register',
                 msg: 'Both Username and Password are required fields.',
+                variant: 'warning'
+            });
+            return;
+        }
+        if (school === "") {
+            this.props.handleException({
+                code: 400,
+                title: 'Failed to register',
+                msg: 'It is required to select a school.',
                 variant: 'warning'
             });
             return;
@@ -84,7 +107,7 @@ class ModalDialogRegister extends Component {
             });
             return;
         }
-        UserService.register(username, password, type, license).then((data) => {
+        UserService.register(username, password, type, school, license).then((data) => {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
             } else {
@@ -137,6 +160,22 @@ class ModalDialogRegister extends Component {
                         required={true}
                         onChange={this.handleChangePassword}
                     />
+                </DialogContent>
+                <DialogContent>
+                    <InputLabel htmlFor="school-helper">School&nbsp;&nbsp;</InputLabel>
+                    <Select
+                        value={this.state.school}
+                        onChange={this.handleChangeSchool}
+                        input={<Input name="school" id="school-helper"/>}>
+                        {this.props.schools.map((school) => {
+
+                            return (
+                                <MenuItem value={school.name}>{school.name}</MenuItem>
+                            )
+
+                        })}
+                    </Select>
+                    <FormHelperText>Select your School</FormHelperText>
                 </DialogContent>
                 <DialogContent>
                     <RadioGroup

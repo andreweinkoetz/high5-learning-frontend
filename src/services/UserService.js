@@ -5,14 +5,13 @@ export default class UserService {
     static baseURL() {return HttpService.apiURL() + "/auth"; }
 
     // if user is teacher, pass license to backend
-    static register(user, pass, type, license) {
+    static register(user, pass, type, school, license) {
         let userModel = {
             username: user,
             password: pass,
-            type: type
+            type: type,
+            schoolname: school
         };
-        console.log(userModel);
-        console.log(license);
         if(type === 'Teacher'){
             userModel['license'] = license;
         }
@@ -105,7 +104,8 @@ export default class UserService {
         return {
             id : JSON.parse(window.atob(base64)).id,
             username: JSON.parse(window.atob(base64)).username,
-            type: JSON.parse(window.atob(base64)).type
+            type: JSON.parse(window.atob(base64)).type,
+            schoolname:JSON.parse(window.atob(base64)).schoolname
         };
     }
 
