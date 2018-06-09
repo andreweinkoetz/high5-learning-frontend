@@ -11,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
+import ExerciseListEmpty from '../components/Exercise/ExerciseListEmpty';
 import HomeworkService from '../services/HomeworkService';
 import SubmissionService from '../services/SubmissionService';
 import ClassService from '../services/ClassService';
@@ -34,7 +35,12 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             studentsOfClass: [],
             progressOfStudents: 50,
             percentageCorrectAnswers: 25,
-            percentage: []
+            percentage: [],
+            allSubmissions: [],
+            selectedSubmission: [],
+            empty: false,
+            statistics: []
+
         };
 
         this.handleValueSelected = this.handleValueSelected.bind(this);
@@ -60,33 +66,47 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 exercises: homeworkExercises,
 
             });
-        }).catch(e => this.props.handleException(e));
+        })
+            .catch(e => this.props.handleException(e))
 
-        SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
-            .then(submission => {
-                console.log(submission);
-                const exerciseStatistics = [...submission.exerciseStatistics];
-                const numberOfStudentsSubmitted = submission.studentCount;
-                const numberOfAssignedStudentsToClass = submission.count;
+            .then(() =>
+                ClassService.getStudentsOfClass(this.props.location.state.classId)
+                    .then(listOfStudents => {
+                        const studentList =
+                            listOfStudents.map(obj => ({studentId: obj._id, studentName: obj.username}));
+                        this.setState({
+                            studentsOfClass: studentList
+                        });
+                    }))
 
-                this.setState({
-                    exerciseStatistics: exerciseStatistics,
-                    numberOfStudentsSubmitted: 4,
-                    numberOfAssignedStudentsToClass: 8,
-                    loading: false
-                });
+            .then(() => {
+                SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
+                    .then(submission => {
+                        if (submission.submissions.length !== 0) {
 
-            });
+                            const exerciseStatistics = [...submission.exerciseStatistics];
+                            const newSubmission = [...submission.submissions];
+                            const numberOfStudentsSubmitted = submission.studentCount;
+                            const numberOfAssignedStudentsToClass = submission.count;
 
-        ClassService.getStudentsOfClass(this.props.location.state.classId)
-            .then(listOfStudents => {
-                const studentList =
-                    listOfStudents.map(obj => ({studentId: obj._id, studentName: obj.username}));
-                this.setState({
-                    studentsOfClass: studentList
-                });
+                            this.setState({
+                                allSubmissions: newSubmission,
+                                exerciseStatistics: exerciseStatistics,
+                                numberOfStudentsSubmitted: 4,
+                                numberOfAssignedStudentsToClass: 8,
+                                loading: false
+                            });
+                        }
+                        else {
+                            this.setState({
+                                empty: true,
+                                loading: false
+                            })
+                        }
+                    });
             })
     };
+
 
     componentDidMount() {
         this.props.updateBreadcrumb([
@@ -113,15 +133,34 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
     handleValueSelected = (event) => {
         const newValueSelected = event.target.value;
-        this.setState({selectedStudent: newValueSelected});
+        if (event.target.value != 'All') {
+            const result = this.state.allSubmissions.filter(x => x.student == event.target.value);
+            this.setState({
+                selectedStudent: event.target.value,
+                selectedSubmission: result[0].exercises
+            });
+        }
+        else {
+            this.setState({
+                selectedStudent: event.target.value,
+                selectedSubmission: []
+            });
+        }
+
     };
 
 
     render() {
 
-        if(this.state.loading) {
-            return <div>LOADING</div>
+        if (this.state.loading) {
+            return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
+                size={30}/>
+                <Typography variant={'caption'}>Loading...</Typography></div>;
         }
+
+        let AllSubmissionMenuItem;
+        this.state.allSubmissions.length === 0 ? AllSubmissionMenuItem = <MenuItem disabled value={"All"}>All</MenuItem>
+            : AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>
 
         let statistics =
             <div>
@@ -133,10 +172,18 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         <Grid item xs={12} sm={6}>
                             <FormControl style={{minWidth: '120px'}}>
                                 <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
-                                    <MenuItem value={"All"}>All</MenuItem>
-                                    {
-                                        this.state.studentsOfClass.map((obj, i) => {
-                                            return (<MenuItem key={i} value={obj.studentId}>{obj.studentName}</MenuItem>)
+
+                                    /* AllSubmissionMenuItem --> disabled if no submission */
+                                    {AllSubmissionMenuItem}
+
+                                    {this.state.studentsOfClass.map((obj, i) => {
+                                            return (
+                                                /* check if student has submitted a solution - if not disable */
+                                                this.state.allSubmissions.filter(x => x.student == obj.studentId).length === 0
+                                                    ? <MenuItem disabled key={i}
+                                                                value={obj.studentId}>{obj.studentName}</MenuItem>
+                                                    : <MenuItem key={i}
+                                                                value={obj.studentId}>{obj.studentName}</MenuItem>);
                                         }
                                     )}
                                 </Select>
@@ -194,19 +241,24 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 </Grid>
             </Grid>;
 
-        let loading;
-        if (this.state.loading) {
-            loading = <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
-                size={30}/>
-                <Typography variant={'caption'}>Loading...</Typography></div>;
-        }
 
+        let result;
+        (!this.state.empty) ?
+            result =
+                <ExerciseListSolutionTeacher exercises={this.state.exercises}
+                                             percentage={this.state.exerciseStatistics}
+                                             selectedStudent={this.state.selectedStudent}
+                                             selectedChoice={this.state.selectedSubmission}
+                                             empty={this.state.empty}
+                />
 
-        let result =
-            <ExerciseListSolutionTeacher exercises={this.state.exercises}
-                                         percentage={this.state.exerciseStatistics}
-                                         selectedStudent={this.state.selectedStudent}
-            />
+            :
+            result =
+                <ExerciseListEmpty exercises={this.state.exercises}
+                                   selectedStudent={this.state.selectedStudent}
+                                   percentage={[0, 0, 0, 0]}
+                                   empty={this.state.empty}
+                />
 
 
         return (
@@ -222,7 +274,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
-                        {loading}
                         {result}
                     </Grid>
                     {backButton}

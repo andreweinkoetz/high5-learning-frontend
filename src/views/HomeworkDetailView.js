@@ -8,7 +8,9 @@ import HomeworkDetailViewTeacher from './HomeworkDetailViewTeacher';
 
 const HomeworkDetailView = (props) => {
     let isStudent;
+
     UserService.getCurrentUser().type === 'Student' ? isStudent = true : isStudent = false;
+    console.log(isStudent)
     return (isStudent ? <HomeworkDetailViewStudent {...props}/> : <HomeworkDetailViewTeacher {...props}/>);
 };
 

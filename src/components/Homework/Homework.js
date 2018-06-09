@@ -50,10 +50,10 @@ const Homework = (props) => {
 
         return (
             <div>
-                {(!props.homeworkVisible && !UserService.isTeacher())
+                {/*{(!props.homeworkVisible && !UserService.isTeacher())
                     ?
                     null
-                    : <ExpansionPanel>
+                    :*/} <ExpansionPanel>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Link to={
                                 {
@@ -72,7 +72,7 @@ const Homework = (props) => {
                             {buttonsForTeacher}
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
-                }
+            {/*    }*/}
             </div>
         );
 };
