@@ -8,14 +8,11 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Page from './components/Page/Page'
 import ClassListView from './views/ClassListView';
 import UserService from './services/UserService';
-import ModalDialogNewHomework from "./components/ModalDialogNewHomework/ModalDialogNewHomework";
-import ModalDialogNewClass from "./components/ModalDialogNewClass/ModalDialogNewClass";
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
-import ModalDialogRegisteringStudentToClass
-    from './components/ModalDialogRegisteringStudentToClass/ModalDialogRegisteringStudentToClass';
 import Exception from './components/Exception/Exception';
 import HomeworkDetailView from './views/HomeworkDetailView';
+import MyProfile from "./views/MyProfile";
 
 
 class App extends Component {
@@ -37,9 +34,9 @@ class App extends Component {
 
             routes: [
                 {
-                    render: (props) => (
-                        <ModalDialogRegisteringStudentToClass {...props} handleException={this.handleException}/>),
-                    path: '/goToClass/:classId',
+                    render: () => (<MyProfile {...props} handleException={this.handleException}
+                                                  updateBreadcrumb={this.updateBreadcrumb}/>),
+                    path: '/myprofile',
                     exact: true
                 },
                 {

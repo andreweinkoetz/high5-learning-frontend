@@ -16,7 +16,7 @@ export default class UserService {
         if(type === 'Teacher'){
             userModel['license'] = license;
         }
-        console.log(userModel);
+
         return new Promise((resolve, reject) => {
             HttpService.post(`${UserService.baseURL()}/register`, userModel, function(data) {
                 resolve(data);
@@ -30,6 +30,18 @@ export default class UserService {
         return new Promise((resolve, reject) => {
             HttpService.post(`${UserService.baseURL()}/login`, {
                 username: user,
+                password: pass
+            }, function(data) {
+                resolve(data);
+            }, function(textStatus) {
+                reject(textStatus);
+            });
+        });
+    }
+
+    static changePassword(pass) {
+        return new Promise((resolve, reject) => {
+            HttpService.put(`${UserService.baseURL()}/changepw`, {
                 password: pass
             }, function(data) {
                 resolve(data);
