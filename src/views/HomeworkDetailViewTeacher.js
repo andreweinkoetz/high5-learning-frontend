@@ -9,6 +9,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
 
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
 import ExerciseListEmpty from '../components/Exercise/ExerciseListEmpty';
@@ -42,9 +43,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             statistics: []
 
         };
-
+        
         this.handleValueSelected = this.handleValueSelected.bind(this);
-
     }
 
     componentWillMount() {
@@ -158,9 +158,11 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 <Typography variant={'caption'}>Loading...</Typography></div>;
         }
 
-        let AllSubmissionMenuItem;
-        this.state.allSubmissions.length === 0 ? AllSubmissionMenuItem = <MenuItem disabled value={"All"}>All</MenuItem>
-            : AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>
+        /*  let AllSubmissionMenuItem;
+          this.state.allSubmissions.length === 0 ? AllSubmissionMenuItem = <MenuItem disabled value={"All"}>All</MenuItem>
+              : AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem> */
+
+        let AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>
 
         let statistics =
             <div>
@@ -282,3 +284,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
         );
     }
 }
+
+HomeworkDetailViewTeacher.propTypes = {
+
+};
