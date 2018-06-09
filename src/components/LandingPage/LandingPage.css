@@ -20,6 +20,12 @@
     padding: 0;
 }
 
+.modal-dialog {
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -webkit-box;
+}
+
 .head-line {
     position: fixed;
     top: 7vh;

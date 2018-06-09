@@ -102,11 +102,11 @@ export default class LandingPage extends React.Component {
                 {(() => {
                     switch (this.state.modalDialogClass) {
                         case "logIn":
-                            return <LogIn onUsername={this.onHandleChangeUsername}
+                            return <LogIn className="modal-dialog" onUsername={this.onHandleChangeUsername}
                                           cancel={this.onClickCancelModalDialog}
                                           handleException={this.props.handleException}/>;
                         case "register":
-                            return <Register onUsername={this.onHandleChangeUsername}
+                            return <Register className="modal-dialog" onUsername={this.onHandleChangeUsername}
                                              cancel={this.onClickCancelModalDialog}
                                              handleException={this.props.handleException}/>;
                         case "":

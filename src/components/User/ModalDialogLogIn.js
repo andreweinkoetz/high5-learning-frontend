@@ -26,25 +26,33 @@ class ModalDialogLogIn extends Component {
     }
 
     handleChangePassword(event) {
-        this.setState({password:event.target.value});
+        this.setState({password: event.target.value});
     }
 
     handleChangeUsername(event) {
-        this.setState({username:event.target.value});
+        this.setState({username: event.target.value});
     }
 
-    handleSubmit(){
+    handleSubmit() {
         const username = this.state.username;
         const password = this.state.password;
-        if(username === "" || password === ""){
-            this.props.handleException({code:400,title:'Login failed',msg:'Both Username and Password are required fields.'})
+        if (username === "" || password === "") {
+            this.props.handleException({
+                code: 400,
+                title: 'Login failed',
+                msg: 'Both Username and Password are required fields.'
+            })
             return;
         }
         UserService.login(username, password).then((data) => {
-            if(UserService.isAuthenticated()){
+            if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
-            }else{
-                this.props.handleException({code:400,title:'Login failed',msg:'User could not be logged in, please check your username and password.'})
+            } else {
+                this.props.handleException({
+                    code: 400,
+                    title: 'Login failed',
+                    msg: 'User could not be logged in, please check your username and password.'
+                })
             }
         }).catch((e) => {
             this.props.handleException(e);
@@ -54,48 +62,46 @@ class ModalDialogLogIn extends Component {
 
     render() {
         return (
-            <div>
-                <Dialog
-                    disableBackdropClick
-                    disableEscapeKeyDown
-                    className={"modalDialog"}
-                    open={true}
-                >
-                    <DialogTitle>LogIn</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            label="Username"
-                            helperText="Required"
-                            type="email"
-                            required={true}
-                            onChange={this.handleChangeUsername}
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <TextField
-                            label="Password"
-                            type="password"
-                            helperText="Required"
-                            required={true}
-                            onChange={this.handleChangePassword}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            className="Button"
-                            color="primary"
-                            variant="raised"
-                            onClick={this.handleSubmit}
-                        >LogIn</Button>
-                        <Button
-                            className="Button"
-                            color="secondary"
-                            variant="raised"
-                            onClick={this.props.cancel}
-                        >Cancel</Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                className={"modalDialog"}
+                open={true}
+            >
+                <DialogTitle>LogIn</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Username"
+                        helperText="Required"
+                        type="email"
+                        required={true}
+                        onChange={this.handleChangeUsername}
+                    />
+                </DialogContent>
+                <DialogContent>
+                    <TextField
+                        label="Password"
+                        type="password"
+                        helperText="Required"
+                        required={true}
+                        onChange={this.handleChangePassword}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        className="Button"
+                        color="primary"
+                        variant="raised"
+                        onClick={this.handleSubmit}
+                    >LogIn</Button>
+                    <Button
+                        className="Button"
+                        color="secondary"
+                        variant="raised"
+                        onClick={this.props.cancel}
+                    >Cancel</Button>
+                </DialogActions>
+            </Dialog>
         )
     }
 }
