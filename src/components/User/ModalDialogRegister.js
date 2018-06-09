@@ -38,7 +38,7 @@ class ModalDialogRegister extends Component {
         this.setState({username: event.target.value});
     }
 
-    handleChangeLicense(event){
+    handleChangeLicense(event) {
         this.setState({license: event.target.value});
     }
 
@@ -51,22 +51,49 @@ class ModalDialogRegister extends Component {
     handleSubmit() {
         const username = this.state.username;
         const password = this.state.password;
-        if(username === "" || password === ""){
-            this.props.handleException({code:400,title:'Failed to register',msg:'Both Username and Password are required fields.'});
+        if (username === "" || password === "") {
+            this.props.handleException({
+                code: 400,
+                title: 'Failed to register',
+                msg: 'Both Username and Password are required fields.',
+                variant: 'warning'
+            });
             return;
         }
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (!re.test(username)) {
+            this.props.handleException({
+                code: 400,
+                title: 'Failed to register',
+                msg: 'Username has to be a vaid email address.',
+                variant: 'warning'
+            });
+            return;
+        }
+
         const type = this.state.type;
         let license = undefined;
         if (type === "Teacher") license = this.state.license;
-        if (type === "Teacher" && license === ""){
-            this.props.handleException({code:400,title:'Failed to register',msg:'Please type in a valid license code.'});
+        if (type === "Teacher" && license === "") {
+            this.props.handleException({
+                code: 400,
+                title: 'Failed to register',
+                msg: 'Please type in a valid license code.',
+                variant: 'warning'
+            });
             return;
         }
         UserService.register(username, password, type, license).then((data) => {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
             } else {
-                this.props.handleException({code:400,title:'Registration failed', msg:'Registration failed, please check your username and password.'})
+                this.props.handleException({
+                    code: 400,
+                    title: 'Registration failed',
+                    msg: 'Registration failed, please check your username and password.',
+                    variant: 'error'
+                })
             }
         }).catch((e) => {
             this.props.handleException(e);
@@ -85,59 +112,58 @@ class ModalDialogRegister extends Component {
             </DialogContent>) : undefined;
 
         return (
-            <div>
-                <Dialog
-                    disableBackdropClick
-                    disableEscapeKeyDown
-                    className={"modalDialog"}
-                    open={this.props.visible}
-                >
-                    <DialogTitle>Register</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            label="Username"
-                            helperText="Required"
-                            autoFocus={true}
-                            required={true}
-                            onChange={this.handleChangeUsername}
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <TextField
-                            label="Password"
-                            type="password"
-                            helperText="Required"
-                            required={true}
-                            onChange={this.handleChangePassword}
-                        />
-                    </DialogContent>
-                    <DialogContent>
-                        <RadioGroup
-                            name="type"
-                            value={this.state.type}
-                            onChange={this.handleChangeType}
-                        >
-                            <FormControlLabel value="Teacher" control={<Radio/>} label="Teacher"/>
-                            <FormControlLabel value="Student" control={<Radio/>} label="Student"/>
-                        </RadioGroup>
-                    </DialogContent>
-                    {licenseDialog}
-                    <DialogActions>
-                        <Button
-                            className={"Button"}
-                            color={"primary"}
-                            variant={"raised"}
-                            onClick={this.handleSubmit}
-                        >Register</Button>
-                        <Button
-                            className={"Button"}
-                            color={"secondary"}
-                            variant={"raised"}
-                            onClick={this.props.cancel}
-                        >Cancel</Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                className={"modalDialog"}
+                open={true}
+            >
+                <DialogTitle>Register</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Username"
+                        helperText="Required"
+                        type="email"
+                        autoFocus={true}
+                        required={true}
+                        onChange={this.handleChangeUsername}
+                    />
+                </DialogContent>
+                <DialogContent>
+                    <TextField
+                        label="Password"
+                        type="password"
+                        helperText="Required"
+                        required={true}
+                        onChange={this.handleChangePassword}
+                    />
+                </DialogContent>
+                <DialogContent>
+                    <RadioGroup
+                        name="type"
+                        value={this.state.type}
+                        onChange={this.handleChangeType}
+                    >
+                        <FormControlLabel value="Teacher" control={<Radio/>} label="Teacher"/>
+                        <FormControlLabel value="Student" control={<Radio/>} label="Student"/>
+                    </RadioGroup>
+                </DialogContent>
+                {licenseDialog}
+                <DialogActions>
+                    <Button
+                        className={"Button"}
+                        color={"primary"}
+                        variant={"raised"}
+                        onClick={this.handleSubmit}
+                    >Register</Button>
+                    <Button
+                        className={"Button"}
+                        color={"secondary"}
+                        variant={"raised"}
+                        onClick={this.props.cancel}
+                    >Cancel</Button>
+                </DialogActions>
+            </Dialog>
         )
     }
 }

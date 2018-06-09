@@ -20,6 +20,12 @@
     padding: 0;
 }
 
+.modal-dialog {
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -webkit-box;
+}
+
 .head-line {
     position: fixed;
     top: 7vh;
@@ -128,6 +134,11 @@
     background-color: #FAFAFA;
 }
 
+.content-page3 p {
+    margin: 0 0 0 0;
+    padding: 2vh 0 2vh 0;
+}
+
 .content-page4 {
     float: left;
     clear: both;
@@ -136,10 +147,15 @@
     text-align: center;
 }
 
+.content-page4 p {
+    margin: 0 20vw 0 20vw;
+    padding: 2vh 2vw 2vh 2vw;
+}
+
 .buttonDiv {
     text-align: center;
     position: fixed;
-    top: 70vh;
+    top: 80vh;
     left: 0;
     width: 100%;
     height: fit-content;
