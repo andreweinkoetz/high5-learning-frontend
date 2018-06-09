@@ -59,7 +59,7 @@ class ModalDialogLogIn extends Component {
                     disableBackdropClick
                     disableEscapeKeyDown
                     className={"modalDialog"}
-                    open={this.props.visible}
+                    open="true"
                 >
                     <DialogTitle>LogIn</DialogTitle>
                     <DialogContent>

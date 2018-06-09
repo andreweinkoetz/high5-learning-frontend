@@ -20,8 +20,7 @@ export default class LandingPage extends React.Component {
         // modalDialogClass tells the render function which modal dialog to load
         // modalDialogVisibility tells the render if the modal dialogs should be visible
         this.state = {
-            modalDialogVisibility: false,
-            modalDialogClass: "register",
+            modalDialogClass: "",
             username: "",
             width: window.innerWidth
         };
@@ -55,14 +54,12 @@ export default class LandingPage extends React.Component {
 
     onClickRegisterButton() {
         this.setState({
-            modalDialogVisibility: true,
             modalDialogClass: "register"
         });
     }
 
     onClickLogInButton() {
         this.setState({
-            modalDialogVisibility: true,
             modalDialogClass: "logIn"
         });
     }
@@ -70,7 +67,7 @@ export default class LandingPage extends React.Component {
     // onClick method of the cancel buttons of the modal dialogues
     onClickCancelModalDialog() {
         this.setState({
-            modalDialogVisibility: false
+            modalDialogClass: ""
         });
     }
 
@@ -102,13 +99,20 @@ export default class LandingPage extends React.Component {
         return (
             <div className="landingPage">
                 {/* modal dialog */}
-
-                {(this.state.modalDialogClass === "logIn") ?
-                    <LogIn onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
-                           visible={this.state.modalDialogVisibility} handleException={this.props.handleException}/> :
-                    <Register onUsername={this.onHandleChangeUsername} cancel={this.onClickCancelModalDialog}
-                              handleException={this.props.handleException} visible={this.state.modalDialogVisibility}/>
-                }
+                {(() => {
+                    switch (this.state.modalDialogClass) {
+                        case "logIn":
+                            return <LogIn onUsername={this.onHandleChangeUsername}
+                                          cancel={this.onClickCancelModalDialog}
+                                          handleException={this.props.handleException}/>;
+                        case "register":
+                            return <Register onUsername={this.onHandleChangeUsername}
+                                             cancel={this.onClickCancelModalDialog}
+                                             handleException={this.props.handleException}/>;
+                        case "":
+                            return;
+                    }
+                })()}
                 {/* one pager content */}
                 <div className="content">
                     {/* short slogan and nice backgroud picture for the first page */}

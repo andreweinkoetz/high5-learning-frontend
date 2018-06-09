@@ -90,7 +90,7 @@ class ModalDialogRegister extends Component {
                     disableBackdropClick
                     disableEscapeKeyDown
                     className={"modalDialog"}
-                    open={this.props.visible}
+                    open="true"
                 >
                     <DialogTitle>Register</DialogTitle>
                     <DialogContent>
