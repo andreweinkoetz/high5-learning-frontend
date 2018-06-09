@@ -19,7 +19,7 @@ const NavBar = (props) => {
             ><ListItem button>
                 <ListItemText primary="My classes"/></ListItem>
             </Link>
-        <Divider/>
+            <Divider/>
             <ListItem button onClick={props.clicked}>
                 <ListItemText primary="My homework"/>
                 <ListItemIcon>
@@ -42,7 +42,12 @@ const NavBar = (props) => {
             </ListItem>
             <Divider/>
             <ListItem button>
-                <ListItemText primary="My profile"/>
+                <Link
+                    to="/myprofile"
+                    style={{textDecoration: 'none'}}
+                >
+                    <ListItemText primary="My profile"/>
+                </Link>
             </ListItem>
         </List>
     </div>);

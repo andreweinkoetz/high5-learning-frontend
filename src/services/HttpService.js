@@ -69,7 +69,7 @@ export default class HttpService {
             }
             else {
                 resp.json().then((json) => {
-                    onError(json.error);
+                    onError({code: resp.status, title: json.error, msg: json.message});
                 });
             }
         }).then((resp) => {
@@ -77,8 +77,8 @@ export default class HttpService {
                 window.localStorage['jwtToken'] = resp.token;
             }
             onSuccess(resp);
-        }).catch((e) => {
-            onError(e.message);
+        }).catch(() => {
+            onError({code: 500, title: 'Server error', msg: 'Failed to contact backend'});
         });
     }
 
