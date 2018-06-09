@@ -3,14 +3,14 @@ import React from 'react';
 import ExerciseSolutionTeacher from "./ExerciseSolutionTeacher";
 
 
-const ExerciseList = (props) => {
+const ExerciseListEmpty = (props) => {
 
     return (
         <div>
             {props.exercises.map((obj, k) => {
                 return (
                     <ExerciseSolutionTeacher
-                        percentage={props.percentage[k].answerPercentage}
+                        percentage={props.percentage}
                         selectedStudent={props.selectedStudent}
                         rightSolution={obj.rightSolution}
                         key={obj._id}
@@ -18,9 +18,8 @@ const ExerciseList = (props) => {
                         question={obj.question}
                         answers={obj.answers}
                         answerKey={k}
-                        selectedChoice={props.selectedChoice[k]}
                         empty={props.empty}
-                        rightAnswerPercentage={props.percentage[k].rightAnswerPercentage}
+
                     />
                 )
             })}
@@ -28,4 +27,4 @@ const ExerciseList = (props) => {
     );
 };
 
-export default ExerciseList;
+export default ExerciseListEmpty;

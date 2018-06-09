@@ -9,11 +9,33 @@ import Grid from '@material-ui/core/Grid';
 import './ExerciseSolution.css';
 
 const Exercise = (props) => {
+    console.log(props.selectedStudent);
+    console.log(props.rightAnswerPercentage);
+
+    let className;
+    if(props.empty) {
+        className = "empty";
+    }
+    else if(props.selectedStudent !== "All" && props.rightSolution == props.selectedChoice) {
+        className = "right";
+    }
+    else if(props.selectedStudent !== "All" && props.rightSolution != props.selectedChoice) {
+        className = "wrong";
+    }
+    else if (props.selectedStudent === "All" && props.rightAnswerPercentage >= 0.5) {
+        className = "right";
+    }
+    else if (props.selectedStudent === "All" && props.rightAnswerPercentage < 0.5) {
+        className = "wrong";
+    }
+    else {
+        className = "";
+    }
 
     return (
         <div style={{margin: '10px'}}>
             <Paper elevation={4}>
-                <div style={{padding: '30px'}} className={(props.rightSolution == props.selectedChoice) ? "right" : "wrong"}>
+                <div style={{padding: '30px'}} className={className}>
                     <Grid container spacing={8}>
                         <Grid item xs={12}>
                             <Typography variant={'subheading'}>{props.question}</Typography>
