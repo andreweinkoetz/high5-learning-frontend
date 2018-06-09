@@ -1,5 +1,5 @@
-i  {
-   position: relative;
+i {
+    position: relative;
     top: 12px;
 }
 
@@ -8,6 +8,14 @@ i  {
     top: 12px;
 }
 
-.right{ background-color: LightGreen}
+.right {
+    border-style: solid;
+    border-color: LightGreen;
+    border-width: 7px;
+}
 
-.wrong{ background-color: LightSalmon}
+.wrong {
+    border-style: solid;
+    border-color: LightSalmon;
+    border-width: 7px;
+}

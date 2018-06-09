@@ -33,7 +33,7 @@ const Exercise = (props) => {
     }
 
     return (
-        <div style={{margin: '10px'}}>
+        <div style={{marginTop: '15px', marginBottom: '10px'}}>
             <Paper elevation={4}>
                 <div style={{padding: '30px'}} className={className}>
                     <Grid container spacing={8}>

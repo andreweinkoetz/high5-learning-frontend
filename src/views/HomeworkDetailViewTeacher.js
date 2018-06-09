@@ -43,7 +43,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             statistics: []
 
         };
-        
+
         this.handleValueSelected = this.handleValueSelected.bind(this);
     }
 
@@ -151,6 +151,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     render() {
+        console.log(this.state.loading)
 
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
