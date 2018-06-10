@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Homework from './Homework';
+import UserService from '../../services/UserService';
 
 //this component contains the list of all exercises
 
@@ -9,6 +10,9 @@ const HomeworkList = (props) => {
     return (
         <div>
             {props.homework.map((obj) => {
+                if(!UserService.isTeacher() && !obj.visible){
+                    return null;
+                }
                 return (<Homework
                     key={obj._id}
                     id={obj._id} c
@@ -18,6 +22,7 @@ const HomeworkList = (props) => {
                     updateHomeworkTitle={props.updateHomeworkTitle}
                     deleteHomework={props.deleteHomework}
                     homeworkVisible={obj.visible}
+                    createdAt={obj.createdAt}
                     makeHomeworkInvisible={props.makeHomeworkInvisible}
                     makeHomeworkVisible={props.makeHomeworkVisible}
                     changeSwitch={props.changeSwitch}>
