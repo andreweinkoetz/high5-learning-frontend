@@ -41,13 +41,8 @@ const NavBar = (props) => {
                 <ListItemText primary="My settings"/>
             </ListItem>
             <Divider/>
-            <ListItem button>
-                <Link
-                    to="/myprofile"
-                    style={{textDecoration: 'none'}}
-                >
-                    <ListItemText primary="My profile"/>
-                </Link>
+            <ListItem button onClick={()=>{window.location.href = "/myprofile"}}>
+                <ListItemText primary="My profile"/>
             </ListItem>
         </List>
     </div>);
