@@ -15,7 +15,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import './ModalDialog.css';
 import UserService from "../../services/UserService";
-import config from "../../config";
 
 class ModalDialogRegister extends Component {
 
