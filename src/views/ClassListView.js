@@ -21,20 +21,18 @@ export default class ClassListView extends React.Component {
         this.state = {
             loading: false,
             showModal: false,
-            classToAdd: {
-                title: '',
-                description: ''
-            },
             classes: [],
             updateClassWished: false,
             idOfToBeUpdatedClass: '',
             studentsOfSchool: [],
-            studentsOfClassToBeUpdated: []
+            informationOfClassToBeUpdated: {
+                title: '',
+                description: '',
+                students: []
+            }
         };
 
-        this.addNewClass = this.addNewClass.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleSubmitModal = this.handleSubmitModal.bind(this);
     }
 
     componentWillMount() {
@@ -70,78 +68,35 @@ export default class ClassListView extends React.Component {
     toggleModal() {
         const oldState = this.state.showModal;
         const errorStateWhenClickingAdd = false; // needed so that the old state of a canceled class creation isn't shown in the modal dialog
-        const classToAddWhenClickingAdd = {title: '', description: ''};
         this.setState({
             showModal: !oldState,
             errorState: errorStateWhenClickingAdd,
-            classToAdd: classToAddWhenClickingAdd,
             updateClassWished: false
         });
     };
 
-    updateClass(classToUpdate) {
-
-        ClassService.updateClass(classToUpdate, this.state.idOfToBeUpdatedClass).then((updatedClass) => {
-
-            console.log(updatedClass);
-
-            let newClasses = [...this.state.classes];
-
-            let classToUpdate = newClasses.find(e => e._id === updatedClass._id);
-
-            classToUpdate.title = updatedClass.title;
-            classToUpdate.description = updatedClass.description;
-
-            this.setState({classes: newClasses, updateClassWished: false});
-            this.toggleModal();
-
-        }).catch(e => this.props.handleNotification(e));
-
+    handleChangesOfClasses = () => {
+        ClassService.getClassesOfUser().then((data) => {
+            this.setState({
+                classes: [...data],
+                loading: false,
+                showModal: false
+            });
+        }).catch((e) => {
+            this.props.handleNotification(e);
+        });
     };
 
-    handleSubmitModal(classToAdd) {
-
-        if (this.state.updateClassWished) {
-            this.updateClass(classToAdd);
-        }
-        else {
-            if (classToAdd.title === '') {
-                this.props.handleNotification({
-                    title: 'No title',
-                    msg: 'Your class must have a title.',
-                    code: 12,
-                    variant: 'warning'
-                });
-            } else {
-                this.addNewClass(classToAdd);
-            }
-        }
-    };
-
-
-    addNewClass(classToAdd) {
-
-        ClassService.addNewClass(classToAdd).then((newClass) => {
-                const newClasses = [...this.state.classes, newClass];
-
-                this.setState({classes: newClasses});
-                this.toggleModal();
-
-            }
-        ).catch(e => this.props.handleNotification(e));
-    };
-
-    handleUpdateClassInfoWished = (id, t, d) => {
+    handleUpdateClassWished = (id, t, d) => {
         const updatedClass = {title: t, description: d};
         ClassService.getStudentsOfClass(id).then(students => {
-            console.log(students);
             const studentsOfClass = students;
+            const informationOfClassToBeUpdated = {title: t, description: d, students: students};
             this.setState({
-                classToAdd: updatedClass,
                 showModal: true,
                 updateClassWished: true,
                 idOfToBeUpdatedClass: id,
-                studentsOfClassToBeUpdated: students
+                informationOfClassToBeUpdated: informationOfClassToBeUpdated
             });
         })
     };
@@ -151,7 +106,6 @@ export default class ClassListView extends React.Component {
         ClassService.deleteClass(id).then((newClasses) => {
             const nClasses = [...newClasses];
             this.setState({classes: nClasses});
-            console.log(this.state.classes);
         }).catch(e => this.props.handleNotification(e));
 
     };
@@ -189,15 +143,13 @@ export default class ClassListView extends React.Component {
         let modalDialog = this.state.showModal
             ? <ModalDialogNewClass
                 visible={this.state.showModal}
-                handleTitleChange={this.handleTitleChange}
-                handleDescriptionChange={this.handleDescriptionChange}
-                handleSubmit={this.handleSubmitModal}
                 toggle={this.toggleModal}
-                values={this.state.classToAdd}
                 studentsOfSchool={this.state.studentsOfSchool}
                 updateWished={this.state.updateClassWished}
                 handleNotification={this.props.handleNotification}
-                studentsOfClassToBeUpdated={this.state.studentsOfClassToBeUpdated}/>
+                informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
+                idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
+                handleChangesOfClasses={this.handleChangesOfClasses}/>
             : null
 
         return (
@@ -217,7 +169,7 @@ export default class ClassListView extends React.Component {
                                 <Typography variant={'caption'}>Loading...</Typography></div>
                             : <ClassList
                                 classes={this.state.classes}
-                                updateClassInfo={this.handleUpdateClassInfoWished}
+                                updateClassInfo={this.handleUpdateClassWished}
                                 deleteClass={this.handleDeleteClass}/>}
                     </Grid>
                 </Grid>

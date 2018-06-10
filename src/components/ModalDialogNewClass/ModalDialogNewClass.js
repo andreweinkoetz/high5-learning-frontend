@@ -118,20 +118,52 @@ class ModalDialogNewClass extends Component {
         SchoolService.getStudentsOfSchool("no").then(users => {
             this.setState({studentsOfSchool: users});
             if (this.props.updateWished) { // this is done so that the title, description and students of the class are shown when updating
-                const infoOfUpdatedClass = {...this.props.values, students: []}
+                const infoOfUpdatedClass = this.props.informationOfClassToBeUpdated; // in this props also the students of the class are saved
+                const studentsOfClass = this.props.informationOfClassToBeUpdated.students;
                 this.setState({
-                    selectedItem: this.props.studentsOfClassToBeUpdated,
-                    classToAdd: infoOfUpdatedClass
+                    classToAdd: infoOfUpdatedClass,
+                    selectedItem: studentsOfClass
                 });
             }
         }).catch(e => this.props.handleNotification(e));
     }
 
+    addNewClass(classToAdd) {
+
+        ClassService.addNewClass(classToAdd).then((newClass) => {
+                this.props.handleChangesOfClasses();
+            }
+        ).catch(e => this.props.handleNotification(e));
+
+    };
+
+    updateClass(classToUpdate) {
+
+        ClassService.updateClass(classToUpdate, this.props.idOfToBeUpdatedClass).then((updatedClass) => {
+            this.props.handleChangesOfClasses();
+        }).catch(e => this.props.handleNotification(e));
+
+    };
 
     handleSubmit() {
         let classToAdd = {...this.state.classToAdd};
         classToAdd.students = [...this.state.selectedItem];
-        this.props.handleSubmit(classToAdd);
+        if (this.props.updateWished) {
+            this.updateClass(classToAdd);
+        }
+        else {
+            if (classToAdd.title === '') {
+                this.props.handleNotification({
+                    title: 'No title',
+                    msg: 'Your class must have a title.',
+                    code: 12,
+                    variant: 'warning'
+                });
+            } else {
+                this.addNewClass(classToAdd);
+            }
+        }
+
         this.setState({
             classToAdd: {
                 title: '',
