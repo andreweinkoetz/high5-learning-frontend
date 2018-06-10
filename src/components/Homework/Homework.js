@@ -61,9 +61,10 @@ const Homework = (props) => {
     const {classes} = props;
 
     let buttonsForTeacher = <div></div>;
-    let secondaryContent =  <div></div>;
+    let secondaryContent = <div></div>;
 
-    const hwIcon = props.isSubmitted ?<AssignmentTurnedInIcon className={classes.hwIcon}/>: <AssignmentIcon className={classes.hwIcon}/>;
+    const hwIcon = props.isSubmitted ? <AssignmentTurnedInIcon className={classes.hwIcon}/> :
+        <AssignmentIcon className={classes.hwIcon}/>;
 
     if (UserService.isTeacher()) {
         buttonsForTeacher =
@@ -71,14 +72,16 @@ const Homework = (props) => {
                 Statistics of homework<br/>
                 Here will be some statistics<br/>
                 Here will be some statistics<br/>
-                <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
-                        onClick={() => props.updateHomeworkTitle(props.id, props.title)}>
-                    Update homework title</Button>
+                {props.homeworkVisible ? null
+                    : <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
+                              onClick={() => props.updateHomework(props.id)}>
+                        Update homework</Button>}
                 <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}}
                         onClick={() => props.deleteHomework(props.id)}>
                     Delete homework</Button>
             </Typography>;
-        secondaryContent = <Tooltip id="tooltip-bottom" title="Activate to make homework invisible">
+        secondaryContent = <Tooltip id="tooltip-bottom"
+                                    title={props.homeworkVisible ? "Activate to make homework invisible" : "Activate to make homework visible"}>
             <Switch checked={props.homeworkVisible} color={"primary"}
                     onChange={props.changeSwitch(props.id)}/>
         </Tooltip>;

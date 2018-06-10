@@ -23,7 +23,7 @@ const HomeworkList = (props) => {
                         classId={props.classId}
                         classTitle={props.classTitle}
                         title={obj.title}
-                        updateHomeworkTitle={props.updateHomeworkTitle}
+                        updateHomework={props.updateHomework}
                         deleteHomework={props.deleteHomework}
                         homeworkVisible={obj.visible}
                         createdAt={obj.createdAt}
