@@ -137,8 +137,8 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
         this.props.handleNotification({
             title:'Submission',
-            msg: 'Succesful submission of your homework!',
-            variant: 'info'
+            msg: 'You successfully submitted your homework!',
+            variant: 'success'
         })
     };
 

@@ -25,6 +25,7 @@ export default class ClassDetailView extends React.Component {
             loading: false,
             showModal: false,
             homework: [],
+            submissions: [],
             ableToDeleteExercises: false,
             errorText: [],
             errorState: false,
@@ -66,7 +67,8 @@ export default class ClassDetailView extends React.Component {
 
         ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
             this.setState({
-                homework: [...data.homework],
+                homework: [...data.singleClass.homework],
+                submissions: [...data.submissions],
                 loading: false
             });
         }).catch((e) => {
@@ -344,28 +346,39 @@ export default class ClassDetailView extends React.Component {
     };
 
     handleUpdateHomework = (id) => {
-        SubmissionService.getSubmissionOfHomework(id).then(submissions => {
-            if(submissions.count === 0) {
-                HomeworkService.getHomeworkDetail(id).then((homework) => {
-                    const homeworkToUpdate = {
-                        title: homework.title,
-                        exercises: homework.exercises,
-                        assignedClass: homework.assignedClass,
-                        visible: homework.visible
-                    };
-                    this.setState({homeworkToAdd: homeworkToUpdate, updateHomeworkWished: true, showModal: true, idOfToBeUpdatedHomework: id});
-                })
-            }
-            else {
-                this.props.handleNotification({
-                    title: 'Updating of class not possible',
-                    msg: 'A student has already submitted, so you cannot update the class!',
-                    code: 12,
-                    variant: 'warning'
-                });
-            }
+        /*SubmissionService.getSubmissionOfHomework(id).then(submissions => {
+            if(submissions.count === 0) {*/
+        HomeworkService.getHomeworkDetail(id).then((homework) => {
+            const homeworkToUpdate = {
+                title: homework.title,
+                exercises: homework.exercises,
+                assignedClass: homework.assignedClass,
+                visible: homework.visible
+            };
+            let homeworkToUpdateErrors = {title: false, exercises: []};
+            homeworkToUpdate.exercises.map(e => {
+                homeworkToUpdateErrors.exercises.push({
+                    id: e.id,
+                    question: false,
+                    answers: [false, false, false, false],
+                    rightSolution: false})
+            })
+
+            this.setState({homeworkToAddErrors: homeworkToUpdateErrors, homeworkToAdd: homeworkToUpdate, updateHomeworkWished: true, showModal: true, idOfToBeUpdatedHomework: id});
         })
+        /*
+        else {
+            this.props.handleNotification({
+                title: 'Updating of class not possible',
+                msg: 'A student has already submitted, so you cannot update the class!',
+                code: 12,
+                variant: 'warning'
+            });
+        }
+    })
+    */
     };
+
 
     render() {
 
@@ -435,6 +448,7 @@ export default class ClassDetailView extends React.Component {
                                             makeHomeworkInvisible={this.handleMakeHomeworkInvisble}
                                             makeHomeworkVisible={this.handleMakeHomeworkVisible}
                                             changeSwitch={this.handleSwitchChange}
+                                            submissions={this.state.submissions}
                             />}
                     </Grid>
                 </Grid>

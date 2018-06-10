@@ -10,23 +10,28 @@ const HomeworkList = (props) => {
     return (
         <div>
             {props.homework.map((obj) => {
-                if(!UserService.isTeacher() && !obj.visible){
+                if (!UserService.isTeacher() && !obj.visible) {
                     return null;
                 }
+                const submitted = (props.submissions.findIndex(x => {
+                    return (x.homework === obj._id);
+                }) !== -1);
+
                 return (<Homework
-                    key={obj._id}
-                    id={obj._id} c
-                    classId={props.classId}
-                    classTitle={props.classTitle}
-                    title={obj.title}
-                    updateHomework={props.updateHomework}
-                    deleteHomework={props.deleteHomework}
-                    homeworkVisible={obj.visible}
-                    createdAt={obj.createdAt}
-                    makeHomeworkInvisible={props.makeHomeworkInvisible}
-                    makeHomeworkVisible={props.makeHomeworkVisible}
-                    changeSwitch={props.changeSwitch}>
-                </Homework>)
+                        key={obj._id}
+                        id={obj._id} c
+                        classId={props.classId}
+                        classTitle={props.classTitle}
+                        title={obj.title}
+                        updateHomework={props.updateHomework}
+                        deleteHomework={props.deleteHomework}
+                        homeworkVisible={obj.visible}
+                        createdAt={obj.createdAt}
+                        makeHomeworkInvisible={props.makeHomeworkInvisible}
+                        makeHomeworkVisible={props.makeHomeworkVisible}
+                        changeSwitch={props.changeSwitch}
+                        isSubmitted={submitted}/>
+                )
             })}
         </div>
     );
