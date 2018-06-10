@@ -31,6 +31,19 @@ export default class HomeworkService {
 
     }
 
+    static updateHomework(homeworkId, homeworkToUpdate){
+
+        return new Promise((resolve, reject) => {
+            HttpService.put(`${HomeworkService.baseUrl()}` + homeworkId, homeworkToUpdate,
+                function(data) {
+                    resolve(data);
+                }, function(textStatus) {
+                    reject(textStatus);
+                });
+        });
+
+    }
+
     static deleteHomework(homeworkId){
 
         return new Promise((resolve, reject) => {
