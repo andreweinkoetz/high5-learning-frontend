@@ -68,8 +68,8 @@ class Page extends React.Component {
                         {this.props.children}
                     </Grid>
                 </Grid>
-                <div style={styles.distDiv}>&nbsp;</div>
-                <Footer/>
+                {/*<div style={styles.distDiv}>&nbsp;</div>
+                <Footer/>*/}
 
             </div>
         );

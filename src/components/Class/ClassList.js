@@ -1,8 +1,6 @@
 import React from 'react';
 import Class from './Class';
 
-import config from '../../config';
-
 
 const ClassList = (props) => {
 
@@ -12,9 +10,8 @@ const ClassList = (props) => {
 
                     return (
                         <Class key={obj._id} id={obj._id} title={obj.title} description={obj.description}
-                               url={config.baseUrlFrontend + '/goToClass/' + obj._id}
-                               password={obj.password}
                                updateClassInfo={props.updateClassInfo}
+                               createdAt={obj.createdAt}
                                deleteClass={props.deleteClass}/>
                     )
 
