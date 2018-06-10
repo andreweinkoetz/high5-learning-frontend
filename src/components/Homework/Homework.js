@@ -68,18 +68,22 @@ const Homework = (props) => {
                 Statistics of homework<br/>
                 Here will be some statistics<br/>
                 Here will be some statistics<br/>
-                <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
-                        onClick={() => props.updateHomeworkTitle(props.id, props.title)}>
-                    Update homework title</Button>
+                {props.homeworkVisible
+                    ? null
+                    : <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
+                              onClick={() => props.updateHomework(props.id)}>
+                    Update homework</Button>}
                 <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}}
                         onClick={() => props.deleteHomework(props.id)}>
                     Delete homework</Button>
             </Typography>;
-        homeworkVisibleButton = <Tooltip id="tooltip-bottom" title="Activate to make homework invisible">
+        homeworkVisibleButton = <Tooltip id="tooltip-bottom" title={props.homeworkVisible ? "Activate to make homework invisible" : "Activate to make homework visible" }>
             <Switch checked={props.homeworkVisible} color={"primary"}
                     onChange={props.changeSwitch(props.id)}/>
         </Tooltip>;
     }
+
+
     return (
         <ExpansionPanel className={!props.homeworkVisible ? classes.panelDisabled : null}>
             <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon/>}>

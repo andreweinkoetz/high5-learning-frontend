@@ -55,7 +55,7 @@ const ModalDialogNewHomework = (props) => {
                     disableEscapeKeyDown
                     open={props.visible}
                 >
-                    <DialogTitle>Create new homework</DialogTitle>
+                    {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}
                     <DialogContent>
                     <TextField
                         error={props.homeworkTitleError}
@@ -65,6 +65,7 @@ const ModalDialogNewHomework = (props) => {
                         required={true}
                         fullWidth={true}
                         autoFocus={true}
+                        value={props.homeworkTitle}
                     />
                         <div style={{maxHeight:'500px', marginBottom: '20px'}}>
                         {exercises}
@@ -81,11 +82,20 @@ const ModalDialogNewHomework = (props) => {
                     </Grid>
                     <Grid container justify={"center"}>
                 <DialogActions>
-                    <Button
-                        color={"primary"}
-                        variant={"raised"}
-                        onClick={props.handleCreate}
-                    >Create homework</Button>
+                    {props.updateHomeworkWished
+                        ?
+                        <Button
+                            color={"primary"}
+                            variant={"raised"}
+                            onClick={props.handleCreate}
+                        >Update homework</Button>
+                        :
+                        <Button
+                            color={"primary"}
+                            variant={"raised"}
+                            onClick={props.handleCreate}
+                        >Create homework</Button>
+                    }
                     <Button
                         color={"secondary"}
                         variant={"raised"}

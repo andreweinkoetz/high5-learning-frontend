@@ -135,9 +135,9 @@ export default class HomeworkDetailViewStudent extends React.Component {
             submittedValues: submissionToAdd.exercises
         });
 
-        this.props.handleException({
+        this.props.handleNotification({
             title:'Submission',
-            msg: 'Succesfull submission of your homework!',
+            msg: 'Succesful submission of your homework!',
             variant: 'info'
         })
     };

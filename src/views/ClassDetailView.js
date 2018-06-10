@@ -10,6 +10,7 @@ import ModalDialogNewHomework from '../components/ModalDialogNewHomework/ModalDi
 import HomeworkList from '../components/Homework/HomeworkList';
 import ClassService from "../services/ClassService";
 import HomeworkService from '../services/HomeworkService';
+import SubmissionService from '../services/SubmissionService';
 import UserService from '../services/UserService';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
@@ -27,11 +28,12 @@ export default class ClassDetailView extends React.Component {
             ableToDeleteExercises: false,
             errorText: [],
             errorState: false,
+            updateHomeworkWished: false,
+            idOfToBeUpdatedHomework: "",
             homeworkToAddErrors: {
                 title: false,
                 exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
             },
-
             homeworkToAdd:
                 {
                     title: "",
@@ -102,7 +104,8 @@ export default class ClassDetailView extends React.Component {
             showModal: !oldState,
             homeworkToAdd: homeworkToAddWhenClickingAdd,
             homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd,
-            errorText: []
+            errorText: [],
+            updateHomeworkWished: false
         });
     }
 
@@ -150,8 +153,14 @@ export default class ClassDetailView extends React.Component {
                 variant: 'warning'
             });
         } else {
-            this.setState({errorText: newErrorText});
-            this.addNewHomework(newHomeworkToAdd);
+            if (this.state.updateHomeworkWished) {
+                this.setState({errorText: newErrorText});
+                this.updateHomework(newHomeworkToAdd);
+            }
+            else {
+                this.setState({errorText: newErrorText});
+                this.addNewHomework(newHomeworkToAdd);
+            }
         }
     }
 
@@ -182,6 +191,21 @@ export default class ClassDetailView extends React.Component {
 
             }
         ).catch(e => this.props.handleNotification(e));
+    }
+
+    updateHomework(homeworkToUpdate) {
+
+        HomeworkService.updateHomework(this.state.idOfToBeUpdatedHomework, homeworkToUpdate).then((updatedHomework) => {
+            let newHomework = [...this.state.homework];
+
+            let homeworkToUpdate = newHomework.find(h => h._id === updatedHomework._id);
+
+            homeworkToUpdate.title = updatedHomework.title;
+            homeworkToUpdate.exercises = updatedHomework.exercises;
+
+            this.setState({homework: newHomework, updateHomeworkWished: false});
+            this.toggleModal();
+        }).catch(e => console.log(e));
     }
 
     handleExerciseTitleChange = (id) => (event) => {
@@ -319,6 +343,30 @@ export default class ClassDetailView extends React.Component {
             .catch(e => console.log(e));
     };
 
+    handleUpdateHomework = (id) => {
+        SubmissionService.getSubmissionOfHomework(id).then(submissions => {
+            if(submissions.count === 0) {
+                HomeworkService.getHomeworkDetail(id).then((homework) => {
+                    const homeworkToUpdate = {
+                        title: homework.title,
+                        exercises: homework.exercises,
+                        assignedClass: homework.assignedClass,
+                        visible: homework.visible
+                    };
+                    this.setState({homeworkToAdd: homeworkToUpdate, updateHomeworkWished: true, showModal: true, idOfToBeUpdatedHomework: id});
+                })
+            }
+            else {
+                this.props.handleNotification({
+                    title: 'Updating of class not possible',
+                    msg: 'A student has already submitted, so you cannot update the class!',
+                    code: 12,
+                    variant: 'warning'
+                });
+            }
+        })
+    };
+
     render() {
 
         let addNewHomeworkButton;
@@ -358,12 +406,14 @@ export default class ClassDetailView extends React.Component {
                     handleExerciseQuestionChange={this.handleExerciseTitleChange}
                     homeworkTitleError={this.state.homeworkToAddErrors.title}
                     exercises={this.state.homeworkToAdd.exercises}
+                    homeworkTitle={this.state.homeworkToAdd.title}
                     exercisesErrors={this.state.homeworkToAddErrors.exercises}
                     handleChangeRadioValue={this.handleChangeRadioValue}
                     handleChangeAnswers={this.handleChangeAnswers}
                     handleAddExercise={this.handleAddExercise}
                     handleDeleteExercise={this.handleDeleteExercise}
-                    ableToDeleteExercises={this.state.ableToDeleteExercises}/>
+                    ableToDeleteExercises={this.state.ableToDeleteExercises}
+                    updateHomeworkWished={this.state.updateHomeworkWished}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>
@@ -381,7 +431,7 @@ export default class ClassDetailView extends React.Component {
                                             classTitle={this.state.currentClass.title}
                                             homework={this.state.homework}
                                             deleteHomework={this.handleDeleteHomework}
-                                            updateHomeworkTitle={this.handleUpdateHomeworkTitle}
+                                            updateHomework={this.handleUpdateHomework}
                                             makeHomeworkInvisible={this.handleMakeHomeworkInvisble}
                                             makeHomeworkVisible={this.handleMakeHomeworkVisible}
                                             changeSwitch={this.handleSwitchChange}
