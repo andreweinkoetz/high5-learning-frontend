@@ -24,6 +24,7 @@ export default class ClassDetailView extends React.Component {
             loading: false,
             showModal: false,
             homework: [],
+            submissions: [],
             ableToDeleteExercises: false,
             errorText: [],
             errorState: false,
@@ -64,7 +65,8 @@ export default class ClassDetailView extends React.Component {
 
         ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
             this.setState({
-                homework: [...data.homework],
+                homework: [...data.singleClass.homework],
+                submissions: [...data.submissions],
                 loading: false
             });
         }).catch((e) => {
@@ -385,6 +387,7 @@ export default class ClassDetailView extends React.Component {
                                             makeHomeworkInvisible={this.handleMakeHomeworkInvisble}
                                             makeHomeworkVisible={this.handleMakeHomeworkVisible}
                                             changeSwitch={this.handleSwitchChange}
+                                            submissions={this.state.submissions}
                             />}
                     </Grid>
                 </Grid>

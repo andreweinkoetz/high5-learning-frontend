@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import {withStyles} from '@material-ui/core/styles';
 
 import UserService from '../../services/UserService';
@@ -15,7 +16,7 @@ import Tooltip from "@material-ui/core/es/Tooltip/Tooltip";
 
 
 const styles = theme => ({
-    rightIcon: {
+    hwIcon: {
         color: theme.palette.primary.main,
         fontSize: 36,
         marginRight: 5
@@ -60,7 +61,9 @@ const Homework = (props) => {
     const {classes} = props;
 
     let buttonsForTeacher = <div></div>;
-    let homeworkVisibleButton = <div></div>;
+    let secondaryContent =  <div></div>;
+
+    const hwIcon = props.isSubmitted ?<AssignmentTurnedInIcon className={classes.hwIcon}/>: <AssignmentIcon className={classes.hwIcon}/>;
 
     if (UserService.isTeacher()) {
         buttonsForTeacher =
@@ -75,11 +78,12 @@ const Homework = (props) => {
                         onClick={() => props.deleteHomework(props.id)}>
                     Delete homework</Button>
             </Typography>;
-        homeworkVisibleButton = <Tooltip id="tooltip-bottom" title="Activate to make homework invisible">
+        secondaryContent = <Tooltip id="tooltip-bottom" title="Activate to make homework invisible">
             <Switch checked={props.homeworkVisible} color={"primary"}
                     onChange={props.changeSwitch(props.id)}/>
         </Tooltip>;
     }
+
     return (
         <ExpansionPanel className={!props.homeworkVisible ? classes.panelDisabled : null}>
             <ExpansionPanelSummary className={classes.summary} expandIcon={<ExpandMoreIcon/>}>
@@ -100,14 +104,14 @@ const Homework = (props) => {
 
                         <Button variant="flat"
                                 className={classes.titleButton}>
-                            <AssignmentIcon className={classes.rightIcon}/>
+                            {hwIcon}
                             {props.title}
                         </Button></Link>
                     <Typography variant={'caption'} className={classes.subtitle}>Created
                         at: {new Date(props.createdAt).toLocaleDateString()} - {new Date(props.createdAt).toLocaleTimeString()}</Typography>
                 </div>
                 <div className={classes.secondaryContent}>
-                    {homeworkVisibleButton}
+                    {secondaryContent}
                 </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
