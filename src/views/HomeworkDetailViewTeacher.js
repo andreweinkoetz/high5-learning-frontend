@@ -17,6 +17,8 @@ import HomeworkService from '../services/HomeworkService';
 import SubmissionService from '../services/SubmissionService';
 import ClassService from '../services/ClassService';
 
+import SubmissionChart from '../components/Exercise/SubmissionChart';
+
 
 export default class HomeworkDetailViewTeacher extends React.Component {
 
@@ -266,12 +268,17 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
         return (
             <div>
+
                 <Grid container spacing={16}>
+
                     <Grid item xs={12}>
                         <Typography variant={'title'}>Homework: {this.state.title}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         {statistics}
+                    </Grid>
+                    <Grid itm xs={12}>
+                        <SubmissionChart/>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>
@@ -286,6 +293,4 @@ export default class HomeworkDetailViewTeacher extends React.Component {
     }
 }
 
-HomeworkDetailViewTeacher.propTypes = {
-
-};
+HomeworkDetailViewTeacher.propTypes = {};
