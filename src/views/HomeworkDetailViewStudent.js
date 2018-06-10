@@ -69,7 +69,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
                 });
 
             }
-        }).catch(e => this.props.handleException(e));
+        }).catch(e => this.props.handleNotification(e));
 
         HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
             const homeworkExercises = [...homework.exercises];
@@ -78,7 +78,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
                 exercises: homeworkExercises,
                 loading: false
             });
-        }).catch(e => this.props.handleException(e));
+        }).catch(e => this.props.handleNotification(e));
     };
 
     componentDidMount() {

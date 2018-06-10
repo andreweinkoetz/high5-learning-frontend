@@ -37,25 +37,25 @@ class ModalDialogLogIn extends Component {
         const username = this.state.username;
         const password = this.state.password;
         if (username === "" || password === "") {
-            this.props.handleException({
+            this.props.handleNotification({
                 code: 400,
                 title: 'Login failed',
                 msg: 'Both Username and Password are required fields.'
-            })
+            });
             return;
         }
         UserService.login(username, password).then((data) => {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
             } else {
-                this.props.handleException({
+                this.props.handleNotification({
                     code: 400,
                     title: 'Login failed',
                     msg: 'User could not be logged in, please check your username and password.'
                 })
             }
         }).catch((e) => {
-            this.props.handleException(e);
+            this.props.handleNotification(e);
         });
         this.props.cancel();
     }

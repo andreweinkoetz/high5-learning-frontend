@@ -66,7 +66,7 @@ class ModalDialogRegister extends Component {
         const password = this.state.password;
         const school = this.state.school;
         if (username === "" || password === "") {
-            this.props.handleException({
+            this.props.handleNotification({
                 code: 400,
                 title: 'Failed to register',
                 msg: 'Both Username and Password are required fields.',
@@ -75,7 +75,7 @@ class ModalDialogRegister extends Component {
             return;
         }
         if (school === "") {
-            this.props.handleException({
+            this.props.handleNotification({
                 code: 400,
                 title: 'Failed to register',
                 msg: 'It is required to select a school.',
@@ -86,7 +86,7 @@ class ModalDialogRegister extends Component {
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if (!re.test(username)) {
-            this.props.handleException({
+            this.props.handleNotification({
                 code: 400,
                 title: 'Failed to register',
                 msg: 'Username has to be a vaid email address.',
@@ -99,7 +99,7 @@ class ModalDialogRegister extends Component {
         let license = undefined;
         if (type === "Teacher") license = this.state.license;
         if (type === "Teacher" && license === "") {
-            this.props.handleException({
+            this.props.handleNotification({
                 code: 400,
                 title: 'Failed to register',
                 msg: 'Please type in a valid license code.',
@@ -111,7 +111,7 @@ class ModalDialogRegister extends Component {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
             } else {
-                this.props.handleException({
+                this.props.handleNotification({
                     code: 400,
                     title: 'Registration failed',
                     msg: 'Registration failed, please check your username and password.',
@@ -119,7 +119,7 @@ class ModalDialogRegister extends Component {
                 })
             }
         }).catch((e) => {
-            this.props.handleException(e);
+            this.props.handleNotification(e);
         });
         this.props.cancel();
     }

@@ -31,10 +31,10 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
             else {
                 ClassService.getClassDetail(this.props.match.params.classId).then((c) => {
                     this.setState({visible: true, classPassword: c.password});
-                }).catch(e => this.props.handleException(e))
+                }).catch(e => this.props.handleNotification(e))
             }
         }).catch((e) => {
-            this.props.handleException(e);
+            this.props.handleNotification(e);
         });
     };
 
@@ -62,8 +62,8 @@ class ModalDialogRegisteringNewStudentToClass extends Component {
                     else {
                         this.setState({showSuccessFailure: true});
                     }
-                }).catch(e => this.props.handleException(e))
-            }).catch(e => this.props.handleException(e))
+                }).catch(e => this.props.handleNotification(e))
+            }).catch(e => this.props.handleNotification(e))
         }
         else {
             this.setState({wrongPassword: true});

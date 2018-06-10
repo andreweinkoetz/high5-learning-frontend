@@ -68,7 +68,7 @@ export default class ClassDetailView extends React.Component {
                 loading: false
             });
         }).catch((e) => {
-            this.props.handleException(e);
+            this.props.handleNotification(e);
         });
 
     }
@@ -144,7 +144,7 @@ export default class ClassDetailView extends React.Component {
         }
 
         if (newErrorText.length !== 0) {
-            this.props.handleException({
+            this.props.handleNotification({
                 title: 'Some problems found',
                 msg: newErrorText.toString(),
                 variant: 'warning'
@@ -181,7 +181,7 @@ export default class ClassDetailView extends React.Component {
                 this.toggleModal();
 
             }
-        ).catch(e => this.props.handleException(e));
+        ).catch(e => this.props.handleNotification(e));
     }
 
     handleExerciseTitleChange = (id) => (event) => {
@@ -280,7 +280,7 @@ export default class ClassDetailView extends React.Component {
                     loading: false
                 });
             })
-            .catch(e => this.props.handleException(e));
+            .catch(e => this.props.handleNotification(e));
     };
 
     handleMakeHomeworkVisible = (id) => {

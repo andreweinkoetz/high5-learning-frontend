@@ -48,20 +48,20 @@ export default class MyProfile extends React.Component {
         UserService.changePassword(this.state.password).then(token => {
             if (UserService.isAuthenticated()) {
                 this.setState({password: '', confirmPassword: ''});
-                this.props.handleException({
+                this.props.handleNotification({
                     title:'Password changed',
                     msg: 'The password of your account has been successfully changed!',
-                    variant: 'info'
+                    variant: 'success'
                 })
             } else {
-                this.props.handleException({
+                this.props.handleNotification({
                     code: 500,
                     title: 'Changing password failed',
                     msg: 'Password could not be changed, please try again.'
                 })
             }
         }).catch((e) => {
-            this.props.handleException(e);
+            this.props.handleNotification(e);
         });
     };
 

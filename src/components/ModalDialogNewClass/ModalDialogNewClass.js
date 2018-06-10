@@ -116,7 +116,7 @@ class ModalDialogNewClass extends Component {
     componentWillMount() {
         SchoolService.getStudentsOfSchool("no").then(users => {
             this.setState({studentsOfSchool: users});
-        }).catch(e => this.props.handleException(e));
+        }).catch(e => this.props.handleNotification(e));
     }
 
 

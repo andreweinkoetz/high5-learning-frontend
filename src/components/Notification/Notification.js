@@ -15,15 +15,15 @@ import WarningIcon from '@material-ui/icons/Warning';
 import {withStyles} from '@material-ui/core/styles';
 
 /*
-    Short description of the usage of the error object in this component:
-    To provide a message via this component, you simply need to call handleException (via props or this.props)
-    and provide an error object in the following form:
+    Short description of the usage of the notification object in this component:
+    To provide a message via this component, you simply need to call handleNotification (via props or this.props)
+    and provide an notification object in the following form:
 
-    error: {
+    notification: {
                 title: // String,
                 code: // Number - will only be displayed when variant === 'error',
                 msg: // String and if multiline: separated with commas,
-                variant: // Enum, one of ['warning', 'error', 'info']
+                variant: // Enum, one of ['warning', 'error', 'info', 'success']
             }
  */
 
@@ -64,7 +64,7 @@ const styles = theme => ({
     }
 });
 
-function ExceptionContent(props) {
+function NotificationContent(props) {
     const {classes, className, onClose, variant, ...other} = props;
     const Icon = variantIcon[variant];
 
@@ -75,8 +75,8 @@ function ExceptionContent(props) {
             message={
                 <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
-                    <span className={classes.messageContent}>{props.error.title}{variant === 'error' ? ` (${props.error.code})` : null}<br/>
-                    {props.error.msg.split(',').map((val,k) => <div key={k}>{val}<br key={k}/></div>)}
+                    <span className={classes.messageContent}>{props.notification.title}{variant === 'error' ? ` (${props.notification.code})` : null}<br/>
+                    {props.notification.msg.split(',').map((val,k) => <div key={k}>{val}<br key={k}/></div>)}
                     </span>
         </span>
             }
@@ -96,19 +96,19 @@ function ExceptionContent(props) {
     );
 }
 
-ExceptionContent.propTypes = {
+NotificationContent.propTypes = {
     classes: PropTypes.object.isRequired,
     className: PropTypes.string,
-    error: PropTypes.object.isRequired,
+    notification: PropTypes.object.isRequired,
     onClose: PropTypes.func,
-    variant: PropTypes.oneOf(['warning', 'error', 'info']).isRequired,
+    variant: PropTypes.oneOf(['warning', 'error', 'info', 'success']).isRequired,
 };
 
-const ExceptionContentWrapper = withStyles(styles)(ExceptionContent);
+const NotificationContentWrapper = withStyles(styles)(NotificationContent);
 
-function Exception(props) {
+function Notification(props) {
 
-    const variant = props.error.variant ? props.error.variant : 'error';
+    const variant = props.notification.variant ? props.notification.variant : 'error';
 
     return <Snackbar
         anchorOrigin={{
@@ -119,14 +119,14 @@ function Exception(props) {
         autoHideDuration={6000}
         onClose={props.closeDialog}
     >
-        <ExceptionContentWrapper
+        <NotificationContentWrapper
             onClose={props.closeDialog}
             variant={variant}
-            error={props.error}
+            notification={props.notification}
         />
     </Snackbar>
 
 
 }
 
-export default Exception;
+export default Notification;

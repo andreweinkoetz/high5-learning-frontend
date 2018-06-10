@@ -47,7 +47,7 @@ export default class ClassListView extends React.Component {
                 loading: false
             });
         }).catch((e) => {
-            this.props.handleException(e);
+            this.props.handleNotification(e);
         });
 
         SchoolService.getStudentsOfSchool("no").then(data =>{
@@ -92,7 +92,7 @@ export default class ClassListView extends React.Component {
             this.setState({classes: newClasses, updateClassWished: false});
             this.toggleModal();
 
-        }).catch(e => this.props.handleException(e));
+        }).catch(e => this.props.handleNotification(e));
 
     };
 
@@ -103,7 +103,7 @@ export default class ClassListView extends React.Component {
         }
         else {
             if (classToAdd.title === '') {
-                this.props.handleException({
+                this.props.handleNotification({
                     title: 'No title',
                     msg: 'Your class must have a title.',
                     code: 12,
@@ -125,7 +125,7 @@ export default class ClassListView extends React.Component {
                 this.toggleModal();
 
             }
-        ).catch(e => this.props.handleException(e));
+        ).catch(e => this.props.handleNotification(e));
     };
 
     handleUpdateClassInfoWished = (id, t, d) => {
@@ -139,7 +139,7 @@ export default class ClassListView extends React.Component {
             const nClasses = [...newClasses];
             this.setState({classes: nClasses});
             console.log(this.state.classes);
-        }).catch(e => this.props.handleException(e));
+        }).catch(e => this.props.handleNotification(e));
 
     };
 
@@ -183,7 +183,7 @@ export default class ClassListView extends React.Component {
                                      values={this.state.classToAdd}
                                      studentsOfSchool={this.state.studentsOfSchool}
                                      updateWished={this.state.updateClassWished}
-                                     handleException={this.props.handleException}
+                                     handleNotification={this.props.handleNotification}
                 />
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>

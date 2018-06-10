@@ -39,7 +39,7 @@ export default class LandingPage extends React.Component {
                 schools: schools
             });
         }).catch(error => {
-            this.props.handleException(error);
+            this.props.handleNotification(error);
         });
 
         window.addEventListener('resize', this.onHandleChangeWindowSize);
@@ -113,11 +113,11 @@ export default class LandingPage extends React.Component {
                         case "logIn":
                             return <LogIn className="modal-dialog" onUsername={this.onHandleChangeUsername}
                                           cancel={this.onClickCancelModalDialog}
-                                          handleException={this.props.handleException}/>;
+                                          handleNotification={this.props.handleNotification}/>;
                         case "register":
                             return <Register className="modal-dialog" onUsername={this.onHandleChangeUsername}
                                              cancel={this.onClickCancelModalDialog}
-                                             handleException={this.props.handleException}
+                                             handleNotification={this.props.handleNotification}
                                              schools={this.state.schools}/>;
                         case "":
                             return;

@@ -67,7 +67,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
             });
         })
-            .catch(e => this.props.handleException(e))
+            .catch(e => this.props.handleNotification(e))
 
             .then(() =>
                 ClassService.getStudentsOfClass(this.props.location.state.classId)
@@ -151,7 +151,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     render() {
-        console.log(this.state.loading)
+        console.log(this.state.loading);
 
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
@@ -163,7 +163,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
           this.state.allSubmissions.length === 0 ? AllSubmissionMenuItem = <MenuItem disabled value={"All"}>All</MenuItem>
               : AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem> */
 
-        let AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>
+        let AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>;
 
         let statistics =
             <div>
@@ -261,7 +261,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                    selectedStudent={this.state.selectedStudent}
                                    percentage={[0, 0, 0, 0]}
                                    empty={this.state.empty}
-                />
+                />;
 
 
         return (

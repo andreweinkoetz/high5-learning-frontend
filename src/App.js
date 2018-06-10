@@ -10,7 +10,7 @@ import ClassListView from './views/ClassListView';
 import UserService from './services/UserService';
 import LandingPage from './components/LandingPage/LandingPage';
 import ClassDetailView from './views/ClassDetailView';
-import Exception from './components/Exception/Exception';
+import Notification from './components/Notification/Notification';
 import HomeworkDetailView from './views/HomeworkDetailView';
 import MyProfile from "./views/MyProfile";
 
@@ -22,8 +22,8 @@ class App extends Component {
 
         this.state = {
 
-            errorFired: false,
-            error: {
+            notificationFired: false,
+            notification: {
                 code: 0,
                 title: '',
                 msg: '',
@@ -34,32 +34,32 @@ class App extends Component {
 
             routes: [
                 {
-                    render: () => (<MyProfile {...props} handleException={this.handleException}
+                    render: () => (<MyProfile {...props} handleNotification={this.handleNotification}
                                                   updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myprofile',
                     exact: true
                 },
                 {
-                    render: () => (<ClassListView {...props} handleException={this.handleException}
+                    render: () => (<ClassListView {...props} handleNotification={this.handleNotification}
                                                   updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/',
                     exact: true
                 },
                 {
-                    render: () => (<ClassListView {...props} handleException={this.handleException}
+                    render: () => (<ClassListView {...props} handleNotification={this.handleNotification}
                                                   updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses',
                     exact: true
                 },
 
                 {
-                    render: (props) => (<ClassDetailView {...props} handleException={this.handleException}
+                    render: (props) => (<ClassDetailView {...props} handleNotification={this.handleNotification}
                                                          updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses/:title',
                     exact: true
                 },
                 {
-                    render: (props) => (<HomeworkDetailView {...props} handleException={this.handleException}
+                    render: (props) => (<HomeworkDetailView {...props} handleNotification={this.handleNotification}
                                                             updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myclasses/:classTitle/homework/:title',
                     exact: true
@@ -69,18 +69,18 @@ class App extends Component {
         };
 
         this.updateBreadcrumb = this.updateBreadcrumb.bind(this);
-        this.handleException = this.handleException.bind(this);
+        this.handleNotification = this.handleNotification.bind(this);
 
     }
 
-    handleException(error) {
+    handleNotification(notification) {
         this.setState({
-            errorFired: true,
-            error: {
-                title: error.title,
-                code: error.code,
-                msg: error.msg,
-                variant: error.variant
+            notificationFired: true,
+            notification: {
+                title: notification.title,
+                code: notification.code,
+                msg: notification.msg,
+                variant: notification.variant
             }
         })
     }
@@ -113,7 +113,7 @@ class App extends Component {
                 <Route key={i} {...route}/>))}</Page>;
         } else {
             routes = <Route
-                render={() => (<LandingPage {...this.props} handleException={this.handleException}/>)}
+                render={() => (<LandingPage {...this.props} handleNotification={this.handleNotification}/>)}
                 path={'/'}
             />;
         }
@@ -121,11 +121,11 @@ class App extends Component {
 
         return (
             <MuiThemeProvider theme={theme}>
-                <Exception
-                    visible={this.state.errorFired}
-                    error={this.state.error}
+                <Notification
+                    visible={this.state.notificationFired}
+                    notification={this.state.notification}
                     closeDialog={() => {
-                        this.setState({errorFired: false})
+                        this.setState({notificationFired: false})
                     }}
                 />
                 <Router>
