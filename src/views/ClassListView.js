@@ -28,7 +28,8 @@ export default class ClassListView extends React.Component {
             classes: [],
             updateClassWished: false,
             idOfToBeUpdatedClass: '',
-            studentsOfSchool: []
+            studentsOfSchool: [],
+            studentsOfClassToBeUpdated: []
         };
 
         this.addNewClass = this.addNewClass.bind(this);
@@ -73,7 +74,8 @@ export default class ClassListView extends React.Component {
         this.setState({
             showModal: !oldState,
             errorState: errorStateWhenClickingAdd,
-            classToAdd: classToAddWhenClickingAdd
+            classToAdd: classToAddWhenClickingAdd,
+            updateClassWished: false
         });
     };
 
@@ -81,13 +83,14 @@ export default class ClassListView extends React.Component {
 
         ClassService.updateClass(classToUpdate, this.state.idOfToBeUpdatedClass).then((updatedClass) => {
 
+            console.log(updatedClass);
+
             let newClasses = [...this.state.classes];
 
             let classToUpdate = newClasses.find(e => e._id === updatedClass._id);
 
             classToUpdate.title = updatedClass.title;
             classToUpdate.description = updatedClass.description;
-            classToUpdate.password = updatedClass.password;
 
             this.setState({classes: newClasses, updateClassWished: false});
             this.toggleModal();
@@ -130,7 +133,17 @@ export default class ClassListView extends React.Component {
 
     handleUpdateClassInfoWished = (id, t, d) => {
         const updatedClass = {title: t, description: d};
-        this.setState({classToAdd: updatedClass, showModal: true, updateClassWished: true, idOfToBeUpdatedClass: id});
+        ClassService.getStudentsOfClass(id).then(students => {
+            console.log(students);
+            const studentsOfClass = students;
+            this.setState({
+                classToAdd: updatedClass,
+                showModal: true,
+                updateClassWished: true,
+                idOfToBeUpdatedClass: id,
+                studentsOfClassToBeUpdated: students
+            });
+        })
     };
 
     handleDeleteClass = (id) => {
@@ -173,18 +186,23 @@ export default class ClassListView extends React.Component {
             </Grid>;
         }
 
+        let modalDialog = this.state.showModal
+            ? <ModalDialogNewClass
+                visible={this.state.showModal}
+                handleTitleChange={this.handleTitleChange}
+                handleDescriptionChange={this.handleDescriptionChange}
+                handleSubmit={this.handleSubmitModal}
+                toggle={this.toggleModal}
+                values={this.state.classToAdd}
+                studentsOfSchool={this.state.studentsOfSchool}
+                updateWished={this.state.updateClassWished}
+                handleNotification={this.props.handleNotification}
+                studentsOfClassToBeUpdated={this.state.studentsOfClassToBeUpdated}/>
+            : null
+
         return (
             <div>
-                <ModalDialogNewClass visible={this.state.showModal}
-                                     handleTitleChange={this.handleTitleChange}
-                                     handleDescriptionChange={this.handleDescriptionChange}
-                                     handleSubmit={this.handleSubmitModal}
-                                     toggle={this.toggleModal}
-                                     values={this.state.classToAdd}
-                                     studentsOfSchool={this.state.studentsOfSchool}
-                                     updateWished={this.state.updateClassWished}
-                                     handleNotification={this.props.handleNotification}
-                />
+                {modalDialog}
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>

@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Chip from '@material-ui/core/Chip';
 
 import SchoolService from '../../services/SchoolService';
+import ClassService from '../../services/ClassService';
 import './ModalDialogNewClass.css';
 
 const styles = theme => ({
@@ -116,6 +117,13 @@ class ModalDialogNewClass extends Component {
     componentWillMount() {
         SchoolService.getStudentsOfSchool("no").then(users => {
             this.setState({studentsOfSchool: users});
+            if (this.props.updateWished) { // this is done so that the title, description and students of the class are shown when updating
+                const infoOfUpdatedClass = {...this.props.values, students: []}
+                this.setState({
+                    selectedItem: this.props.studentsOfClassToBeUpdated,
+                    classToAdd: infoOfUpdatedClass
+                });
+            }
         }).catch(e => this.props.handleNotification(e));
     }
 
@@ -193,7 +201,10 @@ class ModalDialogNewClass extends Component {
                 disableEscapeKeyDown
                 open={this.props.visible}
             >
-                {this.props.updateWished ? <DialogTitle>Update class</DialogTitle> :
+                {this.props.updateWished
+                    ?
+                    <DialogTitle>Update class</DialogTitle>
+                    :
                     <DialogTitle>Create new class</DialogTitle>}
                 <DialogContent>
                     <TextField
@@ -265,20 +276,24 @@ class ModalDialogNewClass extends Component {
                     </Downshift>
                 </DialogContent>
                 <DialogActions>
-                    {this.props.updateWished ? <Button
-                        color={"primary"}
-                        variant={"raised"}
-                        onClick={this.handleSubmit}
-                    >Update Class</Button> : <Button
-                        color={"primary"}
-                        variant={"raised"}
-                        onClick={this.handleSubmit}
-                    >Create Class</Button>}
-                    <Button
-                        color={"secondary"}
-                        variant={"raised"}
-                        onClick={this.props.toggle}
-                    >Cancel</Button>
+                    {this.props.updateWished
+                        ?
+                        <Button
+                            color={"primary"}
+                            variant={"raised"}
+                            onClick={this.handleSubmit}
+                        >Update Class</Button>
+                        :
+                        <Button
+                            color={"primary"}
+                            variant={"raised"}
+                            onClick={this.handleSubmit}
+                        >Create Class</Button>}
+                        <Button
+                            color={"secondary"}
+                            variant={"raised"}
+                            onClick={this.props.toggle}
+                        >Cancel</Button>
                 </DialogActions>
             </Dialog>
         )
