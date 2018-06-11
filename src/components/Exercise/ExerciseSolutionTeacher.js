@@ -14,10 +14,10 @@ const Exercise = (props) => {
     if(props.empty) {
         className = "empty";
     }
-    else if(props.selectedStudent !== "All" && (parseInt(props.rightSolution, 10) === parseInt(props.selectedChoice, 10))) {
+    else if(props.selectedStudent !== "All" && props.rightSolution == props.selectedChoice) {
         className = "right";
     }
-    else if(props.selectedStudent !== "All" && (parseInt(props.rightSolution, 10) !== parseInt(props.selectedChoice, 10))) {
+    else if(props.selectedStudent !== "All" && props.rightSolution != props.selectedChoice) {
         className = "wrong";
     }
     else if (props.selectedStudent === "All" && props.rightAnswerPercentage >= 0.5) {

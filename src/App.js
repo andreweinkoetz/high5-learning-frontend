@@ -120,6 +120,7 @@ class App extends Component {
         if (UserService.isAuthenticated()) {
             routes = <Page breadcrumbs={this.state.breadcrumbs}
                            updatedClassesNavBar={this.state.updatedClassesNavBar}
+                           handleNotification={this.handleNotification}
             >{this.state.routes.map((route, i) => (
                 <Route key={i} {...route}/>))}</Page>;
         } else {

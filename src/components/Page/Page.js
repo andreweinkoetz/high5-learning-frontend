@@ -34,6 +34,9 @@ class Page extends React.Component {
     componentWillMount() {
         ClassService.getClassesOfUser().then((data) => {
             this.setState({classes: [...data], loading: false});
+            if (data.length === 0){
+
+            }
         });
     }
 
@@ -58,8 +61,18 @@ class Page extends React.Component {
     };
 
     handleClick = () => {
-        const oldStateCollapsed = this.state.navBarCollapsed;
-        this.setState({navBarCollapsed: !oldStateCollapsed});
+        if (this.state.classes.length !== 0) {
+            const oldStateCollapsed = this.state.navBarCollapsed;
+            this.setState({navBarCollapsed: !oldStateCollapsed});
+        }
+        else {
+            this.props.handleNotification({
+                title: 'Showing classes is not possible!',
+                msg: 'You do not have any classes to show!',
+                code: 12,
+                variant: 'warning'
+            });
+        }
     };
 
     componentWillUpdate(nextProps) {

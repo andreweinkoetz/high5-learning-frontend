@@ -6,6 +6,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import CreateExercise from '../CreateExercise/CreateExercise';
 
@@ -48,6 +51,11 @@ const ModalDialogNewHomework = (props) => {
             }
         );
 
+        let alreadyAddedHomeworks = props.alreadyAddedHomeworks.map(h => {
+            console.log(h);
+            return (<MenuItem>{h.title}</MenuItem>)
+        })
+
         return (
             <div>
                 <Dialog
@@ -55,6 +63,13 @@ const ModalDialogNewHomework = (props) => {
                     disableEscapeKeyDown
                     open={props.visible}
                 >
+                    <FormControl>
+                        <Select
+                            value={"None"}
+                            onChange={() => this.props.change}>
+                            {alreadyAddedHomeworks}
+                        </Select>
+                    </FormControl>
                     {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}
                     <DialogContent>
                     <TextField
