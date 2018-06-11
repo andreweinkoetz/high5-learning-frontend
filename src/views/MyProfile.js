@@ -69,7 +69,7 @@ export default class MyProfile extends React.Component {
 
         return (
             <div>
-                <Grid container spacing={16}>
+                <Grid container spacing={16} justify={'center'}>
                     <Grid item xs={12}>
                         <Typography variant={'title'}>My profile</Typography>
                     </Grid>
@@ -77,14 +77,19 @@ export default class MyProfile extends React.Component {
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
+                        <Typography variant={'subheading'}>Change your password</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
                         <TextField
                             label="Username"
                             disabled
+                            fullWidth
                             value={this.state.username}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            fullWidth
                             label="Password"
                             helperText="Required"
                             type="password"
@@ -94,6 +99,7 @@ export default class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            fullWidth
                             label="Confirm password"
                             helperText="Required"
                             type="password"
@@ -102,7 +108,7 @@ export default class MyProfile extends React.Component {
                             onChange={this.handleChangePassword2}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{textAlign:'center'}}>
                         <Button
                             disabled={this.state.noMatch || (this.state.password === '' || this.state.confirmPassword === '')}
                             className="Button"
