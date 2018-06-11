@@ -57,7 +57,7 @@ const Class = (props) => {
 
     let secondaryContent;
 
-    if (UserService.isTeacher() || (props.openHomework === 0 && props.openHomework !== undefined)) {
+    if (UserService.isTeacher() || (props.openHomework === undefined || props.openHomework === 0 )) {
         secondaryContent = null
     } else {
         secondaryContent =

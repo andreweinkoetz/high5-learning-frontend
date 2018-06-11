@@ -11,7 +11,6 @@ import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
-import SchoolService from "../services/SchoolService";
 
 export default class ClassListView extends React.Component {
 
@@ -41,15 +40,19 @@ export default class ClassListView extends React.Component {
             loading: true
         });
 
-        ClassService.getClassesOfUser().then((data) => {
-            if (data.length === 0) {
-                this.setState({
-                    loading: false
-                })
-            } else {
-                this.setState({
-                    classes: [...data]
-                });
+        ClassService.getClassesOfUser()
+            .then((data) => {
+                if (data.length === 0) {
+                    this.setState({
+                        loading: false
+                    })
+                } else {
+                    this.setState({
+                        classes: [...data]
+                    });
+                }
+            })
+            .then(() => {
                 ClassService.getOpenHomeworkOfStudent().then(openHw => {
                     if (openHw) {
                         this.setState({
@@ -58,16 +61,10 @@ export default class ClassListView extends React.Component {
                         })
                     }
                 })
-            }
-
-        }).catch((e) => {
-            this.props.handleNotification(e);
-        });
-
-        SchoolService.getStudentsOfSchool().then(data => {
-            this.setState({studentsOfSchool: data});
-        })
-
+            })
+            .catch((e) => {
+                this.props.handleNotification(e);
+            });
     };
 
     componentDidMount() {
@@ -156,21 +153,16 @@ export default class ClassListView extends React.Component {
             </Grid>;
         }
 
-        let modalDialog = this.state.showModal
-            ? <ModalDialogNewClass
-                visible={this.state.showModal}
-                toggle={this.toggleModal}
-                studentsOfSchool={this.state.studentsOfSchool}
-                updateWished={this.state.updateClassWished}
-                handleNotification={this.props.handleNotification}
-                informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
-                idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
-                handleChangesOfClasses={this.handleChangesOfClasses}/>
-            : null;
-
         return (
             <div>
-                {modalDialog}
+                <ModalDialogNewClass
+                    visible={this.state.showModal}
+                    toggle={this.toggleModal}
+                    updateWished={this.state.updateClassWished}
+                    handleNotification={this.props.handleNotification}
+                    informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
+                    idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
+                    handleChangesOfClasses={this.handleChangesOfClasses}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>

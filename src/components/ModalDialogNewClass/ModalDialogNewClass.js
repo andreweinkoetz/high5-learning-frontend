@@ -125,6 +125,18 @@ class ModalDialogNewClass extends Component {
         }).catch(e => this.props.handleNotification(e));
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.visible && !this.props.visible) {
+            this.setState({
+                classToAdd: {
+                    title: '',
+                    description: '',
+                    students: []
+                }
+            })
+        }
+    }
+
     addNewClass(classToAdd) {
 
         ClassService.addNewClass(classToAdd).then((newClass) => {
@@ -174,7 +186,7 @@ class ModalDialogNewClass extends Component {
 
         if (classToAdd.students.length && !inputValue.length && keycode(event) === 'backspace') {
             let newClassToAdd = classToAdd;
-            newClassToAdd.students.slice(0, classToAdd.students.length - 1)
+            newClassToAdd.students.slice(0, classToAdd.students.length - 1);
             this.setState({
                 classToAdd: newClassToAdd,
             });
@@ -191,7 +203,7 @@ class ModalDialogNewClass extends Component {
 
         let itemIsInClassToAdd = false;
 
-        classToAdd.students.forEach(function(i) {
+        classToAdd.students.forEach(function (i) {
             if (i._id === item._id) {
                 itemIsInClassToAdd = true;
             }
@@ -327,11 +339,11 @@ class ModalDialogNewClass extends Component {
                             variant={"raised"}
                             onClick={this.handleSubmit}
                         >Create Class</Button>}
-                        <Button
-                            color={"secondary"}
-                            variant={"raised"}
-                            onClick={this.props.toggle}
-                        >Cancel</Button>
+                    <Button
+                        color={"secondary"}
+                        variant={"raised"}
+                        onClick={this.props.toggle}
+                    >Cancel</Button>
                 </DialogActions>
             </Dialog>
         )
