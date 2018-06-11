@@ -51,7 +51,7 @@ const ModalDialogNewHomework = (props) => {
             }
         );
 
-        let alreadyAddedHomeworks = props.alreadyAddedHomeworks.map(h => {
+        let alreadyAddedHomeworks = props.alreadyAddedHomework.map(h => {
             console.log(h);
             return (<MenuItem>{h.title}</MenuItem>)
         })

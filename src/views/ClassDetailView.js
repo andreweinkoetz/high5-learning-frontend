@@ -46,7 +46,8 @@ export default class ClassDetailView extends React.Component {
             currentClass: {
                 title: '',
                 id: ''
-            }
+            },
+            alreadyAddedHomework: []
         };
 
         this.addNewHomework = this.addNewHomework.bind(this);
@@ -64,6 +65,10 @@ export default class ClassDetailView extends React.Component {
                 id: this.props.location.state.id
             }
         });
+
+        ClassService.getAllHomeworksOfUser().then((homework) => {
+            this.setState({alreadyAddedHomework: homework})
+        })
 
         ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
             this.setState({
@@ -424,6 +429,8 @@ export default class ClassDetailView extends React.Component {
         return (
             <div>
                 <ModalDialogNewHomework
+                    change={this.handleChange}
+                    alreadyAddedHomework={this.state.alreadyAddedHomework}
                     visible={this.state.showModal}
                     handleCreate={this.handleSubmitModal}
                     handleCancel={this.toggleModal}
