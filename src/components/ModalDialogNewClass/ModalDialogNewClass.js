@@ -189,9 +189,18 @@ class ModalDialogNewClass extends Component {
     };
 
     handleChange = item => {
+
         let {selectedItem} = this.state;
 
-        if (selectedItem.indexOf(item) === -1) {
+        let itemIsInSelectedItem = false;
+
+        selectedItem.forEach(function(i) {
+            if (i._id === item._id) {
+                itemIsInSelectedItem = true;
+            }
+        });
+
+        if (!itemIsInSelectedItem) {
             selectedItem = [...selectedItem, item];
         }
 

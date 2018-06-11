@@ -355,6 +355,10 @@ export default class ClassDetailView extends React.Component {
                 assignedClass: homework.assignedClass,
                 visible: homework.visible
             };
+            let ableToDeleteExercisesOfToBeUpdatedHomework = this.state.ableToDeleteExercises;
+            if (homework.exercises.length > 1) {
+                ableToDeleteExercisesOfToBeUpdatedHomework = true;
+            };
             let homeworkToUpdateErrors = {title: false, exercises: []};
             homeworkToUpdate.exercises.map(e => {
                 homeworkToUpdateErrors.exercises.push({
@@ -364,7 +368,14 @@ export default class ClassDetailView extends React.Component {
                     rightSolution: false})
             })
 
-            this.setState({homeworkToAddErrors: homeworkToUpdateErrors, homeworkToAdd: homeworkToUpdate, updateHomeworkWished: true, showModal: true, idOfToBeUpdatedHomework: id});
+            this.setState({
+                homeworkToAddErrors: homeworkToUpdateErrors,
+                homeworkToAdd: homeworkToUpdate,
+                updateHomeworkWished: true,
+                showModal: true,
+                idOfToBeUpdatedHomework: id,
+                ableToDeleteExercises: ableToDeleteExercisesOfToBeUpdatedHomework
+            });
         })
         /*
         else {
