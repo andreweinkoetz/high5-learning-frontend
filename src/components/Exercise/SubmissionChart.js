@@ -2,6 +2,9 @@ import React from 'react';
 import {LineChart, Line, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer} from 'recharts';
 
 export default class SubmissionChart extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         const data = [

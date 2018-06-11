@@ -42,7 +42,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             allSubmissions: [],
             selectedSubmission: [],
             empty: false,
-            statistics: []
+            statistics: [],
+            submissionCount: {}
 
         };
 
@@ -81,6 +82,12 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             .then(() => {
                 SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
                     .then(submission => {
+
+                        console.log(submission.submissions)
+
+
+
+
                         if (submission.submissions.length !== 0) {
                             const exerciseStatistics = [...submission.exerciseStatistics];
                             const newSubmission = [...submission.submissions];
@@ -90,6 +97,10 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                             const rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
                                 + curr.rightAnswerPercentage) / numberOfAssignedStudentsToClass * 100);
 
+                            var counts = [];
+                            submission.submissions.forEach( x => Object.assign(counts[x.createdAt.substring(0,10)] = (counts[x.createdAt.substring(0,10)] || 0)+1) );
+
+
                             this.setState({
                                 allSubmissions: newSubmission,
                                 exerciseStatistics: exerciseStatistics,
@@ -97,7 +108,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 numberOfAssignedStudentsToClass: 8,
                                 rightAnswerPercentage: rightAnswerPercentage,
                                 submissionRate: submissionRate,
-                                loading: false
+                                loading: false,
+                                submissionCount: counts
                             });
                         }
                         else {
@@ -156,6 +168,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     render() {
+
+        console.log(this.state.submissionCount)
 
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
@@ -278,7 +292,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         {statistics}
                     </Grid>
                     <Grid item xs={12}>
-                        <SubmissionChart/>
+                        <SubmissionChart />
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>
