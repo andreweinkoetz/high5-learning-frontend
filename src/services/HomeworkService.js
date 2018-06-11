@@ -1,5 +1,4 @@
 import HttpService from './HttpService';
-import ClassService from "./ClassService";
 
 export default class HomeworkService {
 

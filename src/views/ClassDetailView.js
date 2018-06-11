@@ -362,7 +362,7 @@ export default class ClassDetailView extends React.Component {
                     };
                     let homeworkToUpdateErrors = {title: false, exercises: []};
                     homeworkToUpdate.exercises.map(e => {
-                        homeworkToUpdateErrors.exercises.push({
+                        return homeworkToUpdateErrors.exercises.push({ // return here only needed so that no error warning appears
                             id: e.id,
                             question: false,
                             answers: [false, false, false, false],

@@ -102,7 +102,6 @@ class ModalDialogNewClass extends Component {
                 description: '',
                 students: []
             },
-            selectedItem: [],
             error: false,
             inputValue: '',
             studentsOfSchool: []
@@ -119,10 +118,8 @@ class ModalDialogNewClass extends Component {
             this.setState({studentsOfSchool: users});
             if (this.props.updateWished) { // this is done so that the title, description and students of the class are shown when updating
                 const infoOfUpdatedClass = this.props.informationOfClassToBeUpdated; // in this props also the students of the class are saved
-                const studentsOfClass = this.props.informationOfClassToBeUpdated.students;
                 this.setState({
-                    classToAdd: infoOfUpdatedClass,
-                    selectedItem: studentsOfClass
+                    classToAdd: infoOfUpdatedClass
                 });
             }
         }).catch(e => this.props.handleNotification(e));
@@ -147,7 +144,6 @@ class ModalDialogNewClass extends Component {
 
     handleSubmit() {
         let classToAdd = {...this.state.classToAdd};
-        classToAdd.students = [...this.state.selectedItem];
         if (this.props.updateWished) {
             this.updateClass(classToAdd);
         }
@@ -169,17 +165,18 @@ class ModalDialogNewClass extends Component {
                 title: '',
                 description: '',
                 students: []
-            },
-            selectedItem: []
+            }
         });
     }
 
     handleKeyDown = event => {
-        const {inputValue, selectedItem} = this.state;
+        const {inputValue, classToAdd} = this.state; // look if it doesn't work
 
-        if (selectedItem.length && !inputValue.length && keycode(event) === 'backspace') {
+        if (classToAdd.students.length && !inputValue.length && keycode(event) === 'backspace') {
+            let newClassToAdd = classToAdd;
+            newClassToAdd.students.slice(0, classToAdd.students.length - 1)
             this.setState({
-                selectedItem: selectedItem.slice(0, selectedItem.length - 1),
+                classToAdd: newClassToAdd,
             });
         }
     };
@@ -190,31 +187,31 @@ class ModalDialogNewClass extends Component {
 
     handleChange = item => {
 
-        let {selectedItem} = this.state;
+        let {classToAdd} = this.state;
 
-        let itemIsInSelectedItem = false;
+        let itemIsInClassToAdd = false;
 
-        selectedItem.forEach(function(i) {
+        classToAdd.students.forEach(function(i) {
             if (i._id === item._id) {
-                itemIsInSelectedItem = true;
+                itemIsInClassToAdd = true;
             }
         });
 
-        if (!itemIsInSelectedItem) {
-            selectedItem = [...selectedItem, item];
+        if (!itemIsInClassToAdd) {
+            classToAdd.students = [...classToAdd.students, item];
         }
 
         this.setState({
             inputValue: '',
-            selectedItem,
+            classToAdd,
         });
     };
 
     handleDelete = item => () => {
-        const selectedItem = [...this.state.selectedItem];
-        selectedItem.splice(selectedItem.indexOf(item), 1);
+        const classToAdd = {...this.state.classToAdd};
+        classToAdd.students.splice(classToAdd.students.indexOf(item), 1);
 
-        this.setState({selectedItem});
+        this.setState({classToAdd});
     };
 
     handleTitleChange(event) {
@@ -234,7 +231,7 @@ class ModalDialogNewClass extends Component {
 
     render() {
         const {classes} = this.props;
-        const {inputValue, selectedItem} = this.state;
+        const {inputValue, classToAdd} = this.state;
         return (
             <Dialog
                 style={{minWidth: 300}}
@@ -270,7 +267,7 @@ class ModalDialogNewClass extends Component {
                     />
                 </DialogContent>
                 <DialogContent style={{minWidth: 200}}>
-                    <Downshift inputValue={inputValue} onChange={this.handleChange} selectedItem={selectedItem}
+                    <Downshift inputValue={inputValue} onChange={this.handleChange} selectedItem={classToAdd.students}
                                itemToString={(item) => (item.username)}>
                         {({
                               getInputProps,
@@ -284,7 +281,7 @@ class ModalDialogNewClass extends Component {
                                     fullWidth: true,
                                     classes,
                                     InputProps: getInputProps({
-                                        startAdornment: selectedItem.map(item => (
+                                        startAdornment: classToAdd.students.map(item => (
                                             <Chip
                                                 key={item._id}
                                                 tabIndex={-1}
