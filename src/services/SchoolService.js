@@ -33,10 +33,10 @@ export default class SchoolService {
     }
 
 
-    static getStudentsOfSchool(schoolId){
+    static getStudentsOfSchool(){
 
         return new Promise((resolve, reject) => {
-            HttpService.get(`${SchoolService.baseUrl()}students/` + schoolId,
+            HttpService.get(`${SchoolService.baseUrl()}students/`,
                 function(data) {
                     resolve(data);
                 }, function(textStatus) {

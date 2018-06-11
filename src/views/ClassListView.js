@@ -55,7 +55,7 @@ export default class ClassListView extends React.Component {
             this.props.handleNotification(e);
         });
 
-        SchoolService.getStudentsOfSchool("no").then(data => {
+        SchoolService.getStudentsOfSchool().then(data => {
             this.setState({studentsOfSchool: data});
         })
 
