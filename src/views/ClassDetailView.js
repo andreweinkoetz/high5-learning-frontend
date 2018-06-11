@@ -359,7 +359,7 @@ export default class ClassDetailView extends React.Component {
                     let ableToDeleteExercisesOfToBeUpdatedHomework = this.state.ableToDeleteExercises;
                     if (homework.exercises.length > 1) {
                         ableToDeleteExercisesOfToBeUpdatedHomework = true;
-                    };
+                    }
                     let homeworkToUpdateErrors = {title: false, exercises: []};
                     homeworkToUpdate.exercises.map(e => {
                         return homeworkToUpdateErrors.exercises.push({ // return here only needed so that no error warning appears
@@ -368,7 +368,7 @@ export default class ClassDetailView extends React.Component {
                             answers: [false, false, false, false],
                             rightSolution: false
                         })
-                    })
+                    });
 
                     this.setState({
                         homeworkToAddErrors: homeworkToUpdateErrors,
@@ -421,24 +421,26 @@ export default class ClassDetailView extends React.Component {
             </Grid>
         }
 
+        let modal = this.state.showModal ? <ModalDialogNewHomework
+            visible={this.state.showModal}
+            handleCreate={this.handleSubmitModal}
+            handleCancel={this.toggleModal}
+            handleTitleChange={this.handleTitleChange}
+            handleExerciseQuestionChange={this.handleExerciseTitleChange}
+            homeworkTitleError={this.state.homeworkToAddErrors.title}
+            exercises={this.state.homeworkToAdd.exercises}
+            homeworkTitle={this.state.homeworkToAdd.title}
+            exercisesErrors={this.state.homeworkToAddErrors.exercises}
+            handleChangeRadioValue={this.handleChangeRadioValue}
+            handleChangeAnswers={this.handleChangeAnswers}
+            handleAddExercise={this.handleAddExercise}
+            handleDeleteExercise={this.handleDeleteExercise}
+            ableToDeleteExercises={this.state.ableToDeleteExercises}
+            updateHomeworkWished={this.state.updateHomeworkWished}/> : null;
+
         return (
             <div>
-                <ModalDialogNewHomework
-                    visible={this.state.showModal}
-                    handleCreate={this.handleSubmitModal}
-                    handleCancel={this.toggleModal}
-                    handleTitleChange={this.handleTitleChange}
-                    handleExerciseQuestionChange={this.handleExerciseTitleChange}
-                    homeworkTitleError={this.state.homeworkToAddErrors.title}
-                    exercises={this.state.homeworkToAdd.exercises}
-                    homeworkTitle={this.state.homeworkToAdd.title}
-                    exercisesErrors={this.state.homeworkToAddErrors.exercises}
-                    handleChangeRadioValue={this.handleChangeRadioValue}
-                    handleChangeAnswers={this.handleChangeAnswers}
-                    handleAddExercise={this.handleAddExercise}
-                    handleDeleteExercise={this.handleDeleteExercise}
-                    ableToDeleteExercises={this.state.ableToDeleteExercises}
-                    updateHomeworkWished={this.state.updateHomeworkWished}/>
+                {modal}
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>
