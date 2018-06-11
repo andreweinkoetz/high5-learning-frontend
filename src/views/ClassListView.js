@@ -42,15 +42,24 @@ export default class ClassListView extends React.Component {
         });
 
         ClassService.getClassesOfUser().then((data) => {
-            this.setState({
-                classes: [...data]
-            });
-            ClassService.getOpenHomeworkOfStudent().then(openHw => {
+            if (data.length === 0) {
                 this.setState({
-                    openHomework: {...openHw},
                     loading: false
                 })
-            })
+            } else {
+                this.setState({
+                    classes: [...data]
+                });
+                ClassService.getOpenHomeworkOfStudent().then(openHw => {
+                    if (openHw) {
+                        this.setState({
+                            openHomework: {...openHw},
+                            loading: false
+                        })
+                    }
+                })
+            }
+
         }).catch((e) => {
             this.props.handleNotification(e);
         });
