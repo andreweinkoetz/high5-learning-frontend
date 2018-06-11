@@ -112,16 +112,16 @@ class Page extends React.Component {
                     <Grid item xs={12}>
                         {<Breadcrumb breadcrumbs={this.props.breadcrumbs}/>}
                     </Grid>
-                    <Grid item sm={4} md={2}>
+                    <Grid item sm={4} md={3}>
                         <Hidden only={'xs'}>
                             {this.state.loading ? null :
                                 <NavBar
                                 collapsed={this.state.navBarCollapsed}
                                 clicked={this.handleClick}
-                                classes={this.state.classes}/>}
+                                myClasses={this.state.classes}/>}
                         </Hidden>
                     </Grid>
-                    <Grid item xs={10} sm={7} md={9}>
+                    <Grid item xs={10} sm={7} md={8}>
                         {this.props.children}
                     </Grid>
                 </Grid>
