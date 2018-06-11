@@ -31,47 +31,47 @@ const ModalDialogNewHomework = (props) => {
         );
         ;
     };*/
-        let exercises = props.exercises.map(exc => {
-                return (
-                    <CreateExercise
-                        key={exc.id}
-                        id={exc.id}
-                        changeRadioValue={props.handleChangeRadioValue}
-                        changeAnswers={props.handleChangeAnswers}
-                        radioValue={props.exercises.find(e => e.id === exc.id).rightSolution}
-                        changeQuestion={props.handleExerciseQuestionChange}
-                        errorExerciseQuestion={props.exercisesErrors[exc.id-1].question}
-                        errorExerciseAnswers={props.exercisesErrors[exc.id-1].answers}
-                        handleDeleteExercise={props.handleDeleteExercise}
-                        answersValues={props.exercises[exc.id-1].answers}
-                        questionValue={props.exercises[exc.id-1].question}
-                        ableToDeleteExercises={props.ableToDeleteExercises}
-                    />
-                )
-            }
-        );
+    let exercises = props.exercises.map(exc => {
+            return (
+                <CreateExercise
+                    key={exc.id}
+                    id={exc.id}
+                    changeRadioValue={props.handleChangeRadioValue}
+                    changeAnswers={props.handleChangeAnswers}
+                    radioValue={props.exercises.find(e => e.id === exc.id).rightSolution}
+                    changeQuestion={props.handleExerciseQuestionChange}
+                    errorExerciseQuestion={props.exercisesErrors[exc.id-1].question}
+                    errorExerciseAnswers={props.exercisesErrors[exc.id-1].answers}
+                    handleDeleteExercise={props.handleDeleteExercise}
+                    answersValues={props.exercises[exc.id-1].answers}
+                    questionValue={props.exercises[exc.id-1].question}
+                    ableToDeleteExercises={props.ableToDeleteExercises}
+                />
+            )
+        }
+    );
 
-        let alreadyAddedHomeworks = props.alreadyAddedHomework.map(h => {
-            console.log(h);
-            return (<MenuItem>{h.title}</MenuItem>)
-        })
+    let alreadyAddedHomeworks = props.alreadyAddedHomework.map(h => {
+        console.log(h);
+        return (<MenuItem>{h.title}</MenuItem>)
+    })
 
-        return (
-            <div>
-                <Dialog
-                    disableBackdropClick
-                    disableEscapeKeyDown
-                    open={props.visible}
-                >
-                    <FormControl>
-                        <Select
-                            value={"None"}
-                            onChange={() => this.props.change}>
-                            {alreadyAddedHomeworks}
-                        </Select>
-                    </FormControl>
-                    {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}
-                    <DialogContent>
+    return (
+        <div>
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                open={props.visible}
+            >
+                <FormControl>
+                    <Select
+                        value={"None"}
+                        onChange={() => this.props.change}>
+                        {alreadyAddedHomeworks}
+                    </Select>
+                </FormControl>
+                {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}
+                <DialogContent>
                     <TextField
                         error={props.homeworkTitleError}
                         onChange={props.handleTitleChange}
@@ -82,11 +82,11 @@ const ModalDialogNewHomework = (props) => {
                         autoFocus={true}
                         value={props.homeworkTitle}
                     />
-                        <div style={{maxHeight:'500px', marginBottom: '20px'}}>
+                    <div style={{maxHeight:'500px', marginBottom: '20px'}}>
                         {exercises}
                     </div>
-                    </DialogContent>
-                    <Grid container justify={"center"}>
+                </DialogContent>
+                <Grid container justify={"center"}>
                     <DialogActions>
                         <Button
                             color={"primary"}
@@ -94,33 +94,33 @@ const ModalDialogNewHomework = (props) => {
                             onClick={props.handleAddExercise}
                         >Add new exercise to homework</Button>
                     </DialogActions>
-                    </Grid>
-                    <Grid container justify={"center"}>
-                <DialogActions>
-                    {props.updateHomeworkWished
-                        ?
+                </Grid>
+                <Grid container justify={"center"}>
+                    <DialogActions>
+                        {props.updateHomeworkWished
+                            ?
+                            <Button
+                                color={"primary"}
+                                variant={"raised"}
+                                onClick={props.handleCreate}
+                            >Update homework</Button>
+                            :
+                            <Button
+                                color={"primary"}
+                                variant={"raised"}
+                                onClick={props.handleCreate}
+                            >Create homework</Button>
+                        }
                         <Button
-                            color={"primary"}
+                            color={"secondary"}
                             variant={"raised"}
-                            onClick={props.handleCreate}
-                        >Update homework</Button>
-                        :
-                        <Button
-                            color={"primary"}
-                            variant={"raised"}
-                            onClick={props.handleCreate}
-                        >Create homework</Button>
-                    }
-                    <Button
-                        color={"secondary"}
-                        variant={"raised"}
-                        onClick={props.handleCancel}
-                    >Cancel</Button>
-                </DialogActions>
-                    </Grid>
-                </Dialog>
-            </div>
-        )
-    }
+                            onClick={props.handleCancel}
+                        >Cancel</Button>
+                    </DialogActions>
+                </Grid>
+            </Dialog>
+        </div>
+    )
+}
 
 export default ModalDialogNewHomework;
