@@ -11,6 +11,26 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 const NavBar = (props) => {
 
+let classes = props.classes.map(c => {
+    return (
+        <Link to={
+            {
+                pathname: `/myclasses/${c.title}`,
+                state:
+                    {
+                        title: c.title,
+                        id: c._id
+                    }
+            }
+        }
+        style={{textDecoration: 'none'}}
+        key = {c._id}>
+    <ListItem button>
+        <ListItemText inset primary={c.title}/>
+    </ListItem>
+    </Link>)
+});
+
     return (<div>
         <List>
             <Link
@@ -21,25 +41,16 @@ const NavBar = (props) => {
             </Link>
             <Divider/>
             <ListItem button onClick={props.clicked}>
-                <ListItemText primary="My homework"/>
+                <ListItemText primary="My classes in detail"/>
                 <ListItemIcon>
                     {props.collapsed ? <ExpandMore/> : <ExpandLess/>}
                 </ListItemIcon>
             </ListItem>
             <Collapse in={props.collapsed}>
                 <List>
-                    <ListItem button>
-                        <ListItemText inset primary="Add new homework"/>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemText inset primary="Enable deleting homework"/>
-                    </ListItem>
+                    {classes}
                 </List>
             </Collapse>
-            <Divider/>
-            <ListItem button>
-                <ListItemText primary="My settings"/>
-            </ListItem>
             <Divider/>
             <ListItem button onClick={()=>{window.location.href = "/myprofile"}}>
                 <ListItemText primary="My profile"/>

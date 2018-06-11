@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 
 import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import UserService from "../../services/UserService";
+import ClassService from "../../services/ClassService";
 
 
 class Page extends React.Component {
@@ -19,12 +20,21 @@ class Page extends React.Component {
             title: '',
             isAuthenticated: UserService.isAuthenticated(),
             navBarCollapsed: false,
-            anchorEl: null
+            anchorEl: null,
+            classes: [],
+            updatedClasses: [],
+            loading: true
         };
 
         this.logout = this.logout.bind(this);
         this.handleMenu = this.handleMenu.bind(this);
         this.handleMenuClose = this.handleMenuClose.bind(this);
+    }
+
+    componentWillMount() {
+        ClassService.getClassesOfUser().then((data) => {
+            this.setState({classes: [...data], loading: false});
+        });
     }
 
     handleMenu = event => {
@@ -52,8 +62,14 @@ class Page extends React.Component {
         this.setState({navBarCollapsed: !oldStateCollapsed});
     };
 
-    render() {
+    componentWillUpdate(nextProps) {
+        if (nextProps.updatedClassesNavBar !== this.state.updatedClasses) {
+            this.setState({classes: nextProps.updatedClassesNavBar,
+                updatedClasses: nextProps.updatedClassesNavBar});
+        }
+    }
 
+    render() {
 /*        const styles = {
             distDiv: {
                 marginBottom: '40px'
@@ -85,9 +101,11 @@ class Page extends React.Component {
                     </Grid>
                     <Grid item sm={4} md={2}>
                         <Hidden only={'xs'}>
-                            <NavBar
+                            {this.state.loading ? null :
+                                <NavBar
                                 collapsed={this.state.navBarCollapsed}
-                                clicked={this.handleClick}/>
+                                clicked={this.handleClick}
+                                classes={this.state.classes}/>}
                         </Hidden>
                     </Grid>
                     <Grid item xs={10} sm={7} md={9}>

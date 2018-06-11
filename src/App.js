@@ -13,6 +13,7 @@ import ClassDetailView from './views/ClassDetailView';
 import Notification from './components/Notification/Notification';
 import HomeworkDetailView from './views/HomeworkDetailView';
 import MyProfile from "./views/MyProfile";
+import ClassService from "./services/ClassService";
 
 
 class App extends Component {
@@ -32,6 +33,8 @@ class App extends Component {
 
             breadcrumbs: [{link: 'myclasses/'}],
 
+            updatedClassesNavBar: [],
+
             routes: [
                 {
                     render: () => (<MyProfile {...props} handleNotification={this.handleNotification}
@@ -41,13 +44,15 @@ class App extends Component {
                 },
                 {
                     render: () => (<ClassListView {...props} handleNotification={this.handleNotification}
-                                                  updateBreadcrumb={this.updateBreadcrumb}/>),
+                                                  updateBreadcrumb={this.updateBreadcrumb}
+                                                  updateNavBar={this.updateNavBar}/>),
                     path: '/',
                     exact: true
                 },
                 {
                     render: () => (<ClassListView {...props} handleNotification={this.handleNotification}
-                                                  updateBreadcrumb={this.updateBreadcrumb}/>),
+                                                  updateBreadcrumb={this.updateBreadcrumb}
+                                                  updateNavBar={this.updateNavBar}/>),
                     path: '/myclasses',
                     exact: true
                 },
@@ -69,6 +74,7 @@ class App extends Component {
         };
 
         this.updateBreadcrumb = this.updateBreadcrumb.bind(this);
+        this.updateNavBar = this.updateNavBar.bind(this);
         this.handleNotification = this.handleNotification.bind(this);
 
     }
@@ -83,6 +89,11 @@ class App extends Component {
                 variant: notification.variant
             }
         })
+    }
+
+    updateNavBar(value) {
+        let updatedClasses = [...value];
+        this.setState({updatedClassesNavBar: value})
     }
 
     updateBreadcrumb(value) {
@@ -109,7 +120,9 @@ class App extends Component {
         let routes;
 
         if (UserService.isAuthenticated()) {
-            routes = <Page breadcrumbs={this.state.breadcrumbs}>{this.state.routes.map((route, i) => (
+            routes = <Page breadcrumbs={this.state.breadcrumbs}
+                           updatedClassesNavBar={this.state.updatedClassesNavBar}
+            >{this.state.routes.map((route, i) => (
                 <Route key={i} {...route}/>))}</Page>;
         } else {
             routes = <Route

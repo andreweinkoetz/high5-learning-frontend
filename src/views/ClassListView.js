@@ -94,6 +94,7 @@ export default class ClassListView extends React.Component {
 
     handleChangesOfClasses = () => {
         ClassService.getClassesOfUser().then((data) => {
+            this.props.updateNavBar(data);
             this.setState({
                 classes: [...data],
                 loading: false,
@@ -117,8 +118,8 @@ export default class ClassListView extends React.Component {
     };
 
     handleDeleteClass = (id) => {
-
         ClassService.deleteClass(id).then((newClasses) => {
+            this.props.updateNavBar(newClasses);
             const nClasses = [...newClasses];
             this.setState({classes: nClasses});
         }).catch(e => this.props.handleNotification(e));
