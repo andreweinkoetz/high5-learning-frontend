@@ -14,6 +14,7 @@ export default class SubmissionChart extends React.Component {
             {date: '2018-05-09', num: 0},
         ];
         return (
+
             <div style={{
                 paddingBottom: '30%', /* 16:9' 56.25%' */
                 position: 'relative',
@@ -30,15 +31,16 @@ export default class SubmissionChart extends React.Component {
                     <ResponsiveContainer>
                         <LineChart style={{marginBottom: '20px', marginTop: '20px'}}
                                    width={800} height={100} data={data}>
-                            <Line type="monotone" dataKey="num" stroke="#8884d8"/>
+                            <Line type="monotone" dataKey="num" />
                             <XAxis dataKey="date" scale="auto"/>
                             <YAxis/>
                             <Legend/>
-                            <Tooltip content="bla"/>
+                            <Tooltip />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
             </div>
+
 
         );
 

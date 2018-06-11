@@ -9,7 +9,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import PropTypes from 'prop-types';
+
 
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
 import ExerciseListEmpty from '../components/Exercise/ExerciseListEmpty';
@@ -33,11 +33,11 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             loading: false,
             exerciseStatistics: [],
             numberOfAssignedStudentsToClass: 0,
-            numberOfStudentsSubmitted: 0,
+            submissionRate: 0,
             selectedStudent: "All",
             studentsOfClass: [],
-            progressOfStudents: 50,
-            percentageCorrectAnswers: 25,
+            progressOfStudents: 0,
+            rightAnswerPercentage: 0,
             percentage: [],
             allSubmissions: [],
             selectedSubmission: [],
@@ -50,9 +50,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
     }
 
     componentWillMount() {
-        console.log('classid');
-
-        console.log(this.props.location.state.classId);
         this.setState({
             loading: true,
             title: this.props.location.state.title,
@@ -85,23 +82,29 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
                     .then(submission => {
                         if (submission.submissions.length !== 0) {
-
                             const exerciseStatistics = [...submission.exerciseStatistics];
                             const newSubmission = [...submission.submissions];
-                            const numberOfStudentsSubmitted = submission.studentCount;
+                            const submissionRate = Math.round(submission.submissionRate * 100);
                             const numberOfAssignedStudentsToClass = submission.count;
+
+                            const rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
+                                + curr.rightAnswerPercentage) / numberOfAssignedStudentsToClass * 100);
 
                             this.setState({
                                 allSubmissions: newSubmission,
                                 exerciseStatistics: exerciseStatistics,
                                 numberOfStudentsSubmitted: 4,
                                 numberOfAssignedStudentsToClass: 8,
+                                rightAnswerPercentage: rightAnswerPercentage,
+                                submissionRate: submissionRate,
                                 loading: false
                             });
                         }
                         else {
                             this.setState({
                                 empty: true,
+                                rightAnswerPercentage: 100,
+                                submissionRate: 0,
                                 loading: false
                             })
                         }
@@ -134,9 +137,9 @@ export default class HomeworkDetailViewTeacher extends React.Component {
     };
 
     handleValueSelected = (event) => {
-        const newValueSelected = event.target.value;
-        if (event.target.value != 'All') {
-            const result = this.state.allSubmissions.filter(x => x.student == event.target.value);
+
+        if (event.target.value !== 'All') {
+            const result = this.state.allSubmissions.filter(x => x.student === event.target.value);
             this.setState({
                 selectedStudent: event.target.value,
                 selectedSubmission: result[0].exercises
@@ -153,7 +156,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     render() {
-        console.log(this.state.loading);
 
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
@@ -161,9 +163,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 <Typography variant={'caption'}>Loading...</Typography></div>;
         }
 
-        /*  let AllSubmissionMenuItem;
-          this.state.allSubmissions.length === 0 ? AllSubmissionMenuItem = <MenuItem disabled value={"All"}>All</MenuItem>
-              : AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem> */
 
         let AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>;
 
@@ -178,13 +177,14 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                             <FormControl style={{minWidth: '120px'}}>
                                 <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
 
-                                    /* AllSubmissionMenuItem --> disabled if no submission */
+                                    {/* AllSubmissionMenuItem --> disabled if no submission */}
                                     {AllSubmissionMenuItem}
 
                                     {this.state.studentsOfClass.map((obj, i) => {
                                             return (
                                                 /* check if student has submitted a solution - if not disable */
-                                                this.state.allSubmissions.filter(x => x.student == obj.studentId).length === 0
+
+                                                this.state.allSubmissions.filter(x => x.student === obj.studentId).length === 0
                                                     ? <MenuItem disabled key={i}
                                                                 value={obj.studentId}>{obj.studentName}</MenuItem>
                                                     : <MenuItem key={i}
@@ -209,12 +209,12 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 progress: </Typography>
                         </Grid>
                         <Grid item xs={1} sm={1}>
-                            <Typography variant={"body1"}>{this.state.progressOfStudents} %</Typography>
+                            <Typography variant={"body1"}>{this.state.submissionRate} %</Typography>
                         </Grid>
                         <Grid item xs={2} sm={2}>
                             <LinearProgress
                                 variant={"determinate"}
-                                value={this.state.progressOfStudents}
+                                value={this.state.submissionRate}
                                 style={{paddingRight: '10px'}}/>
                         </Grid>
                         <Grid item xs={1} sm={1}/>
@@ -223,12 +223,12 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 answers: </Typography>
                         </Grid>
                         <Grid item xs={1} sm={1}>
-                            <Typography variant={"body1"}>{this.state.percentageCorrectAnswers} %</Typography>
+                            <Typography variant={"body1"}>{this.state.rightAnswerPercentage} %</Typography>
                         </Grid>
                         <Grid item xs={2} sm={2}>
                             <LinearProgress
                                 variant={"determinate"}
-                                value={this.state.percentageCorrectAnswers}
+                                value={this.state.rightAnswerPercentage}
                                 style={{paddingRight: '10px'}}/>
                         </Grid>
                     </Grid>
@@ -277,7 +277,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     <Grid item xs={12}>
                         {statistics}
                     </Grid>
-                    <Grid itm xs={12}>
+                    <Grid item xs={12}>
                         <SubmissionChart/>
                     </Grid>
                     <Grid item xs={12}>
@@ -293,4 +293,3 @@ export default class HomeworkDetailViewTeacher extends React.Component {
     }
 }
 
-HomeworkDetailViewTeacher.propTypes = {};

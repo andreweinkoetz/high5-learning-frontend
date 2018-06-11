@@ -121,7 +121,6 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
 
     handleSubmit() {
-        const homeworkId = this.state.id;
         const userId = UserService.getCurrentUser().id;
         const submissionToAdd = {...this.state.submissionToAdd};
         submissionToAdd.exercises = this.state.selectedValues;
@@ -158,7 +157,6 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
 
     render() {
-        console.log(`here in the rendering: ${this.state.submittedValues}`);
 
         let statistics =
                 <div>

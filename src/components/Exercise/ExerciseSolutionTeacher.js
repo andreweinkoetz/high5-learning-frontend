@@ -9,17 +9,15 @@ import Grid from '@material-ui/core/Grid';
 import './ExerciseSolution.css';
 
 const Exercise = (props) => {
-    console.log(props.selectedStudent);
-    console.log(props.rightAnswerPercentage);
 
     let className;
     if(props.empty) {
         className = "empty";
     }
-    else if(props.selectedStudent !== "All" && props.rightSolution == props.selectedChoice) {
+    else if(props.selectedStudent !== "All" && props.rightSolution === props.selectedChoice) {
         className = "right";
     }
-    else if(props.selectedStudent !== "All" && props.rightSolution != props.selectedChoice) {
+    else if(props.selectedStudent !== "All" && props.rightSolution !== props.selectedChoice) {
         className = "wrong";
     }
     else if (props.selectedStudent === "All" && props.rightAnswerPercentage >= 0.5) {
