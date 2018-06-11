@@ -31,19 +31,6 @@ export default class ClassService {
 
     }
 
-
-    static getAllHomeworksOfUser(){
-        return new Promise((resolve, reject) => {
-            HttpService.get(`${ClassService.baseUrl()}/allhomeworks/`,
-                function(data) {
-                    resolve(data);
-                }, function(error) {
-                    reject(error);
-                });
-        });
-
-    }
-
     static getClassDetail(classId){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}/details/` + classId,
