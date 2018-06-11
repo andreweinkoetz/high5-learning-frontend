@@ -9,11 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import './ExerciseSolution.css';
 
 const Exercise = (props) => {
-
     return (
         <div style={{margin: '10px'}}>
             <Paper elevation={4}>
-                    <div style={{padding: '30px'}} className={(props.rightSolution == props.selectedChoice) ? "right" : "wrong"}>
+                <div style={{padding: '30px'}}
+                     className={(parseInt(props.rightSolution, 10) === parseInt(props.selectedChoice, 10)) ? "right" : "wrong"}>
                     <Grid container spacing={8}>
                         <Grid item xs={12}>
                             <Typography variant={'subheading'}>{props.question}</Typography>
@@ -93,9 +93,9 @@ const Exercise = (props) => {
         </div>
 
 
-            );
+    );
 
 
-            };
+};
 
-            export default Exercise;
+export default Exercise;
