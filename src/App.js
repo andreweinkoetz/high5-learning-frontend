@@ -13,7 +13,6 @@ import ClassDetailView from './views/ClassDetailView';
 import Notification from './components/Notification/Notification';
 import HomeworkDetailView from './views/HomeworkDetailView';
 import MyProfile from "./views/MyProfile";
-import ClassService from "./services/ClassService";
 
 
 class App extends Component {
@@ -92,7 +91,6 @@ class App extends Component {
     }
 
     updateNavBar(value) {
-        let updatedClasses = [...value];
         this.setState({updatedClassesNavBar: value})
     }
 
