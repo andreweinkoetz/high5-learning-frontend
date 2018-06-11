@@ -57,7 +57,6 @@ class ModalDialogLogIn extends Component {
         }).catch((e) => {
             this.props.handleNotification(e);
         });
-        this.props.cancel();
     }
 
     render() {

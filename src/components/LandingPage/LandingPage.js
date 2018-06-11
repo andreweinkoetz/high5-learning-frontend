@@ -119,7 +119,7 @@ export default class LandingPage extends React.Component {
                                              cancel={this.onClickCancelModalDialog}
                                              handleNotification={this.props.handleNotification}
                                              schools={this.state.schools}/>;
-                        case "":
+                        default:
                             return;
                     }
                 })()}
