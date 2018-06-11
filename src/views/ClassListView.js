@@ -105,9 +105,7 @@ export default class ClassListView extends React.Component {
     };
 
     handleUpdateClassWished = (id, t, d) => {
-        const updatedClass = {title: t, description: d};
         ClassService.getStudentsOfClass(id).then(students => {
-            const studentsOfClass = students;
             const informationOfClassToBeUpdated = {title: t, description: d, students: students};
             this.setState({
                 showModal: true,

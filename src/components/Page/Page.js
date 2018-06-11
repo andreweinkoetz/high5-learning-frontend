@@ -2,7 +2,6 @@ import React from 'react';
 import {withRouter} from "react-router-dom";
 
 import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import NavBar from '../NavBar/NavBar';
 import Grid from '@material-ui/core/Grid';
