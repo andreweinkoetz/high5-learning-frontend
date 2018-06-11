@@ -29,7 +29,8 @@ export default class ClassListView extends React.Component {
                 title: '',
                 description: '',
                 students: []
-            }
+            },
+            openHomework: {}
         };
 
         this.toggleModal = this.toggleModal.bind(this);
@@ -42,14 +43,19 @@ export default class ClassListView extends React.Component {
 
         ClassService.getClassesOfUser().then((data) => {
             this.setState({
-                classes: [...data],
-                loading: false
+                classes: [...data]
             });
+            ClassService.getOpenHomeworkOfStudent().then(openHw => {
+                this.setState({
+                    openHomework: {...openHw},
+                    loading: false
+                })
+            })
         }).catch((e) => {
             this.props.handleNotification(e);
         });
 
-        SchoolService.getStudentsOfSchool("no").then(data =>{
+        SchoolService.getStudentsOfSchool("no").then(data => {
             this.setState({studentsOfSchool: data});
         })
 
@@ -62,6 +68,8 @@ export default class ClassListView extends React.Component {
                 linkName: 'My classes'
             }
         ])
+
+
     }
 
 
@@ -150,7 +158,7 @@ export default class ClassListView extends React.Component {
                 informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
                 idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
                 handleChangesOfClasses={this.handleChangesOfClasses}/>
-            : null
+            : null;
 
         return (
             <div>
@@ -169,6 +177,7 @@ export default class ClassListView extends React.Component {
                                 <Typography variant={'caption'}>Loading...</Typography></div>
                             : <ClassList
                                 classes={this.state.classes}
+                                openHomework={this.state.openHomework}
                                 updateClassInfo={this.handleUpdateClassWished}
                                 deleteClass={this.handleDeleteClass}/>}
                     </Grid>

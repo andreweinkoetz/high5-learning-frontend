@@ -30,6 +30,16 @@ export default class ClassService {
         });
     }
 
+    static getOpenHomeworkOfStudent(classId){
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${ClassService.baseUrl()}/openhw/` + classId,
+                function(data) {
+                    resolve(data);
+                }, function(error) {
+                    reject(error);
+                });
+        });
+    }
 
     static getHomeworkOfClass(classId){
         return new Promise((resolve, reject) => {

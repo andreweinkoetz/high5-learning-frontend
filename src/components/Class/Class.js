@@ -10,6 +10,8 @@ import {withStyles} from '@material-ui/core/styles';
 import GroupIcon from '@material-ui/icons/Group';
 
 import UserService from "../../services/UserService";
+import Badge from "@material-ui/core/es/Badge/Badge";
+import Tooltip from "@material-ui/core/es/Tooltip/Tooltip";
 
 const styles = theme => ({
     rightIcon: {
@@ -44,9 +46,6 @@ const styles = theme => ({
         textTransform: 'none'
     },
     panelDisabled: {
-        /*borderStyle: 'solid',
-        borderColor: theme.palette.secondary.main,
-        border: 2*/
         backgroundColor: 'rgba(158,158,158,0.2)'
     }
 });
@@ -56,41 +55,65 @@ const Class = (props) => {
 
     const {classes} = props;
 
+    let secondaryContent;
+
+    if (UserService.isTeacher() || props.openHomework === 0) {
+        secondaryContent = null
+    } else {
+        secondaryContent =
+            <Tooltip id="tooltip-top-start" title={props.openHomework + " assignments not submitted"} placement="top-start">
+                <Badge color="error" badgeContent={props.openHomework}>
+                    <Typography/>
+                </Badge>
+            </Tooltip>;
+    }
+
     return (
         <ExpansionPanel>
+
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                 <div className={classes.primaryContent}>
-                <Link className={classes.linkStyle} to={
-                    {
-                        pathname: `/myclasses/${props.title}`,
-                        state:
-                            {
-                                title: props.title,
-                                id: props.id
-                            }
-                    }
-                }>
-                    <Button variant="flat"
-                            className={classes.titleButton}>
-                        <GroupIcon className={classes.rightIcon}/>
-                        {props.title}
-                    </Button></Link>
+
+                    <Link className={classes.linkStyle} to={
+                        {
+                            pathname: `/myclasses/${props.title}`,
+                            state:
+                                {
+                                    title: props.title,
+                                    id: props.id
+                                }
+                        }
+                    }>
+
+                        <Button variant="flat"
+                                className={classes.titleButton}>
+
+                            <GroupIcon className={classes.rightIcon}/>
+                            {props.title}
+                        </Button>
+                    </Link>
+
                     <Typography variant={'caption'} className={classes.subtitle}>{props.description}</Typography>
                     <Typography variant={'caption'} className={classes.subtitle}>Created
-                at: {new Date(props.createdAt).toLocaleDateString()} - {new Date(props.createdAt).toLocaleTimeString()}</Typography>
+                        at: {new Date(props.createdAt).toLocaleDateString()} - {new Date(props.createdAt).toLocaleTimeString()}</Typography>
                 </div>
+
                 <div className={classes.secondaryContent}>
+                    {secondaryContent}
                 </div>
             </ExpansionPanelSummary>
+
             <ExpansionPanelDetails>
-                {UserService.isTeacher() ?<div>
-                    <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}} onClick={() => props.updateClassInfo(props.id, props.title, props.description)}>
-                        Update class information</Button>
-                    <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}} onClick={() => props.deleteClass(props.id)}>
-                        Delete class</Button>
+                {UserService.isTeacher() ? <div>
+                        <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
+                                onClick={() => props.updateClassInfo(props.id, props.title, props.description)}>
+                            Update class information</Button>
+                        <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}}
+                                onClick={() => props.deleteClass(props.id)}>
+                            Delete class</Button>
                     </div>
-               : <Typography>{props.description}<br/>
-                </Typography>}
+                    : <Typography>{props.description}<br/>
+                    </Typography>}
             </ExpansionPanelDetails>
         </ExpansionPanel>
     );
