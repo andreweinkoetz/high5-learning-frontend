@@ -7,12 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import './Breadcrumb.css';
 
 const Breadcrumb = (props) => {
-
+    const {classes} = props;
     return (
-        <Grid className="breadcrumb" container xs={12} sm={12} alignContent={"center"}>
+        <Grid className="breadcrumb" container alignContent={"center"}>
         {props.breadcrumbs.map((val, index) =>
-            <Grid item><Link
-                key={index}
+            <Grid key={index} item><Link
                 className="link"
                 to={
                     {
