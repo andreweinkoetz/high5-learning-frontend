@@ -169,7 +169,7 @@ class ModalDialogRegister extends Component {
                         {this.props.schools.map((school) => {
 
                             return (
-                                <MenuItem value={school.name}>{school.name}</MenuItem>
+                                <MenuItem key={school._id} value={school.name}>{school.name}</MenuItem>
                             )
 
                         })}
