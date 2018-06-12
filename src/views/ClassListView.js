@@ -153,8 +153,8 @@ export default class ClassListView extends React.Component {
             </Grid>;
         }
 
-        return (
-            <div>
+        let modalDialogNewClass =
+            this.state.showModal ?
                 <ModalDialogNewClass
                     visible={this.state.showModal}
                     toggle={this.toggleModal}
@@ -163,6 +163,11 @@ export default class ClassListView extends React.Component {
                     informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
                     idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
                     handleChangesOfClasses={this.handleChangesOfClasses}/>
+            : null;
+
+        return (
+            <div>
+                {modalDialogNewClass}
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
