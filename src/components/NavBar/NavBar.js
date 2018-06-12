@@ -17,7 +17,7 @@ const styles = theme => ({
     icons: {
         color: theme.palette.secondary.main,
         fontSize: 36
-    },
+    }
 });
 
 const NavBar = (props) => {
@@ -25,6 +25,7 @@ const NavBar = (props) => {
 
     let myClasses = props.myClasses.map(c => {
         return (
+
             <Link to={
                 {
                     pathname: `/myclasses/${c.title}`,
@@ -55,8 +56,8 @@ const NavBar = (props) => {
             </Link>
             <Divider/>
             <ListItem button onClick={props.clicked}>
-                <GroupIcon className={classes.icons}/>
-                <ListItemText primary="My classes in detail (don't know how to call this)"/>
+                <AssignmentIcon className={classes.icons}/>
+                <ListItemText primary="My homework of classes"/>
                 <ListItemIcon>
                     {props.collapsed ? <ExpandMore/> : <ExpandLess/>}
                 </ListItemIcon>
