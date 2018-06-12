@@ -17,7 +17,7 @@ import HomeworkService from '../services/HomeworkService';
 import SubmissionService from '../services/SubmissionService';
 import ClassService from '../services/ClassService';
 
-import SubmissionChart from '../components/Exercise/SubmissionChart';
+import SubmissionChart from '../components/SubmissionChart/SubmissionChart';
 
 
 export default class HomeworkDetailViewTeacher extends React.Component {
@@ -292,6 +292,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         {statistics}
                     </Grid>
                     <Grid item xs={12}>
+                        <Typography variant={'subheading'}>Number Of Submissions</Typography>
                         <SubmissionChart />
                     </Grid>
                     <Grid item xs={12}>

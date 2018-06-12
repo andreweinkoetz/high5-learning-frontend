@@ -121,7 +121,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
 
     handleSubmit() {
-        //check if the student has filled out all exercises 
+        //check if the student has filled out all exercises
         if (this.state.selectedValues.length.toString() === this.state.exercises.length.toString()) {
 
 

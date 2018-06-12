@@ -1,0 +1,25 @@
+.label {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+
+}
+
+.desc {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+}
+
+.intro {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+}
+
+.custom-tooltip {
+    background-color: whitesmoke;
+    opacity: 0.8;
+}
+
+.lineChart {
+    font-family: "Roboto", sans-serif;
+    font-size: 8px;
+}

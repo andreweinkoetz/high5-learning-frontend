@@ -1,5 +1,8 @@
 import React from 'react';
-import {LineChart, Line, Legend, XAxis, YAxis, Tooltip, ResponsiveContainer} from 'recharts';
+import {LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer} from 'recharts';
+
+import CustomTooltip from './CustomTooltip';
+
 
 export default class SubmissionChart extends React.Component {
     constructor(props) {
@@ -18,10 +21,11 @@ export default class SubmissionChart extends React.Component {
         ];
         return (
 
-            <div style={{
+            <div  style={{
                 paddingBottom: '30%', /* 16:9' 56.25%' */
                 position: 'relative',
-                height: 0
+                height: 0,
+                fontSize: '14px'
             }}>
 
                 <div style={{
@@ -32,13 +36,12 @@ export default class SubmissionChart extends React.Component {
                     height: '100%'
                 }}>
                     <ResponsiveContainer>
-                        <LineChart style={{marginBottom: '20px', marginTop: '20px'}}
-                                   width={800} height={100} data={data}>
+                        <LineChart   style={{marginBottom: '20px', marginTop: '20px'}}
+                                   width={800} height={100} data={data} className={"linechart"}>
                             <Line type="monotone" dataKey="num" />
-                            <XAxis dataKey="date" scale="auto"/>
+                            <XAxis dataKey="date" scale="auto" />
                             <YAxis/>
-                            <Legend/>
-                            <Tooltip />
+                            <Tooltip content={<CustomTooltip/>}/>
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
