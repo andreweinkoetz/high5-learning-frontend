@@ -1,21 +1,19 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
+import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import {Link} from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
 
-const style = {
-    breadcrumb: {
-        paddingLeft: '25px'
-    }
-};
+import './Breadcrumb.css';
 
 const Breadcrumb = (props) => {
-    const {classes} = props;
 
-    return <div className={classes.breadcrumb}>
+    return (
+        <Grid className="breadcrumb" container xs={12} sm={12} alignContent={"center"}>
         {props.breadcrumbs.map((val, index) =>
-            <Link
+            <Grid item><Link
                 key={index}
-                style={{textDecoration: 'none', color: 'black'}}
+                className="link"
                 to={
                     {
                         pathname: val.link,
@@ -25,7 +23,8 @@ const Breadcrumb = (props) => {
                                 id: val.id
                             }
                     }
-                }>{val.linkName} > </Link>)}</div>
+                }>{val.linkName}</Link><ArrowRight className="arrowRight"/> </Grid>)}
+        </Grid>)
 };
 
-export default withStyles(style)(Breadcrumb);
+export default Breadcrumb;
