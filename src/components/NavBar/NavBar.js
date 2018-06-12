@@ -55,8 +55,8 @@ const NavBar = (props) => {
             </Link>
             <Divider/>
             <ListItem button onClick={props.clicked}>
-                <AssignmentIcon className={classes.icons}/>
-                <ListItemText primary="My homework"/>
+                <GroupIcon className={classes.icons}/>
+                <ListItemText primary="My classes in detail (don't know how to call this)"/>
                 <ListItemIcon>
                     {props.collapsed ? <ExpandMore/> : <ExpandLess/>}
                 </ListItemIcon>

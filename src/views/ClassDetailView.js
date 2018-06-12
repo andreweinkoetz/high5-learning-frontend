@@ -47,7 +47,9 @@ export default class ClassDetailView extends React.Component {
                 title: '',
                 id: ''
             },
-            alreadyAddedHomework: []
+            availableClasses: [],
+            selectedClass: "",
+            selectedHomework: ""
         };
 
         this.addNewHomework = this.addNewHomework.bind(this);
@@ -66,8 +68,8 @@ export default class ClassDetailView extends React.Component {
             }
         });
 
-        ClassService.getAllHomeworksOfUser().then((homework) => {
-            this.setState({alreadyAddedHomework: homework})
+        ClassService.getAllHomeworkOfUser().then((homework) => {
+            this.setState({availableClasses: homework})
         });
 
         ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
@@ -112,7 +114,9 @@ export default class ClassDetailView extends React.Component {
             homeworkToAdd: homeworkToAddWhenClickingAdd,
             homeworkToAddErrors: homeworkToAddErrorsWhenClickingAdd,
             errorText: [],
-            updateHomeworkWished: false
+            updateHomeworkWished: false,
+            selectedHomework: "",
+            selectedClass: ""
         });
     }
 
@@ -193,7 +197,11 @@ export default class ClassDetailView extends React.Component {
                 const updatedHomework = [...this.state.homework];
                 updatedHomework.push(newHomework);
 
-                this.setState({homework: updatedHomework});
+                let availableClasses = [...this.state.availableClasses];
+                let updatedClass = availableClasses.find(c => c._id === this.state.currentClass.id);
+                updatedClass.homework.push(newHomework);
+
+                this.setState({homework: updatedHomework, availableClasses: availableClasses});
                 this.toggleModal();
 
             }
@@ -210,7 +218,13 @@ export default class ClassDetailView extends React.Component {
             homeworkToUpdate.title = updatedHomework.title;
             homeworkToUpdate.exercises = updatedHomework.exercises;
 
-            this.setState({homework: newHomework, updateHomeworkWished: false});
+            let availableClasses = [...this.state.availableClasses];
+            let updatedClass = availableClasses.find(c => c._id === this.state.currentClass.id);
+            let updatedHW =  updatedClass.homework.find(h => h._id === updatedHomework._id);
+            updatedHW.title = updatedHomework.title;
+            updatedHW.exercises = updatedHomework.exercises;
+
+            this.setState({homework: newHomework, updateHomeworkWished: false, availableClasses: availableClasses});
             this.toggleModal();
         }).catch(e => console.log(e));
     }
@@ -306,9 +320,15 @@ export default class ClassDetailView extends React.Component {
     handleDeleteHomework = (id) => {
         HomeworkService.deleteHomework(id)
             .then((data) => {
+
+                let availableClasses = [...this.state.availableClasses];
+                let updatedClass = availableClasses.find(c => c._id === this.state.currentClass.id);
+                updatedClass.homework = [...data.homework];
+
                 this.setState({
                     homework: [...data.homework],
-                    loading: false
+                    loading: false,
+                    availableClasses: availableClasses
                 });
             })
             .catch(e => this.props.handleNotification(e));
@@ -352,13 +372,11 @@ export default class ClassDetailView extends React.Component {
 
     handleUpdateHomework = (id) => {
         SubmissionService.getSubmissionOfHomework(id).then(submissions => {
-            console.log(submissions);
             if(submissions.count === 0) {
                 HomeworkService.getHomeworkDetail(id).then((homework) => {
                     const homeworkToUpdate = {
                         title: homework.title,
                         exercises: homework.exercises,
-                        assignedClass: homework.assignedClass,
                         visible: homework.visible
                     };
                     let ableToDeleteExercisesOfToBeUpdatedHomework = this.state.ableToDeleteExercises;
@@ -396,6 +414,79 @@ export default class ClassDetailView extends React.Component {
         })
     };
 
+    handleHomeworkSelected = (event) => {
+        if(event.target.value !== "") {
+            const availableClasses = [...this.state.availableClasses];
+            const selectedClass = availableClasses.find(c => c._id === this.state.selectedClass);
+            const selectedHomework = selectedClass.homework.find(e => e._id === event.target.value);
+            this.setState({selectedHomework: selectedHomework._id});
+            this.changeSelectedHomework(selectedHomework);
+        }
+        else {
+            this.setState({selectedHomework: "None"});
+        }
+    };
+
+    handleClassSelected = (event) => {
+        if(event.target.value !== "") {
+            const availableClasses = [...this.state.availableClasses];
+            const selectedClass = availableClasses.find(e => e._id === event.target.value);
+            if (selectedClass._id !== this.state.selectedClass) {
+                let homeworkToAddErrors=  {
+                    title: false,
+                    exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
+                };
+
+                let homeworkToAdd =
+                {
+                    title: "",
+                    exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
+                    assignedClass: '',
+                    visible: false
+                };
+
+                let ableToDeleteExercises = false;
+                this.setState({
+                    selectedClass: selectedClass._id,
+                    selectedHomework: "",
+                    homeworkToAddErrors: homeworkToAddErrors,
+                    homeworkToAdd: homeworkToAdd,
+                    ableToDeleteExercises: ableToDeleteExercises
+                });
+            }
+        }
+        else {
+            this.setState({selectedClass: ""});
+        }
+    };
+
+    changeSelectedHomework = (selectedHomework) => {
+        const homeworkToUpdate = {
+            title: selectedHomework.title,
+            exercises: selectedHomework.exercises,
+            visible: false
+        };
+        let ableToDeleteExercisesOfToBeUpdatedHomework = this.state.ableToDeleteExercises;
+        if (selectedHomework.exercises.length > 1) {
+            ableToDeleteExercisesOfToBeUpdatedHomework = true;
+        }
+        let homeworkToUpdateErrors = {title: false, exercises: []};
+        homeworkToUpdate.exercises.map(e => {
+            return homeworkToUpdateErrors.exercises.push({ // return here only needed so that no error warning appears
+                id: e.id,
+                question: false,
+                answers: [false, false, false, false],
+                rightSolution: false
+            })
+        });
+
+        this.setState({
+            homeworkToAddErrors: homeworkToUpdateErrors,
+            homeworkToAdd: homeworkToUpdate,
+            ableToDeleteExercises: ableToDeleteExercisesOfToBeUpdatedHomework
+        });
+    };
+
 
     render() {
 
@@ -427,8 +518,11 @@ export default class ClassDetailView extends React.Component {
         }
 
         let modal = this.state.showModal ? <ModalDialogNewHomework
-            change={this.handleChange}
-            alreadyAddedHomework={this.state.alreadyAddedHomework}
+            changeClass={this.handleClassSelected}
+            availableClasses={this.state.availableClasses}
+            selectedClass={this.state.selectedClass}
+            selectedHomework={this.state.selectedHomework}
+            changeHomework={this.handleHomeworkSelected}
             visible={this.state.showModal}
             handleCreate={this.handleSubmitModal}
             handleCancel={this.toggleModal}

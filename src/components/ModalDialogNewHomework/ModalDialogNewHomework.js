@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import CreateExercise from '../CreateExercise/CreateExercise';
 
@@ -51,9 +52,16 @@ const ModalDialogNewHomework = (props) => {
         }
     );
 
-    let alreadyAddedHomeworks = props.alreadyAddedHomework.map(h => {
-        console.log(h);
-        return (<MenuItem>{h.title}</MenuItem>)
+    let alreadyAddedHomework = null;
+    if(props.selectedClass !== "") {
+        let selecClass = props.availableClasses.find(e => e._id === props.selectedClass);
+        alreadyAddedHomework = selecClass.homework.map(h => {
+            return (<MenuItem key={h._id} value={h._id}>{h.title}</MenuItem>)
+        })
+    }
+
+    let availableClasses = props.availableClasses.map(c => {
+        return (<MenuItem key={c._id} value={c._id}>{c.title}</MenuItem>)
     })
 
     return (
@@ -64,10 +72,21 @@ const ModalDialogNewHomework = (props) => {
                 open={props.visible}
             >
                 <FormControl>
+                    <InputLabel>Selected class</InputLabel>
                     <Select
-                        value={"None"}
-                        onChange={() => this.props.change}>
-                        {alreadyAddedHomeworks}
+                        value={props.selectedClass}
+                        onChange={props.changeClass}>
+                        <MenuItem key={"None"} value={""}>None</MenuItem>
+                        {availableClasses}
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel>Selected homework</InputLabel>
+                    <Select
+                        value={props.selectedHomework}
+                        onChange={props.changeHomework}>
+                        <MenuItem key={"None"} value={""}>None</MenuItem>
+                        {alreadyAddedHomework}
                     </Select>
                 </FormControl>
                 {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}

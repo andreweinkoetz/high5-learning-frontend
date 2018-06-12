@@ -19,9 +19,9 @@ export default class ClassService {
 
     }
 
-    static getAllHomeworksOfUser(){
+    static getAllHomeworkOfUser(){
         return new Promise((resolve, reject) => {
-            HttpService.get(`${ClassService.baseUrl()}/allhomeworks/`,
+            HttpService.get(`${ClassService.baseUrl()}/allhomework/`,
                 function(data) {
                     resolve(data);
                 }, function(error) {
