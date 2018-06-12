@@ -160,7 +160,8 @@ class ModalDialogRegister extends Component {
                     />
                 </DialogContent>
                 <DialogContent>
-                    <InputLabel htmlFor="school-helper">School&nbsp;&nbsp;</InputLabel>
+                    {/** show InputLabel only when state of school is empty*/}
+                    {(this.state.school === "") && <InputLabel htmlFor="school-helper">School&nbsp;&nbsp;</InputLabel>}
                     <Select
                         value={this.state.school}
                         onChange={this.handleChangeSchool}
