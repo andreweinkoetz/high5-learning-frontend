@@ -69,7 +69,7 @@ export default class ClassDetailView extends React.Component {
         });
 
         ClassService.getAllHomeworkOfUser().then((homework) => {
-            this.setState({availableClasses: homework})
+            this.setState({availableClasses: [...homework]})
         });
 
         ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
@@ -116,7 +116,8 @@ export default class ClassDetailView extends React.Component {
             errorText: [],
             updateHomeworkWished: false,
             selectedHomework: "",
-            selectedClass: ""
+            selectedClass: "",
+            ableToDeleteExercises: false
         });
     }
 
@@ -278,17 +279,19 @@ export default class ClassDetailView extends React.Component {
     handleAddExercise = () => {
         let newHomework = {...this.state.homeworkToAdd};
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
-        let newHomeworkExercises = newHomework.exercises;
-        let newHomeworkErrorExercises = newHomeworkErrors.exercises;
+        let newHomeworkExercises = [...newHomework.exercises];
+        let newHomeworkErrorExercises = [...newHomeworkErrors.exercises];
         let newExerciseID = newHomeworkExercises.length;
         newExerciseID = "" + (newExerciseID + 1);
         newHomeworkExercises.push({id: newExerciseID, question: '', answers: ["", "", "", ""], rightSolution: ""});
+        newHomework.exercises = newHomeworkExercises;
         newHomeworkErrorExercises.push({
             id: newExerciseID,
             question: false,
             answers: [false, false, false, false],
             rightSolution: false
         });
+        newHomeworkErrors.exercises = newHomeworkErrorExercises;
         this.setState({
             homeworkToAdd: newHomework,
             homeworkToAddErrors: newHomeworkErrors,
@@ -446,6 +449,7 @@ export default class ClassDetailView extends React.Component {
                 };
 
                 let ableToDeleteExercises = false;
+
                 this.setState({
                     selectedClass: selectedClass._id,
                     selectedHomework: "",
