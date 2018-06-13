@@ -84,20 +84,31 @@ export default class ClassDetailView extends React.Component {
 
     }
 
-    componentWillUpdate(nextProps) { // needed so that you can navigate through multiple homework each after another
-        if (nextProps.location.state.id !== this.state.currentClass.id) {
+    componentDidUpdate() { // needed so that you can navigate through multiple homework each after another
+        if (this.props.location.state.id !== this.state.currentClass.id) {
             this.setState({
                 loading: true,
                 currentClass: {
-                    title: nextProps.location.state.title,
-                    id: nextProps.location.state.id
+                    title: this.props.location.state.title,
+                    id: this.props.location.state.id
                 }
             });
             ClassService.getAllHomeworkOfUser().then((homework) => {
                 this.setState({availableClasses: [...homework]})
             });
 
-            ClassService.getHomeworkOfClass(nextProps.location.state.id).then((data) => {
+            this.props.updateBreadcrumb([
+                {
+                    link: `/myclasses`,
+                    linkName: 'My classes'
+                },
+                {
+                    link: `/myclasses/${this.props.location.state.title}`,
+                    linkName: this.props.location.state.title,
+                    id: this.props.location.state.id
+                }]);
+
+            ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
                 this.setState({
                     homework: [...data.singleClass.homework],
                     submissions: [...data.submissions],

@@ -25,35 +25,29 @@ const NavBar = (props) => {
 
     let myClasses = props.myClasses.map(c => {
         return (
-
-            <Link to={
-                {
-                    pathname: `/myclasses/${c.title}`,
-                    state:
-                        {
-                            title: c.title,
-                            id: c._id
-                        }
-                }
-            }
-                  style={{textDecoration: 'none'}}
-                  key={c._id}>
-                <ListItem button>
+                <ListItem
+                    key={c._id}
+                    button
+                    component={Link}
+                    to={{
+                        pathname: `/myclasses/${c.title}`,
+                        state:
+                            {
+                                title: c.title,
+                                id: c._id
+                            }
+                    }}>
                     <ListItemText inset primary={c.title}/>
-                </ListItem>
-            </Link>)
+                </ListItem>)
     });
 
     return (<div>
         <List>
-            <Link
-                to="/myclasses"
-                style={{textDecoration: 'none'}}
-            ><ListItem button>
+            <ListItem button component={Link} to={"/myclasses"} >
                 <GroupIcon className={classes.icons}/>
                 <ListItemText primary="My classes"/>
             </ListItem>
-            </Link>
+
             <Divider/>
             <ListItem button onClick={props.clicked}>
                 <AssignmentIcon className={classes.icons}/>
@@ -68,9 +62,7 @@ const NavBar = (props) => {
                 </List>
             </Collapse>
             <Divider/>
-            <ListItem button onClick={() => {
-                window.location.href = "/myprofile"
-            }}>
+            <ListItem button component={Link} to={"/myprofile"}>
                 <AccountCircle className={classes.icons}/>
                 <ListItemText primary="My profile"/>
             </ListItem>

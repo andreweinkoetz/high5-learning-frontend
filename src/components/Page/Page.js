@@ -75,10 +75,10 @@ class Page extends React.Component {
         }
     };
 
-    componentWillUpdate(nextProps) {
-        if (nextProps.updatedClassesNavBar !== this.state.updatedClasses) {
-            this.setState({classes: nextProps.updatedClassesNavBar,
-                updatedClasses: nextProps.updatedClassesNavBar});
+    componentDidUpdate() {
+        if (this.props.updatedClassesNavBar !== this.state.updatedClasses) {
+            this.setState({classes: this.props.updatedClassesNavBar,
+                updatedClasses: this.props.updatedClassesNavBar});
         }
     }
 

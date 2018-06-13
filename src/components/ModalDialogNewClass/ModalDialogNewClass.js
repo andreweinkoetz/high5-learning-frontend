@@ -138,7 +138,6 @@ class ModalDialogNewClass extends Component {
                 });
             }
             else {
-                console.log("bla");
                 this.setState({
                     classToAdd: {
                         title: '',
@@ -186,13 +185,6 @@ class ModalDialogNewClass extends Component {
                 else {
                     this.addNewClass(classToAdd);
                 }
-                this.setState({
-                    classToAdd: {
-                        title: '',
-                        description: '',
-                        students: []
-                    }
-                });
             }
     }
 
@@ -217,18 +209,6 @@ class ModalDialogNewClass extends Component {
         let classToAdd = {...this.state.classToAdd};
 
         let studentsOfSchool = [...this.state.studentsOfSchool];
-
-        /*let itemIsInClassToAdd = false;
-
-        classToAdd.students.forEach(function (i) {
-            if (i._id === item._id) {
-                itemIsInClassToAdd = true;
-            }
-        });
-
-        if (!itemIsInClassToAdd) {
-            classToAdd.students = [...classToAdd.students, item];
-        }*/
 
         let classToAddStudents = [...classToAdd.students];
         classToAddStudents = [...classToAddStudents, item];
@@ -278,6 +258,7 @@ class ModalDialogNewClass extends Component {
                 disableBackdropClick
                 disableEscapeKeyDown
                 open={this.props.visible}
+                onExited={this.props.onExitModal}
             >
                 {this.props.updateWished
                     ?

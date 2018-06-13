@@ -95,13 +95,16 @@ export default class ClassListView extends React.Component {
             this.props.updateNavBar(data);
             this.setState({
                 classes: [...data],
-                showModal: !oldState,
-                updateClassWished: false
+                showModal: !oldState
             });
         }).catch((e) => {
             this.props.handleNotification(e);
         });
     };
+
+    handleOnExitModal = () => {
+        this.setState({updateClassWished: false})
+    }
 
     handleUpdateClassWished = (id, t, d) => {
         ClassService.getStudentsOfClass(id).then(students => {
@@ -163,7 +166,8 @@ export default class ClassListView extends React.Component {
                     handleNotification={this.props.handleNotification}
                     informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
                     idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
-                    handleChangesOfClasses={this.handleChangesOfClasses}/>
+                    handleChangesOfClasses={this.handleChangesOfClasses}
+                    onExitModal={this.handleOnExitModal}/>
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
