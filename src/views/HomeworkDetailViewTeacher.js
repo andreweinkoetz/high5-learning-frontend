@@ -5,10 +5,11 @@ import Divider from "@material-ui/core/es/Divider/Divider";
 import Button from "@material-ui/core/Button";
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
-import LinearProgress from '@material-ui/core/LinearProgress';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import {Progress} from 'react-sweet-progress';
+import "react-sweet-progress/lib/style.css";
 
 
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
@@ -43,9 +44,10 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             selectedSubmission: [],
             empty: false,
             statistics: [],
-            submissionCount: {}
-
-        };
+            submissionCount: {},
+            submissionStatistics: []
+        }
+        ;
 
         this.handleValueSelected = this.handleValueSelected.bind(this);
     }
@@ -82,23 +84,23 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             .then(() => {
                 SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
                     .then(submission => {
-
-                        console.log(submission.submissions)
-
-
-
-
                         if (submission.submissions.length !== 0) {
+                            const submissionStatistics = [...submission.aggregatedSubmissions];
                             const exerciseStatistics = [...submission.exerciseStatistics];
                             const newSubmission = [...submission.submissions];
                             const submissionRate = Math.round(submission.submissionRate * 100);
                             const numberOfAssignedStudentsToClass = submission.count;
 
-                            const rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
+                            let rightAnswerPercentage;
+
+                            exerciseStatistics.length === 1
+                                ? rightAnswerPercentage = exerciseStatistics[0].rightAnswerPercentage * 100
+                                : rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
                                 + curr.rightAnswerPercentage) / numberOfAssignedStudentsToClass * 100);
 
+
                             var counts = [];
-                            submission.submissions.forEach( x => Object.assign(counts[x.createdAt.substring(0,10)] = (counts[x.createdAt.substring(0,10)] || 0)+1) );
+                            submission.submissions.forEach(x => Object.assign(counts[x.createdAt.substring(0, 10)] = (counts[x.createdAt.substring(0, 10)] || 0) + 1));
 
 
                             this.setState({
@@ -109,7 +111,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 rightAnswerPercentage: rightAnswerPercentage,
                                 submissionRate: submissionRate,
                                 loading: false,
-                                submissionCount: counts
+                                submissionCount: counts,
+                                submissionStatistics: submissionStatistics.reverse()
                             });
                         }
                         else {
@@ -169,8 +172,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
     render() {
 
-        console.log(this.state.submissionCount)
-
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
                 size={30}/>
@@ -223,13 +224,18 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 progress: </Typography>
                         </Grid>
                         <Grid item xs={1} sm={1}>
-                            <Typography variant={"body1"}>{this.state.submissionRate} %</Typography>
+                            {/* <Typography variant={"body1"}>{this.state.submissionRate} %</Typography>*/}
                         </Grid>
                         <Grid item xs={2} sm={2}>
-                            <LinearProgress
+                            {/*<LinearProgress
                                 variant={"determinate"}
                                 value={this.state.submissionRate}
-                                style={{paddingRight: '10px'}}/>
+                                style={{paddingRight: '10px'}}/>*/}
+                            <Progress
+                                width={'60px'}
+                                type="circle"
+                                percent={this.state.submissionRate}
+                            />
                         </Grid>
                         <Grid item xs={1} sm={1}/>
                         <Grid item xs={2} sm={2}>
@@ -237,13 +243,19 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 answers: </Typography>
                         </Grid>
                         <Grid item xs={1} sm={1}>
-                            <Typography variant={"body1"}>{this.state.rightAnswerPercentage} %</Typography>
+                            {/*<Typography variant={"body1"}>{this.state.rightAnswerPercentage} %</Typography>*/}
+
                         </Grid>
                         <Grid item xs={2} sm={2}>
-                            <LinearProgress
+                            {/*<LinearProgress
                                 variant={"determinate"}
                                 value={this.state.rightAnswerPercentage}
-                                style={{paddingRight: '10px'}}/>
+                                style={{paddingRight: '10px'}}/>*/}
+                            <Progress
+                                width={'60px'}
+                                type="circle"
+                                percent={this.state.rightAnswerPercentage}
+                            />
                         </Grid>
                     </Grid>
                 </Paper>
@@ -293,7 +305,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant={'subheading'}>Number Of Submissions</Typography>
-                        <SubmissionChart />
+                        <SubmissionChart submissionStatistics={this.state.submissionStatistics}/>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>

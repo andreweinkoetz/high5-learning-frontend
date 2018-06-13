@@ -9,38 +9,37 @@ export default class CustomTooltip extends React.Component {
         this.getIntroOfPage = this.getIntroOfPage.bind(this);
     }
 
-
     getIntroOfPage(label) {
-        if (label === 'Page A') {
-            return "Page A is about men's clothing";
-        } else if (label === '2018-05-02') {
-            return "Page B is about women's dress";
-        } else if (label === 'Page C') {
-            return "Page C is about women's bag";
-        } else if (label === 'Page D') {
-            return "Page D is about household goods";
-        } else if (label === 'Page E') {
-            return "Page E is about food";
-        } else if (label === 'Page F') {
-            return "Page F is about baby food";
+
+        for (var i = 0; i < this.props.data.length; i++) {
+            if (this.props.data[i]._id.date.toString() === label) {
+                return this.props.data[i].students.join(' ').replace(/\n/g, " ");
+            }
         }
     };
 
     render() {
-        const {active} = this.props;
+        if (this.props.data.length !== 0) {
+            const {active} = this.props;
 
-        if (active) {
-            const {payload, label} = this.props;
-            return (
-                <div className="custom-tooltip">
-                    <p className="label">{`${label} : ${payload[0].value}`}</p>
-                    <p className="intro">{this.getIntroOfPage(label)}</p>
-                    <p className="desc">Anything you want can be displayed here.</p>
-                </div>
-            );
+            if (active) {
+                const {payload, label} = this.props;
+                return (
+                    <div className="custom-tooltip">
+
+                        <p className="label">{`${label} : ${payload[0].value}`}</p>
+                        <p className="desc">Students: </p>
+                        <p className="intro">{this.getIntroOfPage(label)}</p>
+
+                    </div>
+                );
+            }
+
+            return null;
         }
+        return <div></div>
+        ;
+    }
 
-        return null;
-    };
 
 }
