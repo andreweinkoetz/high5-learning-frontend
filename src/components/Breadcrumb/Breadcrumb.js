@@ -1,5 +1,4 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
 import ArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
@@ -7,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import './Breadcrumb.css';
 
 const Breadcrumb = (props) => {
-    const {classes} = props;
+
     return (
         <Grid className="breadcrumb" container alignContent={"center"}>
         {props.breadcrumbs.map((val, index) =>

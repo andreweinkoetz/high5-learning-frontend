@@ -199,9 +199,11 @@ class ModalDialogNewClass extends Component {
 
     handleChange = item => {
 
-        let {classToAdd} = this.state;
+        let classToAdd = {...this.state.classToAdd};
 
-        let itemIsInClassToAdd = false;
+        let studentsOfSchool = [...this.state.studentsOfSchool];
+
+        /*let itemIsInClassToAdd = false;
 
         classToAdd.students.forEach(function (i) {
             if (i._id === item._id) {
@@ -211,19 +213,32 @@ class ModalDialogNewClass extends Component {
 
         if (!itemIsInClassToAdd) {
             classToAdd.students = [...classToAdd.students, item];
-        }
+        }*/
+
+        let classToAddStudents = [...classToAdd.students];
+        classToAddStudents = [...classToAddStudents, item];
+        classToAdd.students = classToAddStudents;
+
+        const chosenStudent = studentsOfSchool.find(s => s._id === item._id);
+        studentsOfSchool.splice(studentsOfSchool.indexOf(chosenStudent), 1);
 
         this.setState({
             inputValue: '',
-            classToAdd,
+            classToAdd: classToAdd,
+            studentsOfSchool: studentsOfSchool
         });
     };
 
     handleDelete = item => () => {
-        const classToAdd = {...this.state.classToAdd};
-        classToAdd.students.splice(classToAdd.students.indexOf(item), 1);
+        let classToAdd = {...this.state.classToAdd};
+        let studentsOfSchool = [...this.state.studentsOfSchool];
 
-        this.setState({classToAdd});
+        let classToAddStudents = [...classToAdd.students];
+        classToAddStudents.splice(classToAddStudents.indexOf(item), 1);
+        studentsOfSchool.push(item);
+
+        classToAdd.students = classToAddStudents;
+        this.setState({classToAdd: classToAdd, studentsOfSchool: studentsOfSchool});
     };
 
     handleTitleChange(event) {
