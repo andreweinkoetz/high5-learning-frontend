@@ -102,9 +102,10 @@ class ModalDialogNewClass extends Component {
                 description: '',
                 students: []
             },
-            error: false,
             inputValue: '',
-            studentsOfSchool: []
+            studentsOfSchool: [],
+            studentsOfSchoolAvailable: []
+
         };
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -115,26 +116,41 @@ class ModalDialogNewClass extends Component {
 
     componentWillMount() {
         SchoolService.getStudentsOfSchool("no").then(users => {
-            this.setState({studentsOfSchool: users});
-            if (this.props.updateWished) { // this is done so that the title, description and students of the class are shown when updating
-                const infoOfUpdatedClass = this.props.informationOfClassToBeUpdated; // in this props also the students of the class are saved
-                this.setState({
-                    classToAdd: infoOfUpdatedClass
-                });
-            }
+            this.setState({studentsOfSchool: users, studentsOfSchoolAvailable: users});
         }).catch(e => this.props.handleNotification(e));
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.visible && !this.props.visible) {
-            this.setState({
-                classToAdd: {
-                    title: '',
-                    description: '',
-                    students: []
-                }
-            })
+
+        if (!prevProps.visible && this.props.visible) {
+            if ((!prevProps.updateWished && this.props.updateWished)) { // this is done so that the title, description and students of the class are shown when updating
+                const infoOfUpdatedClass = this.props.informationOfClassToBeUpdated; // in this props also the students of the class are saved
+                let studentsOfSchoolAvailable = [...this.state.studentsOfSchoolAvailable];
+                infoOfUpdatedClass.students.forEach(function (c) {
+                    let element = studentsOfSchoolAvailable.find(s => s._id === c._id);
+                    studentsOfSchoolAvailable.splice(studentsOfSchoolAvailable.indexOf(element),1);
+                })
+
+                this.setState({
+                    classToAdd: infoOfUpdatedClass,
+                    studentsOfSchool: [...studentsOfSchoolAvailable],
+                    inputValue: ''
+                });
+            }
+            else {
+                console.log("bla");
+                this.setState({
+                    classToAdd: {
+                        title: '',
+                        description: '',
+                        students: []
+                    },
+                    studentsOfSchool: [...this.state.studentsOfSchoolAvailable],
+                    inputValue: ''
+                })
+            }
         }
+
     }
 
     addNewClass(classToAdd) {
@@ -156,10 +172,6 @@ class ModalDialogNewClass extends Component {
 
     handleSubmit() {
         let classToAdd = {...this.state.classToAdd};
-        if (this.props.updateWished) {
-            this.updateClass(classToAdd);
-        }
-        else {
             if (classToAdd.title === '') {
                 this.props.handleNotification({
                     title: 'No title',
@@ -168,17 +180,20 @@ class ModalDialogNewClass extends Component {
                     variant: 'warning'
                 });
             } else {
-                this.addNewClass(classToAdd);
+                if (this.props.updateWished) {
+                    this.updateClass(classToAdd);
+                }
+                else {
+                    this.addNewClass(classToAdd);
+                }
+                this.setState({
+                    classToAdd: {
+                        title: '',
+                        description: '',
+                        students: []
+                    }
+                });
             }
-        }
-
-        this.setState({
-            classToAdd: {
-                title: '',
-                description: '',
-                students: []
-            }
-        });
     }
 
     handleKeyDown = event => {
@@ -244,9 +259,6 @@ class ModalDialogNewClass extends Component {
     handleTitleChange(event) {
         const newClass = {...this.state.classToAdd};
         newClass.title = event.target.value;
-        if (event.target.value !== "") {
-            this.setState({errorState: false});
-        }
         this.setState({classToAdd: newClass});
     };
 
@@ -259,6 +271,7 @@ class ModalDialogNewClass extends Component {
     render() {
         const {classes} = this.props;
         const {inputValue, classToAdd} = this.state;
+
         return (
             <Dialog
                 style={{minWidth: 300}}
@@ -275,7 +288,6 @@ class ModalDialogNewClass extends Component {
                     <TextField
                         className={classes.inputs}
                         fullWidth
-                        error={this.state.error}
                         onChange={this.handleTitleChange}
                         label="Title"
                         value={this.state.classToAdd.title}

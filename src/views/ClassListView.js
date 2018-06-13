@@ -90,12 +90,13 @@ export default class ClassListView extends React.Component {
     };
 
     handleChangesOfClasses = () => {
+        const oldState = this.state.showModal;
         ClassService.getClassesOfUser().then((data) => {
             this.props.updateNavBar(data);
             this.setState({
                 classes: [...data],
-                loading: false,
-                showModal: false
+                showModal: !oldState,
+                updateClassWished: false
             });
         }).catch((e) => {
             this.props.handleNotification(e);
@@ -153,8 +154,8 @@ export default class ClassListView extends React.Component {
             </Grid>;
         }
 
-        let modalDialogNewClass =
-            this.state.showModal ?
+        return (
+            <div>
                 <ModalDialogNewClass
                     visible={this.state.showModal}
                     toggle={this.toggleModal}
@@ -163,11 +164,6 @@ export default class ClassListView extends React.Component {
                     informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
                     idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
                     handleChangesOfClasses={this.handleChangesOfClasses}/>
-            : null;
-
-        return (
-            <div>
-                {modalDialogNewClass}
                 <Grid container spacing={16}>
                     <Grid item xs={6} sm={6} md={6}>
                         <Typography variant={'title'}>My classes</Typography>
