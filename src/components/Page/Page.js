@@ -83,12 +83,6 @@ class Page extends React.Component {
     }
 
     render() {
-/*        const styles = {
-            distDiv: {
-                marginBottom: '40px'
-            }
-        };*/
-
 
         return (
             <div>
@@ -125,9 +119,6 @@ class Page extends React.Component {
                         {this.props.children}
                     </Grid>
                 </Grid>
-                {/*<div style={styles.distDiv}>&nbsp;</div>
-                <Footer/>*/}
-
             </div>
         );
     }
