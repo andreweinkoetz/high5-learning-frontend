@@ -135,8 +135,6 @@ export default class HomeworkDetailViewStudent extends React.Component {
             //prepare notification
             let countRightSolution = 0;
             let countExercises = this.state.exercises.length;
-            console.log(this.state.exercises[0].rightSolution);
-            console.log(this.state.selectedValues[0]);
             this.state.exercises.forEach((elem, index) => {
                 if (elem.rightSolution.toString() === this.state.selectedValues[index].toString()) {
                     countRightSolution++;
@@ -180,7 +178,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
 
     render() {
-        console.log(this.state.exercises);
+
 
         let statistics =
             <div>

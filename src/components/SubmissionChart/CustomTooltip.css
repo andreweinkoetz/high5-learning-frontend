@@ -1,23 +1,33 @@
 .label {
+    padding-left: 10px;
+    padding-top: 10px;
     font-family: "Roboto", sans-serif;
+    font-weight: bold;
     font-size: 14px;
 
 }
 
 .desc {
+    padding: 10px;
     font-family: "Roboto", sans-serif;
     font-size: 14px;
-    text-decoration: underline;
+    color: black;
+    margin-bottom: 5px;
 }
 
 .intro {
+    padding-left: 10px;
+    padding-bottom: 10px;
+    display: block;
+    width: 150px;
     font-family: "Roboto", sans-serif;
     font-size: 14px;
+    line-height: 2.0;
 }
 
 .custom-tooltip {
     background-color: whitesmoke;
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 .lineChart {
