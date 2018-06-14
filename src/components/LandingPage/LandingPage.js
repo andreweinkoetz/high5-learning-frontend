@@ -98,7 +98,19 @@ export default class LandingPage extends React.Component {
             },
             {
                 url: `${window.location.origin}/img/high-five.svg`,
-            }
+            },
+            {
+                url: `${window.location.origin}/img/andre.jfif`,
+            },
+            {
+                url: `${window.location.origin}/img/andrela.jpg`,
+            },
+            {
+                url: `${window.location.origin}/img/hermann.jfif`,
+            },
+            {
+                url: `${window.location.origin}/img/martin.jfif`,
+            },
         ];
 
         if (UserService.isAuthenticated()) {
@@ -148,7 +160,7 @@ export default class LandingPage extends React.Component {
                             students’ <b>now</b>! We want you all to succeed!
                         </p>
                     </section>
-                    {/* about our produt / service */}
+                    {/* about our product / service */}
                     <section className="content-page3">
                         <h1>WHAT WE OFFER</h1>
                         <p>Modern, intuitive e-learning platform</p>
@@ -161,10 +173,25 @@ export default class LandingPage extends React.Component {
                     {/* about our team / us */}
                     <section className="content-page4">
                         <h1>OUR TEAM</h1>
-                        <p>Andre</p>
-                        <p>Andre</p>
-                        <p>Hermann</p>
-                        <p>Martin</p>
+                        <div className="team">
+                            {/* Andre Landgraf	Hermann Grübel	Martin Lindemann Andre Weinkötz */}
+                            <div className="team-member">
+                                <p><img className="icon" src={images[6].url} alt="Andre Landgraf" height="60"
+                                        width="60"/><br/>Hermann Grübel</p>
+                            </div>
+                            <div className="team-member">
+                                <p><img className="icon" src={images[5].url} alt="Andre Weinkötz" height="60"
+                                        width="60"/><br/>Andre Landgraf</p>
+                            </div>
+                            <div className="team-member">
+                                <p><img className="icon" src={images[7].url} alt="Martin" height="60"
+                                        width="60"/><br/>Martin Lindemann</p>
+                            </div>
+                            <div className="team-member" id="last-team-member">
+                                <p><img className="icon" src={images[4].url} alt="High Five Icon" height="60"
+                                        width="60"/><br/>Andre Weinkötz</p>
+                            </div>
+                        </div>
                     </section>
                 </div>
                 {/* transparent absolute div presenting brand name & logo */}
