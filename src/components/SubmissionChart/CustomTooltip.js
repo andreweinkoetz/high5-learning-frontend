@@ -10,10 +10,15 @@ export default class CustomTooltip extends React.Component {
     }
 
     getIntroOfPage(label) {
+        const names = [];
 
         for (var i = 0; i < this.props.data.length; i++) {
             if (this.props.data[i]._id.date.toString() === label) {
-                return this.props.data[i].students.join(' ').replace(/\n/g, " ");
+                this.props.data[i].students.map((obj) => {
+                        names.push(obj.username)
+                    }
+                )
+                return names.join("\n");
             }
         }
     };
@@ -29,7 +34,7 @@ export default class CustomTooltip extends React.Component {
 
                         <p className="label">{`${label} : ${payload[0].value}`}</p>
                         <p className="desc">Students: </p>
-                        <p className="intro">{this.getIntroOfPage(label)}</p>
+                        <div className="intro">{this.getIntroOfPage(label)}</div>
 
                     </div>
                 );
@@ -38,7 +43,7 @@ export default class CustomTooltip extends React.Component {
             return null;
         }
         return <div></div>
-        ;
+            ;
     }
 
 

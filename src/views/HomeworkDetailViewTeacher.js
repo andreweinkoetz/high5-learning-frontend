@@ -86,6 +86,13 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     .then(submission => {
                         if (submission.submissions.length !== 0) {
                             const submissionStatistics = [...submission.aggregatedSubmissions];
+
+                            submissionStatistics.sort(function(a,b){
+                                // Turn your strings into dates, and then subtract them
+                                // to get a value that is either negative, positive, or zero.
+                                return new Date(b._id.date) - new Date(a._id.date);
+                            });
+
                             const exerciseStatistics = [...submission.exerciseStatistics];
                             const newSubmission = [...submission.submissions];
                             const submissionRate = Math.round(submission.submissionRate * 100);
@@ -93,10 +100,11 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
                             let rightAnswerPercentage;
 
+
                             exerciseStatistics.length === 1
                                 ? rightAnswerPercentage = exerciseStatistics[0].rightAnswerPercentage * 100
                                 : rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
-                                + curr.rightAnswerPercentage) / numberOfAssignedStudentsToClass * 100);
+                                + curr.rightAnswerPercentage) / this.state.exercises.length * 100);
 
 
                             var counts = [];
@@ -171,6 +179,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     render() {
+
+
 
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
