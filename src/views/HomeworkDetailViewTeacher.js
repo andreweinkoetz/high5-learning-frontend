@@ -242,7 +242,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 value={this.state.submissionRate}
                                 style={{paddingRight: '10px'}}/>*/}
                             <Progress
-                                width={'60px'}
+                                width={60}
                                 type="circle"
                                 percent={this.state.submissionRate}
                             />
@@ -262,7 +262,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 value={this.state.rightAnswerPercentage}
                                 style={{paddingRight: '10px'}}/>*/}
                             <Progress
-                                width={'60px'}
+                                width={60}
                                 type="circle"
                                 percent={this.state.rightAnswerPercentage}
                             />
