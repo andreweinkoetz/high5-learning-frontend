@@ -30,7 +30,9 @@ const HomeworkList = (props) => {
                         makeHomeworkInvisible={props.makeHomeworkInvisible}
                         makeHomeworkVisible={props.makeHomeworkVisible}
                         changeSwitch={props.changeSwitch}
-                        isSubmitted={submitted}/>
+                        isSubmitted={submitted}
+                        rank={props.homeworkRanking ? props.homeworkRanking[obj._id] : -1}
+                    />
                 )
             })}
         </div>

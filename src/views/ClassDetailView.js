@@ -49,7 +49,8 @@ export default class ClassDetailView extends React.Component {
             },
             availableClasses: [],
             selectedClass: "",
-            selectedHomework: ""
+            selectedHomework: "",
+            homeworkRanking: undefined
         };
 
         this.addNewHomework = this.addNewHomework.bind(this);
@@ -78,9 +79,18 @@ export default class ClassDetailView extends React.Component {
                 submissions: [...data.submissions],
                 loading: false
             });
-        }).catch((e) => {
-            this.props.handleNotification(e);
-        });
+            if(UserService.isTeacher()){
+                return undefined;
+            }
+            return SubmissionService.getRankingOfSubmissions(this.state.currentClass.id);
+        })
+            .then((homeworkRanking) => {
+                this.setState({homeworkRanking: homeworkRanking})
+            })
+
+            .catch((e) => {
+                this.props.handleNotification(e);
+            });
 
     }
 
@@ -131,6 +141,7 @@ export default class ClassDetailView extends React.Component {
                 linkName: this.props.location.state.title,
                 id: this.props.location.state.id
             }]);
+
     }
 
     toggleModal() {
@@ -257,7 +268,7 @@ export default class ClassDetailView extends React.Component {
 
             let availableClasses = [...this.state.availableClasses];
             let updatedClass = availableClasses.find(c => c._id === this.state.currentClass.id);
-            let updatedHW =  updatedClass.homework.find(h => h._id === updatedHomework._id);
+            let updatedHW = updatedClass.homework.find(h => h._id === updatedHomework._id);
             updatedHW.title = updatedHomework.title;
             updatedHW.exercises = updatedHomework.exercises;
 
@@ -411,7 +422,7 @@ export default class ClassDetailView extends React.Component {
 
     handleUpdateHomework = (id) => {
         SubmissionService.getSubmissionOfHomework(id).then(submissions => {
-            if(submissions.count === 0) {
+            if (submissions.count === 0) {
                 HomeworkService.getHomeworkDetail(id).then((homework) => {
                     const homeworkToUpdate = {
                         title: homework.title,
@@ -454,7 +465,7 @@ export default class ClassDetailView extends React.Component {
     };
 
     handleHomeworkSelected = (event) => {
-        if(event.target.value !== "") {
+        if (event.target.value !== "") {
             const availableClasses = [...this.state.availableClasses];
             const selectedClass = availableClasses.find(c => c._id === this.state.selectedClass);
             const selectedHomework = selectedClass.homework.find(e => e._id === event.target.value);
@@ -467,22 +478,22 @@ export default class ClassDetailView extends React.Component {
     };
 
     handleClassSelected = (event) => {
-        if(event.target.value !== "") {
+        if (event.target.value !== "") {
             const availableClasses = [...this.state.availableClasses];
             const selectedClass = availableClasses.find(e => e._id === event.target.value);
             if (selectedClass._id !== this.state.selectedClass) {
-                let homeworkToAddErrors=  {
+                let homeworkToAddErrors = {
                     title: false,
                     exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
                 };
 
                 let homeworkToAdd =
-                {
-                    title: "",
-                    exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
-                    assignedClass: '',
-                    visible: false
-                };
+                    {
+                        title: "",
+                        exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
+                        assignedClass: '',
+                        visible: false
+                    };
 
                 let ableToDeleteExercises = false;
 
@@ -604,6 +615,7 @@ export default class ClassDetailView extends React.Component {
                                             makeHomeworkVisible={this.handleMakeHomeworkVisible}
                                             changeSwitch={this.handleSwitchChange}
                                             submissions={this.state.submissions}
+                                            homeworkRanking={this.state.homeworkRanking}
                             />}
                     </Grid>
                 </Grid>

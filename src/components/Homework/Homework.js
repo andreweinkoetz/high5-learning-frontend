@@ -10,6 +10,7 @@ import Switch from '@material-ui/core/Switch';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import {withStyles} from '@material-ui/core/styles';
+import CakeIcon from '@material-ui/icons/Cake';
 
 import UserService from '../../services/UserService';
 import Tooltip from "@material-ui/core/es/Tooltip/Tooltip";
@@ -48,10 +49,12 @@ const styles = theme => ({
         textTransform: 'none'
     },
     panelDisabled: {
-        /*borderStyle: 'solid',
-        borderColor: theme.palette.secondary.main,
-        border: 2*/
         backgroundColor: 'rgba(158,158,158,0.2)'
+    },
+    cakeIcon: {
+        color: theme.palette.primary.main,
+        fontSize: 32,
+        marginRight: 10
     }
 });
 
@@ -60,14 +63,14 @@ const Homework = (props) => {
 
     const {classes} = props;
 
-    let buttonsForTeacher = <div></div>;
+    let panelDetail = <div></div>;
     let secondaryContent = <div></div>;
 
     const hwIcon = props.isSubmitted ? <AssignmentTurnedInIcon className={classes.hwIcon}/> :
         <AssignmentIcon className={classes.hwIcon}/>;
 
     if (UserService.isTeacher()) {
-        buttonsForTeacher =
+        panelDetail =
             <Typography>
                 Statistics of homework<br/>
                 Here will be some statistics<br/>
@@ -85,6 +88,11 @@ const Homework = (props) => {
             <Switch checked={props.homeworkVisible} color={"primary"}
                     onChange={props.changeSwitch(props.id)}/>
         </Tooltip>;
+    } else {
+        secondaryContent= props.rank === 1 && <CakeIcon className={classes.cakeIcon}/>;
+        panelDetail = props.rank ?
+            <Typography>{props.rank === 1 ? "Congratulations! ": "Well done! "}You've submitted your solutions as #{props.rank}!</Typography>
+            : <Typography>You haven't submitted this homework yet.</Typography>
     }
 
     return (
@@ -118,7 +126,7 @@ const Homework = (props) => {
                 </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-                {buttonsForTeacher}
+                {panelDetail}
             </ExpansionPanelDetails>
         </ExpansionPanel>
     );

@@ -27,6 +27,16 @@ export default class SubmissionService {
         })
     }
 
+    static getRankingOfSubmissions(classId) {
+        return new Promise((resolve, reject) => {
+            HttpService.get(`${SubmissionService.baseUrl()}ranking/` + classId, function (data) {
+                resolve(data);
+            }, function (textStatus) {
+                reject(textStatus);
+            });
+        })
+    }
+
     static addNewSubmission(submissionToAdd) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${SubmissionService.baseUrl()}`, submissionToAdd,
