@@ -33,7 +33,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             exercises: [],
             loading: false,
             exerciseStatistics: [],
-            numberOfAssignedStudentsToClass: 0,
             submissionRate: 0,
             selectedStudent: "All",
             studentsOfClass: [],
@@ -46,8 +45,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             statistics: [],
             submissionCount: {},
             submissionStatistics: []
-        }
-        ;
+        };
 
         this.handleValueSelected = this.handleValueSelected.bind(this);
     }
@@ -96,7 +94,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                             const exerciseStatistics = [...submission.exerciseStatistics];
                             const newSubmission = [...submission.submissions];
                             const submissionRate = Math.round(submission.submissionRate * 100);
-                            const numberOfAssignedStudentsToClass = submission.count;
 
                             let rightAnswerPercentage;
 
@@ -114,8 +111,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                             this.setState({
                                 allSubmissions: newSubmission,
                                 exerciseStatistics: exerciseStatistics,
-                                numberOfStudentsSubmitted: 4,
-                                numberOfAssignedStudentsToClass: 8,
                                 rightAnswerPercentage: rightAnswerPercentage,
                                 submissionRate: submissionRate,
                                 loading: false,

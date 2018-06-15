@@ -14,11 +14,11 @@ export default class CustomTooltip extends React.Component {
 
         for (var i = 0; i < this.props.data.length; i++) {
             if (this.props.data[i]._id.date.toString() === label) {
-                this.props.data[i].students.map((obj) => {
+                this.props.data[i].students.forEach((obj) => {
                         names.push(obj.username)
                     }
                 )
-                return names.join("\n");
+                return names.reverse().join("\n");
             }
         }
     };
