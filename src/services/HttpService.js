@@ -19,18 +19,11 @@ export default class HttpService {
         }).then((resp) => {
             if (resp.ok) {
                 return resp.json();
-            }
-            else if (this.checkIfUnauthorized(resp)) {
-                let res = this.addErrorMessageUnauthorized(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-
-            } else if (this.checkIfForbidden(resp)) {
-                let res = this.addErrorMessageForbidden(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-            }
-            else {
+            } else {
                 resp.json().then((json) => {
-                    onError({code: resp.status, title: json.error, msg: json.message});
+                    onError({code: json.code, title: json.error, msg: json.message});
+                }).catch(() => {
+                    onError({code: 500, title: 'Server error', msg: 'Unknown error in backend'});
                 });
             }
         }).then((resp) => {
@@ -58,18 +51,11 @@ export default class HttpService {
         }).then((resp) => {
             if (resp.ok) {
                 return resp.json();
-            }
-            else if (this.checkIfUnauthorized(resp)) {
-                let res = this.addErrorMessageUnauthorized(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-
-            } else if (this.checkIfForbidden(resp)) {
-                let res = this.addErrorMessageForbidden(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-            }
-            else {
+            } else {
                 resp.json().then((json) => {
-                    onError({code: resp.status, title: json.error, msg: json.message});
+                    onError({code: json.code, title: json.error, msg: json.message});
+                }).catch(() => {
+                    onError({code: 500, title: 'Server error', msg: 'Unknown error in backend'});
                 });
             }
         }).then((resp) => {
@@ -98,17 +84,11 @@ export default class HttpService {
             if (resp.ok) {
                 return resp.json();
             }
-            else if (this.checkIfUnauthorized(resp)) {
-                let res = this.addErrorMessageUnauthorized(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-
-            } else if (this.checkIfForbidden(resp)) {
-                let res = this.addErrorMessageForbidden(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-            }
             else {
                 resp.json().then((json) => {
-                    onError({code: resp.status, title: json.error, msg: json.message});
+                    onError({code: json.code, title: json.error, msg: json.message});
+                }).catch(() => {
+                    onError({code: 500, title: 'Server error', msg: 'Unknown error in backend'});
                 });
             }
         }).then((resp) => {
@@ -134,18 +114,11 @@ export default class HttpService {
         }).then((resp) => {
             if (resp.ok) {
                 return resp.json();
-            }
-            else if (this.checkIfUnauthorized(resp)) {
-                let res = this.addErrorMessageUnauthorized(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-
-            } else if (this.checkIfForbidden(resp)) {
-                let res = this.addErrorMessageForbidden(resp);
-                onError({code: resp.status, title: res.error, msg: res.message});
-            }
-            else {
+            } else {
                 resp.json().then((json) => {
                     onError(json.error);
+                }).catch(() => {
+                    onError({code: 500, title: 'Server error', msg: 'Unknown error in backend'});
                 });
             }
         }).then((resp) => {
@@ -154,27 +127,4 @@ export default class HttpService {
             onError(e);
         });
     }
-
-    static checkIfUnauthorized(res) {
-        return (res.status === 401);
-    }
-
-    static addErrorMessageUnauthorized(res) {
-        let resUpdate = {...res};
-        resUpdate["error"] = "Unauthorized";
-        resUpdate["message"] = "Please login or register.";
-        return resUpdate;
-    }
-
-    static checkIfForbidden(res) {
-        return (res.status === 403);
-    }
-
-    static addErrorMessageForbidden(res) {
-        let resUpdate = {...res};
-        res["error"] = "Forbidden";
-        res["message"] = "You are not allowed to use this feature.";
-        return resUpdate;
-    }
-
 }
