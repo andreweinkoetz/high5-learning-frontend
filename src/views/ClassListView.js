@@ -52,7 +52,9 @@ export default class ClassListView extends React.Component {
                     });
                 }
             })
-            .then(() => {
+            .catch((e) => {
+                this.props.handleNotification(e);
+            });
                 ClassService.getOpenHomeworkOfStudent().then(openHw => {
                     if (openHw) {
                         this.setState({
@@ -61,7 +63,6 @@ export default class ClassListView extends React.Component {
                         })
                     }
                 })
-            })
             .catch((e) => {
                 this.props.handleNotification(e);
             });

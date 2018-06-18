@@ -69,9 +69,11 @@ export default class ClassDetailView extends React.Component {
             }
         });
 
-        ClassService.getAllHomeworkOfUser().then((homework) => {
-            this.setState({availableClasses: [...homework]})
-        });
+        if (UserService.isTeacher()) {
+            ClassService.getAllHomeworkOfUser().then((homework) => {
+                this.setState({availableClasses: [...homework]})
+            });
+        }
 
         ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
             this.setState({
