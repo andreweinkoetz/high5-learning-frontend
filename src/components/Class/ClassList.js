@@ -9,6 +9,7 @@ const ClassList = (props) => {
                 {props.classes.map((obj) => {
                     return (
                         <Class key={obj._id} id={obj._id} title={obj.title} description={obj.description}
+                               studentCount = {obj.students.length}
                                updateClassInfo={props.updateClassInfo}
                                openHomework={props.openHomework ? props.openHomework[obj._id] : undefined}
                                createdAt={obj.createdAt}

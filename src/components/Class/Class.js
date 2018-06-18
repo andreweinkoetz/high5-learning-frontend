@@ -105,6 +105,10 @@ const Class = (props) => {
 
             <ExpansionPanelDetails>
                 {UserService.isTeacher() ? <div>
+                        <Tooltip id="tooltip-studentCount" title="To add more students to this class, update the class information.">
+                            <i>You added {props.studentCount} students to this class.</i>
+                        </Tooltip>
+                        <br/><br/>
                         <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
                                 onClick={() => props.updateClassInfo(props.id, props.title, props.description)}>
                             Update class information</Button>
