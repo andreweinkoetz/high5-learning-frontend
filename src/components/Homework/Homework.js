@@ -72,9 +72,11 @@ const Homework = (props) => {
     if (UserService.isTeacher()) {
         panelDetail =
             <Typography>
-                Statistics of homework<br/>
-                Here will be some statistics<br/>
-                Here will be some statistics<br/>
+                <Tooltip id="visibility-info"
+                         title={"Use the switch one the ride side of this panel to make the homework" + (props.homeworkVisible ? " invisible " : " visible ") + "for your students"}>
+                    <i id="visibility-info">{props.homeworkVisible ? "This homework is visible for your students." : "This homework is invisible for your students"}</i>
+                </Tooltip>
+                <br/><br/>
                 {props.homeworkVisible ? null
                     : <Button variant="raised" color="primary" style={{marginRight: '20px', marginTop: '10px'}}
                               onClick={() => props.updateHomework(props.id)}>
