@@ -71,7 +71,7 @@ const ModalDialogNewHomework = (props) => {
                 disableEscapeKeyDown
                 open={props.visible}
             >
-                <FormControl>
+                <FormControl style={{margin: '10px'}}>
                     <InputLabel>Selected class</InputLabel>
                     <Select
                         value={props.selectedClass}
@@ -80,7 +80,7 @@ const ModalDialogNewHomework = (props) => {
                         {availableClasses}
                     </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl style={{margin: '10px'}}>
                     <InputLabel>Selected homework</InputLabel>
                     <Select
                         value={props.selectedHomework}

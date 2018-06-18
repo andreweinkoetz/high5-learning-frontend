@@ -76,10 +76,10 @@ const Homework = (props) => {
                 Here will be some statistics<br/>
                 Here will be some statistics<br/>
                 {props.homeworkVisible ? null
-                    : <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
+                    : <Button variant="raised" color="primary" style={{marginRight: '20px', marginTop: '10px'}}
                               onClick={() => props.updateHomework(props.id)}>
                         Update homework</Button>}
-                <Button variant="raised" color="secondary" style={{marginLeft: '10px', marginTop: '10px'}}
+                <Button variant="raised" color="secondary" style={{marginTop: '10px'}}
                         onClick={() => props.deleteHomework(props.id)}>
                     Delete homework</Button>
             </Typography>;
