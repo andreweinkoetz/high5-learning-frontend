@@ -217,7 +217,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     </Grid>
                 </Paper>
 
-                <Divider/>
 
                 <Paper elevation={4}>
                     <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
@@ -306,20 +305,30 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
                 <Grid container spacing={16}>
 
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{minHeight:56}}>
                         <Typography variant={'title'}>Homework: {this.state.title}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        {statistics}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant={'subheading'}>Number Of Submissions</Typography>
-                        <SubmissionChart submissionStatistics={this.state.submissionStatistics}/>
+                        <Typography variant={'caption'}>This is where you find your statistics. A feature way to advanced for f*cking 5-8 credits.</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
+                        {statistics}
+                    </Grid>
+                    <Grid item xs={12} style={{marginTop:10}}>
+                        <Divider/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant={'subheading'}>Submission rate</Typography>
+                        {this.state.submissionRate > 0 ?
+                            <SubmissionChart submissionStatistics={this.state.submissionStatistics}/>
+                        : <Typography>There are no submissions yet.</Typography>}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Divider/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant={'subheading'}>Results of students</Typography>
                         {result}
                     </Grid>
                     {backButton}

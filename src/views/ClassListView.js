@@ -134,7 +134,7 @@ export default class ClassListView extends React.Component {
 
     render() {
 
-        let addClassButton;
+        let addClassButton = null;
 
         if (UserService.isTeacher()) {
             addClassButton = <Grid item xs={6} sm={6} md={6}>
@@ -154,11 +154,6 @@ export default class ClassListView extends React.Component {
                     </Grid>
                 </Grid>
             </Grid>;
-        } else {
-            addClassButton = <Grid item xs={6} sm={6} md={6}>
-                <Grid container spacing={0} align={'right'}>
-                </Grid>
-            </Grid>;
         }
 
         return (
@@ -173,8 +168,9 @@ export default class ClassListView extends React.Component {
                     handleChangesOfClasses={this.handleChangesOfClasses}
                     onExitModal={this.handleOnExitModal}/>
                 <Grid container spacing={16}>
-                    <Grid item xs={6} sm={6} md={6}>
+                    <Grid item xs={addClassButton ? 6 : 12} sm={addClassButton ? 6 : 12} md={addClassButton ? 6 : 12} style={{minHeight:56}}>
                         <Typography variant={'title'}>My classes</Typography>
+                        <Typography variant={'caption'}>Below you find all your classes</Typography>
                     </Grid>
                     {addClassButton}
                     <Grid item xs={12}>

@@ -12,6 +12,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import {withStyles} from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Typography from "@material-ui/core/es/Typography/Typography";
 
 const styles = theme => ({
     icons: {
@@ -25,25 +26,32 @@ const NavBar = (props) => {
 
     let myClasses = props.myClasses.map(c => {
         return (
-                <ListItem
-                    key={c._id}
-                    button
-                    component={Link}
-                    to={{
-                        pathname: `/myclasses/${c.title}`,
-                        state:
-                            {
-                                title: c.title,
-                                id: c._id
-                            }
-                    }}>
-                    <ListItemText inset primary={c.title}/>
-                </ListItem>)
+            <ListItem
+                key={c._id}
+                button
+                component={Link}
+                to={{
+                    pathname: `/myclasses/${c.title}`,
+                    state:
+                        {
+                            title: c.title,
+                            id: c._id
+                        }
+                }}>
+                <ListItemText inset primary={c.title}/>
+            </ListItem>)
     });
 
-    return (<div>
+    return (<div style={{paddingLeft:50}}>
+        <div style={{minHeight:56}}>
+            <Typography variant={'title'}>Menu</Typography>
+            <Typography variant={'caption'}>Find all you need here</Typography>
+        </div>
+
+        <Divider/>
+
         <List>
-            <ListItem button component={Link} to={"/myclasses"} >
+            <ListItem button component={Link} to={"/myclasses"}>
                 <GroupIcon className={classes.icons}/>
                 <ListItemText primary="My classes"/>
             </ListItem>

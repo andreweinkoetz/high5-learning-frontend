@@ -543,7 +543,7 @@ export default class ClassDetailView extends React.Component {
 
     render() {
 
-        let addNewHomeworkButton;
+        let addNewHomeworkButton = null;
 
         if (UserService.isTeacher()) {
             addNewHomeworkButton = <Grid item xs={6} sm={6} md={6}>
@@ -563,11 +563,6 @@ export default class ClassDetailView extends React.Component {
                     </Grid>
                 </Grid>
             </Grid>;
-        } else {
-            addNewHomeworkButton = <Grid item xs={6} sm={6} md={6}>
-                <Grid container spacing={0} align={'right'}>
-                </Grid>
-            </Grid>
         }
 
         let modal = this.state.showModal ? <ModalDialogNewHomework
@@ -596,8 +591,9 @@ export default class ClassDetailView extends React.Component {
             <div>
                 {modal}
                 <Grid container spacing={16}>
-                    <Grid item xs={6} sm={6} md={6}>
-                        <Typography variant={'title'}>My homework of {this.state.currentClass.title} </Typography>
+                    <Grid item xs={addNewHomeworkButton ? 6 : 12} sm={6} md={6}>
+                        <Typography variant={'title'}>My homework</Typography>
+                        <Typography variant={'caption'}>This your homework in class: {this.state.currentClass.title} </Typography>
                     </Grid>
                     {addNewHomeworkButton}
                     <Grid item xs={12}>

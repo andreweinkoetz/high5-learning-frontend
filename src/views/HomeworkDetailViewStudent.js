@@ -4,12 +4,7 @@ import Typography from "@material-ui/core/es/Typography/Typography";
 import Divider from "@material-ui/core/es/Divider/Divider";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
-import Paper from '@material-ui/core/Paper';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import ExerciseList from "../components/Exercise/ExerciseList";
 import ExerciseListSolutionStudent from "../components/Exercise/ExerciseListSolutionStudent";
@@ -139,7 +134,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
                 if (elem.rightSolution.toString() === this.state.selectedValues[index].toString()) {
                     countRightSolution++;
                 }
-            })
+            });
 
             //here setting state to rerender in order to get to student submission after pressing submit
             this.setState({
@@ -171,70 +166,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
     };
 
-    handleValueSelected = (event) => {
-        const newValueSelected = event.target.value;
-        this.setState({selectedStudent: newValueSelected});
-    };
-
-
     render() {
-
-
-        let statistics =
-            <div>
-                <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
-                    <Grid container spacing={0} direction={"row"}>
-                        <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                            <Typography variant={"subheading"}>Select: Aggregation level (Required)</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <FormControl style={{minWidth: '120px'}}>
-                                {/* <InputLabel>Select student</InputLabel> */}
-                                <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
-                                    <MenuItem value={"All"}>All</MenuItem>
-                                    <MenuItem value={"Test"}>Test</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                </Paper>
-                <Divider/>
-                <Paper elevation={4}>
-                    <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                        <Typography variant={"subheading"}>Statistics</Typography>
-                    </Grid>
-                    <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
-                        <Grid item xs={2} sm={2}>
-                            <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
-                                progress: </Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1}>
-                            <Typography variant={"body1"}>{this.state.progressOfStudents} %</Typography>
-                        </Grid>
-                        <Grid item xs={2} sm={2}>
-                            <LinearProgress
-                                variant={"determinate"}
-                                value={this.state.progressOfStudents}
-                                style={{paddingRight: '10px'}}/>
-                        </Grid>
-                        <Grid item xs={1} sm={1}/>
-                        <Grid item xs={2} sm={2}>
-                            <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
-                                answers: </Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1}>
-                            <Typography variant={"body1"}>{this.state.percentageCorrectAnswers} %</Typography>
-                        </Grid>
-                        <Grid item xs={2} sm={2}>
-                            <LinearProgress
-                                variant={"determinate"}
-                                value={this.state.percentageCorrectAnswers}
-                                style={{paddingRight: '10px'}}/>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </div>;
-
 
         let buttonsForStudents = <Grid item xs={12}>
             <Grid container align="center" spacing={8}>
@@ -273,11 +205,9 @@ export default class HomeworkDetailViewStudent extends React.Component {
         return (
             <div>
                 <Grid container spacing={16}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{minHeight:56}}>
                         <Typography variant={'title'}>Homework: {this.state.title}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        {UserService.isTeacher() ? statistics : null}
+                        <Typography variant={'caption'}>Please do your homework alone and in a quiet environment.</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>

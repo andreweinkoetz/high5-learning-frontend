@@ -1,5 +1,5 @@
 .breadcrumb {
-    padding-left: 25px;
+    padding-left: 50px;
 }
 
 .arrowRight {
@@ -15,4 +15,10 @@
 .link:hover {
     text-decoration: underline;
     color: blue;
+}
+
+@media screen and (max-width: 600px) {
+    .breadcrumb {
+        padding-left: 30px;
+    }
 }
