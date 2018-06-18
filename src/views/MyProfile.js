@@ -45,7 +45,25 @@ export default class MyProfile extends React.Component {
     };
 
     handleSubmit = () => {
-        UserService.changePassword(this.state.password).then(token => {
+        if(!this.state.confirmPassword){
+            this.props.handleNotification({
+                title:'Confirmation needed',
+                msg: 'Please enter your new password in both fields!',
+                variant: 'warning'
+            });
+            return;
+        }
+
+        if(this.state.noMatch){
+            this.props.handleNotification({
+                title:'Passwords do not match',
+                msg: 'The password you entered for confirmation does not match your password.',
+                variant: 'warning'
+            });
+            return;
+        }
+
+        UserService.changePassword(this.state.password).then(() => {
             if (UserService.isAuthenticated()) {
                 this.setState({password: '', confirmPassword: ''});
                 this.props.handleNotification({
@@ -90,6 +108,7 @@ export default class MyProfile extends React.Component {
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
+                            value={this.state.password}
                             label="Password"
                             helperText="Required"
                             type="password"
@@ -100,6 +119,7 @@ export default class MyProfile extends React.Component {
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
+                            value={this.state.confirmPassword}
                             label="Confirm password"
                             helperText="Required"
                             type="password"
@@ -110,7 +130,7 @@ export default class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={12} style={{textAlign:'center'}}>
                         <Button
-                            disabled={this.state.noMatch || (this.state.password === '' || this.state.confirmPassword === '')}
+                            /*disabled={this.state.noMatch || (this.state.password === '' || this.state.confirmPassword === '')}*/
                             className="Button"
                             color="primary"
                             variant="raised"
