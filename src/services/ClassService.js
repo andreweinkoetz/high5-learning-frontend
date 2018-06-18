@@ -31,17 +31,6 @@ export default class ClassService {
 
     }
 
-    static getClassDetail(classId){
-        return new Promise((resolve, reject) => {
-            HttpService.get(`${ClassService.baseUrl()}/details/` + classId,
-                function(data) {
-                    resolve(data);
-                }, function(error) {
-                    reject(error);
-                });
-        });
-    }
-
     static getOpenHomeworkOfStudent(classId){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}/openhw/` + classId,

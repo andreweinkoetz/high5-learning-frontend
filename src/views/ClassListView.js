@@ -52,20 +52,22 @@ export default class ClassListView extends React.Component {
                     });
                 }
             })
-            .catch((e) => {
-                this.props.handleNotification(e);
-            });
-                ClassService.getOpenHomeworkOfStudent().then(openHw => {
-                    if (openHw) {
-                        this.setState({
-                            openHomework: {...openHw},
-                            loading: false
-                        })
-                    }
-                })
-            .catch((e) => {
-                this.props.handleNotification(e);
-            });
+            .then(() => {
+                return ClassService.getOpenHomeworkOfStudent();
+            })
+            .then(openHw => {
+                if (openHw) {
+                    this.setState({
+                        openHomework: {...openHw},
+                        loading: false
+                    })
+                }
+            })
+            .catch(
+                (e) => {
+                    this.props.handleNotification(e);
+                }
+            );
     };
 
     componentDidMount() {
@@ -88,7 +90,8 @@ export default class ClassListView extends React.Component {
             errorState: errorStateWhenClickingAdd,
             updateClassWished: false
         });
-    };
+    }
+    ;
 
     handleChangesOfClasses = () => {
         const oldState = this.state.showModal;
@@ -105,7 +108,7 @@ export default class ClassListView extends React.Component {
 
     handleOnExitModal = () => {
         this.setState({updateClassWished: false})
-    }
+    };
 
     handleUpdateClassWished = (id, t, d) => {
         ClassService.getStudentsOfClass(id).then(students => {
