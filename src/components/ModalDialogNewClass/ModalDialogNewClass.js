@@ -14,7 +14,6 @@ import Chip from '@material-ui/core/Chip';
 
 import SchoolService from '../../services/SchoolService';
 import ClassService from '../../services/ClassService';
-import './ModalDialogNewClass.css';
 
 const styles = theme => ({
     root: {
@@ -104,7 +103,8 @@ class ModalDialogNewClass extends Component {
             },
             inputValue: '',
             studentsOfSchool: [],
-            studentsOfSchoolAvailable: []
+            studentsOfSchoolAvailable: [],
+            errorState: false
 
         };
         this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -154,10 +154,13 @@ class ModalDialogNewClass extends Component {
 
     addNewClass(classToAdd) {
 
-        ClassService.addNewClass(classToAdd).then((newClass) => {
+        ClassService.addNewClass(classToAdd).then((newClass, error) => {
+                console.log(error);
                 this.props.handleChangesOfClasses();
             }
-        ).catch(e => this.props.handleNotification(e));
+        ).catch((e) => {
+            console.log(e);
+            this.props.handleNotification(e)});
 
     };
 
@@ -172,6 +175,7 @@ class ModalDialogNewClass extends Component {
     handleSubmit() {
         let classToAdd = {...this.state.classToAdd};
             if (classToAdd.title === '') {
+                this.setState({errorState: true});
                 this.props.handleNotification({
                     title: 'No title',
                     msg: 'Your class must have a title.',
@@ -239,7 +243,7 @@ class ModalDialogNewClass extends Component {
     handleTitleChange(event) {
         const newClass = {...this.state.classToAdd};
         newClass.title = event.target.value;
-        this.setState({classToAdd: newClass});
+        this.setState({classToAdd: newClass, errorState: false}); // user did anything, so error state should be false
     };
 
     handleDescriptionChange(event) {
@@ -269,6 +273,7 @@ class ModalDialogNewClass extends Component {
                     <TextField
                         className={classes.inputs}
                         fullWidth
+                        error={this.state.errorState}
                         onChange={this.handleTitleChange}
                         label="Title"
                         value={this.state.classToAdd.title}

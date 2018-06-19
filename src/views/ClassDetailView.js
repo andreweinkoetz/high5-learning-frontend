@@ -28,7 +28,6 @@ export default class ClassDetailView extends React.Component {
             submissions: [],
             ableToDeleteExercises: false,
             errorText: [],
-            errorState: false,
             updateHomeworkWished: false,
             idOfToBeUpdatedHomework: "",
             homeworkToAddErrors: {
@@ -178,6 +177,7 @@ export default class ClassDetailView extends React.Component {
 
         let newErrorText = [];
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
+        let newHomeworkErrorsExercises = [...newHomeworkErrors.exercises];
 
         if (newHomeworkToAdd.title === "") {
             newHomeworkErrors.title = true;
@@ -188,14 +188,14 @@ export default class ClassDetailView extends React.Component {
             if (newHomeworkToAdd.exercises[i].question === "") {
                 newErrorText.push("For exercise " + (i + 1) + " the question is missing!");
             }
-            newHomeworkErrors.exercises[i].question = (newHomeworkToAdd.exercises[i].question === "");
+            newHomeworkErrorsExercises[i].question = (newHomeworkToAdd.exercises[i].question === "");
         }
 
         for (let i = 0; i < newHomeworkToAdd.exercises.length; i++) {
             if (newHomeworkToAdd.exercises[i].rightSolution === "") {
                 newErrorText.push("For exercise " + (i + 1) + " the right solution is missing!");
             }
-            newHomeworkErrors.exercises[i].rightSolution = (newHomeworkToAdd.exercises[i].rightSolution === "");
+            newHomeworkErrorsExercises[i].rightSolution = (newHomeworkToAdd.exercises[i].rightSolution === "");
         }
 
         for (let i = 0; i < newHomeworkToAdd.exercises.length; i++) {
@@ -203,11 +203,14 @@ export default class ClassDetailView extends React.Component {
                 if (newHomeworkToAdd.exercises[i].answers[a] === "") {
                     newErrorText.push("For exercise " + (i + 1) + " answer " + (a + 1) + " is missing!");
                 }
-                newHomeworkErrors.exercises[i].answers[a] = (newHomeworkToAdd.exercises[i].answers[a] === "");
+                newHomeworkErrorsExercises[i].answers[a] = (newHomeworkToAdd.exercises[i].answers[a] === "");
             }
         }
 
+        newHomeworkErrors.exercises = newHomeworkErrorsExercises;
+
         if (newErrorText.length !== 0) {
+            this.setState({homeworkToAddErrors: newHomeworkErrors});
             this.props.handleNotification({
                 title: 'Some problems found',
                 msg: newErrorText.toString(),
@@ -229,15 +232,12 @@ export default class ClassDetailView extends React.Component {
         let newHomework = {...this.state.homeworkToAdd};
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         newHomework.title = event.target.value;
-        let oldErrorState = {...this.state.errorState};
         if (event.target.value !== "") {
             newHomeworkErrors.title = false;
-            oldErrorState = false;
         }
         this.setState({
             homeworkToAdd: newHomework,
-            homeworkToAddErrors: newHomeworkErrors,
-            errorState: oldErrorState
+            homeworkToAddErrors: newHomeworkErrors
         });
     }
 
@@ -285,15 +285,12 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
         exerciseIDData.question = event.target.value;
-        let oldErrorState = {...this.state.errorState};
         if (event.target.value !== "") {
             exerciseIDErrorData.question = false;
-            oldErrorState = false;
         }
         this.setState({
             homeworkToAdd: newHomework,
-            homeworkToAddErrors: newHomeworkErrors,
-            errorState: oldErrorState
+            homeworkToAddErrors: newHomeworkErrors
         });
     };
 
@@ -304,7 +301,7 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
         exerciseIDData.rightSolution = event.target.value;
         exerciseIDErrorData.rightSolution = true;
-        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors, errorState: false});
+        this.setState({homeworkToAdd: newHomework, homeworkToAddErrors: newHomeworkErrors});
     };
 
     handleChangeAnswers = (id, answerID) => (event) => {
@@ -312,16 +309,13 @@ export default class ClassDetailView extends React.Component {
         let newHomeworkErrors = {...this.state.homeworkToAddErrors};
         let exerciseIDData = newHomework.exercises.find(e => e.id === id);
         exerciseIDData.answers[answerID] = event.target.value;
-        let oldErrorState = {...this.state.errorState};
         if (event.target.value !== "") {
             let exerciseIDErrorData = newHomeworkErrors.exercises.find(e => e.id === id);
             exerciseIDErrorData.answers[answerID] = false;
-            oldErrorState = false;
         }
         this.setState({
             homeworkToAdd: newHomework,
-            homeworkToAddErrors: newHomeworkErrors,
-            errorState: oldErrorState
+            homeworkToAddErrors: newHomeworkErrors
         });
     };
 
