@@ -155,11 +155,9 @@ class ModalDialogNewClass extends Component {
     addNewClass(classToAdd) {
 
         ClassService.addNewClass(classToAdd).then((newClass, error) => {
-                console.log(error);
                 this.props.handleChangesOfClasses();
             }
         ).catch((e) => {
-            console.log(e);
             this.props.handleNotification(e)});
 
     };
