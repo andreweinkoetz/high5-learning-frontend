@@ -72,7 +72,7 @@ const ModalDialogNewHomework = (props) => {
                 disableEscapeKeyDown
                 open={props.visible}
             >
-                <Typography variant="subheading" align="center" style={{marginTop: '5px'}}>Copy previous created homework from classes</Typography>
+                <Typography variant="subheading" align="left" style={{marginTop: '15px', marginLeft: '20px'}}>Copy previous created homework from classes</Typography>
                 <FormControl style={{marginLeft: '20px', marginRight: '20px', marginBottom: '5px'}}>
                     <InputLabel>Selected class</InputLabel>
                     <Select
