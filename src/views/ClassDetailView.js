@@ -389,7 +389,7 @@ export default class ClassDetailView extends React.Component {
                     loading: false
                 });
             })
-            .catch(e => console.log(e));
+            .catch(e => this.props.handleNotification(e));
     };
 
     handleMakeHomeworkInvisble = (id) => {
@@ -401,7 +401,7 @@ export default class ClassDetailView extends React.Component {
                     loading: false
                 });
             })
-            .catch(e => console.log(e));
+            .catch(e => this.props.handleNotification(e));
     };
 
     handleSwitchChange = (id) => (event) => {
@@ -413,7 +413,7 @@ export default class ClassDetailView extends React.Component {
                     loading: false
                 });
             })
-            .catch(e => console.log(e));
+            .catch(e => this.props.handleNotification(e));
     };
 
     handleUpdateHomework = (id) => {

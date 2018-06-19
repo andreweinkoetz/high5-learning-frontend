@@ -67,7 +67,6 @@ const styles = theme => ({
 function NotificationContent(props) {
     const {classes, className, onClose, variant, ...other} = props;
     const Icon = variantIcon[variant];
-
     return (
         <SnackbarContent
             className={classNames(classes[variant], className)}

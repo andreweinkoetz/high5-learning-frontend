@@ -116,7 +116,7 @@ export default class HttpService {
                 return resp.json();
             } else {
                 resp.json().then((json) => {
-                    onError(json.error);
+                    onError({code: json.code, title: json.error, msg: json.message});
                 }).catch(() => {
                     onError({code: 500, title: 'Server error', msg: 'Unknown error in backend'});
                 });
