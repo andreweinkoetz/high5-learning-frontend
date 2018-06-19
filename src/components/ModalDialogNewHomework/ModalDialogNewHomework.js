@@ -10,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Typography from '@material-ui/core/Typography';
 
 import CreateExercise from '../CreateExercise/CreateExercise';
 
@@ -71,7 +72,8 @@ const ModalDialogNewHomework = (props) => {
                 disableEscapeKeyDown
                 open={props.visible}
             >
-                <FormControl style={{margin: '10px'}}>
+                <Typography variant="subheading" align="center" style={{marginTop: '5px'}}>Copy previous created homework from classes</Typography>
+                <FormControl style={{marginLeft: '20px', marginRight: '20px', marginBottom: '5px'}}>
                     <InputLabel>Selected class</InputLabel>
                     <Select
                         value={props.selectedClass}
@@ -80,7 +82,7 @@ const ModalDialogNewHomework = (props) => {
                         {availableClasses}
                     </Select>
                 </FormControl>
-                <FormControl style={{margin: '10px'}}>
+                <FormControl style={{marginLeft: '20px', marginRight: '20px', marginBottom: '10px', marginTop: '5px'}}>
                     <InputLabel>Selected homework</InputLabel>
                     <Select
                         value={props.selectedHomework}
