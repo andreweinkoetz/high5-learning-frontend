@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -16,23 +15,6 @@ import CreateExercise from '../CreateExercise/CreateExercise';
 
 const ModalDialogNewHomework = (props) => {
 
-    /*handleCreate = () => { // in case you want to find out in general whether something is missing
-        let testRightSolutionMissing = false;
-        this.state.exercisesData.map(
-            e => {if(e.rightSolution === "") {
-                testRightSolutionMissing = true;
-            }}
-        );
-        let testSolutionPossibilitiesMissing = false;
-        this.state.exercisesData.map(
-            e => e.solutionPossibilities.map(
-                e1 => {if(Object.values(e1)[0] === "") { with this you get single values of the Objects in array solutionPossibilities
-                    testSolutionPossibilitiesMissing = true;
-                }}
-            )
-        );
-        ;
-    };*/
     let exercises = props.exercises.map(exc => {
             return (
                 <CreateExercise
@@ -63,7 +45,7 @@ const ModalDialogNewHomework = (props) => {
 
     let availableClasses = props.availableClasses.map(c => {
         return (<MenuItem key={c._id} value={c._id}>{c.title}</MenuItem>)
-    })
+    });
 
     return (
         <div>
@@ -73,24 +55,28 @@ const ModalDialogNewHomework = (props) => {
                 open={props.visible}
             >
                 <Typography variant="subheading" align="left" style={{marginTop: '15px', marginLeft: '20px'}}>Copy previous created homework from classes</Typography>
-                <FormControl style={{marginLeft: '20px', marginRight: '20px', marginBottom: '5px'}}>
-                    <InputLabel>Selected class</InputLabel>
-                    <Select
-                        value={props.selectedClass}
-                        onChange={props.changeClass}>
-                        <MenuItem key={"None"} value={""}>None</MenuItem>
-                        {availableClasses}
-                    </Select>
-                </FormControl>
-                <FormControl style={{marginLeft: '20px', marginRight: '20px', marginBottom: '10px', marginTop: '5px'}}>
-                    <InputLabel>Selected homework</InputLabel>
-                    <Select
-                        value={props.selectedHomework}
-                        onChange={props.changeHomework}>
-                        <MenuItem key={"None"} value={""}>None</MenuItem>
-                        {alreadyAddedHomework}
-                    </Select>
-                </FormControl>
+                <div style={{paddingLeft:20, paddingRight:20, marginTop: 8}}>
+                    <FormControl fullWidth>
+                        <InputLabel>Selected class</InputLabel>
+                        <Select
+                            value={props.selectedClass}
+                            onChange={props.changeClass}>
+                            <MenuItem key={"None"} value={""}>None</MenuItem>
+                            {availableClasses}
+                        </Select>
+                    </FormControl>
+                </div>
+                <div style={{paddingLeft:20, paddingRight:20, marginTop: 8}}>
+                    <FormControl fullWidth>
+                        <InputLabel>Selected homework</InputLabel>
+                        <Select
+                            value={props.selectedHomework}
+                            onChange={props.changeHomework}>
+                            <MenuItem key={"None"} value={""}>None</MenuItem>
+                            {alreadyAddedHomework}
+                        </Select>
+                    </FormControl>
+                </div>
                 {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}
                 <DialogContent>
                     <TextField
@@ -103,21 +89,20 @@ const ModalDialogNewHomework = (props) => {
                         autoFocus={true}
                         value={props.homeworkTitle}
                     />
-                    <div style={{maxHeight:'500px', marginBottom: '20px'}}>
+                    <div style={{maxHeight:'500px', marginBottom: '10px'}}>
                         {exercises}
                     </div>
                 </DialogContent>
-                <Grid container justify={"center"}>
-                    <DialogActions>
+
+                    <DialogActions style={{justifyContent:'center', marginTop:10, marginBottom:5}}>
                         <Button
                             color={"primary"}
                             variant={"raised"}
                             onClick={props.handleAddExercise}
                         >Add new exercise to homework</Button>
                     </DialogActions>
-                </Grid>
-                <Grid container justify={"center"}>
-                    <DialogActions>
+
+                    <DialogActions style={{justifyContent:'center', marginBottom:15}}>
                         {props.updateHomeworkWished
                             ?
                             <Button
@@ -138,10 +123,9 @@ const ModalDialogNewHomework = (props) => {
                             onClick={props.handleCancel}
                         >Cancel</Button>
                     </DialogActions>
-                </Grid>
             </Dialog>
         </div>
     )
-}
+};
 
 export default ModalDialogNewHomework;
