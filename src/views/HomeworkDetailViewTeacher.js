@@ -217,53 +217,115 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     </Grid>
                 </Paper>
 
+                <Hidden smUp>
+                    <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
+                        <Grid item xs={12}>
+                            <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"}
+                                  direction={"row"}>
 
-                <Paper elevation={4}>
-                    <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                        <Typography variant={"subheading"}>Statistics</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
+                                <Grid item xs={5} sm={2}>
+                                    <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
+                                        progress: </Typography>
+                                </Grid>
+                                <Grid item xs={1}></Grid>
 
-                            <Grid item xs={5} sm={2}>
-                                <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
-                                    progress: </Typography>
+
+                                <Grid item xs={5} sm={2}>
+                                    <Progress
+                                        theme={{suc: {color: '#4CAF50'}}}
+                                        width={60}
+                                        type="circle"
+                                        status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                        percent={this.state.submissionRate}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={1}></Grid>
-
-
-                            <Grid item xs={5} sm={2}>
-                                <Progress
-                                    theme={{suc: {color: '#4CAF50'}}}
-                                    width={60}
-                                    type="circle"
-                                    status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
-                                    percent={this.state.submissionRate}
-                                />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={5} sm={2}>
-                                <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
-                                    answers: </Typography>
-                            </Grid>
-                            <Grid item xs={1}></Grid>
-
-                            <Grid item xs={5} sm={2}>
-                                <Progress
-                                    theme={{suc: {color: '#4CAF50'}}}
-                                    width={60}
-                                    type="circle"
-                                    status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
-                                    percent={this.state.rightAnswerPercentage}
-                                />
-                            </Grid>
-                            <Grid item xs={1}></Grid>
                         </Grid>
 
-                    </Grid>
+                    </Paper>
 
-                </Paper>
+                    <Paper elevation={4} style={{ padding: '10px'}}>
+                        <Grid item xs={12}>
+                            <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"}
+                                  direction={"row"}>
+
+                                <Grid item xs={5} sm={2}>
+                                    <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of
+                                        correct
+                                        answers: </Typography>
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+
+                                <Grid item xs={5} sm={2}>
+                                    <Progress
+                                        theme={{suc: {color: '#4CAF50'}}}
+                                        width={60}
+                                        type="circle"
+                                        status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                        percent={this.state.rightAnswerPercentage}
+                                    />
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+                            </Grid>
+
+                        </Grid>
+
+                    </Paper>
+                </Hidden>
+
+                <Hidden xsDown>
+                    <Paper elevation={4}>
+                        <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
+                            <Typography variant={"subheading"}>Statistics</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"}
+                                  direction={"row"}>
+
+                                <Grid item xs={5} sm={2}>
+                                    <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
+                                        progress: </Typography>
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+
+
+                                <Grid item xs={5} sm={2}>
+                                    <Progress
+                                        theme={{suc: {color: '#4CAF50'}}}
+                                        width={60}
+                                        type="circle"
+                                        status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                        percent={this.state.submissionRate}
+                                    />
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+
+                                <Grid item xs={5} sm={2}>
+                                    <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of
+                                        correct
+                                        answers: </Typography>
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+
+                                <Grid item xs={5} sm={2}>
+                                    <Progress
+                                        theme={{suc: {color: '#4CAF50'}}}
+                                        width={60}
+                                        type="circle"
+                                        status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                        percent={this.state.rightAnswerPercentage}
+                                    />
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+                            </Grid>
+
+                        </Grid>
+
+                    </Paper>
+
+
+                </Hidden>
+
             </div>;
 
 
