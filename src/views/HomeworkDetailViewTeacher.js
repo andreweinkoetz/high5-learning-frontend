@@ -10,6 +10,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Progress} from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
+import Hidden from '@material-ui/core/Hidden'
 
 
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
@@ -85,7 +86,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         if (submission.submissions.length !== 0) {
                             const submissionStatistics = [...submission.aggregatedSubmissions];
 
-                            submissionStatistics.sort(function(a,b){
+                            submissionStatistics.sort(function (a, b) {
                                 // Turn your strings into dates, and then subtract them
                                 // to get a value that is either negative, positive, or zero.
                                 return new Date(b._id.date) - new Date(a._id.date);
@@ -176,7 +177,6 @@ export default class HomeworkDetailViewTeacher extends React.Component {
     render() {
 
 
-
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
                 size={30}/>
@@ -222,50 +222,47 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     <Grid item xs={2} sm={2} style={{paddingLeft: '25px', paddingTop: '10px'}}>
                         <Typography variant={"subheading"}>Statistics</Typography>
                     </Grid>
-                    <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
-                        <Grid item xs={2} sm={2}>
-                            <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
-                                progress: </Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1}>
-                            {/* <Typography variant={"body1"}>{this.state.submissionRate} %</Typography>*/}
-                        </Grid>
-                        <Grid item xs={2} sm={2}>
-                            {/*<LinearProgress
-                                variant={"determinate"}
-                                value={this.state.submissionRate}
-                                style={{paddingRight: '10px'}}/>*/}
-                            <Progress
-                                theme={{suc: {color: '#4CAF50'}}}
-                                width={60}
-                                type="circle"
-                                status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
-                                percent={this.state.submissionRate}
-                            />
-                        </Grid>
-                        <Grid item xs={1} sm={1}/>
-                        <Grid item xs={2} sm={2}>
-                            <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
-                                answers: </Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1}>
-                            {/*<Typography variant={"body1"}>{this.state.rightAnswerPercentage} %</Typography>*/}
+                    <Grid item xs={12}>
+                        <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"} direction={"row"}>
 
+                            <Grid item xs={5} sm={2}>
+                                <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Overall
+                                    progress: </Typography>
+                            </Grid>
+                            <Grid item xs={1}></Grid>
+
+
+                            <Grid item xs={5} sm={2}>
+                                <Progress
+                                    theme={{suc: {color: '#4CAF50'}}}
+                                    width={60}
+                                    type="circle"
+                                    status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                    percent={this.state.submissionRate}
+                                />
+                            </Grid>
+                            <Grid item xs={1}></Grid>
+
+                            <Grid item xs={5} sm={2}>
+                                <Typography variant={"subheading"} style={{paddingLeft: '15px'}}>Percentage of correct
+                                    answers: </Typography>
+                            </Grid>
+                            <Grid item xs={1}></Grid>
+
+                            <Grid item xs={5} sm={2}>
+                                <Progress
+                                    theme={{suc: {color: '#4CAF50'}}}
+                                    width={60}
+                                    type="circle"
+                                    status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                    percent={this.state.rightAnswerPercentage}
+                                />
+                            </Grid>
+                            <Grid item xs={1}></Grid>
                         </Grid>
-                        <Grid item xs={2} sm={2}>
-                            {/*<LinearProgress
-                                variant={"determinate"}
-                                value={this.state.rightAnswerPercentage}
-                                style={{paddingRight: '10px'}}/>*/}
-                            <Progress
-                                theme={{suc: {color: '#4CAF50'}}}
-                                width={60}
-                                type="circle"
-                                status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
-                                percent={this.state.rightAnswerPercentage}
-                            />
-                        </Grid>
+
                     </Grid>
+
                 </Paper>
             </div>;
 
@@ -305,9 +302,10 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
                 <Grid container spacing={16}>
 
-                    <Grid item xs={12} style={{minHeight:56}}>
+                    <Grid item xs={12} style={{minHeight: 56}}>
                         <Typography variant={'title'}>Homework: {this.state.title}</Typography>
-                        <Typography variant={'caption'}>This is where you find your statistics. A feature way to advanced for f*cking 5-8 credits.</Typography>
+                        <Typography variant={'caption'}>This is where you find the statistics for this
+                            homework.</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>
@@ -315,14 +313,14 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                     <Grid item xs={12}>
                         {statistics}
                     </Grid>
-                    <Grid item xs={12} style={{marginTop:10}}>
+                    <Grid item xs={12} style={{marginTop: 10}}>
                         <Divider/>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant={'subheading'}>Submission rate</Typography>
                         {this.state.submissionRate > 0 ?
                             <SubmissionChart submissionStatistics={this.state.submissionStatistics}/>
-                        : <Typography>There are no submissions yet.</Typography>}
+                            : <Typography>There are no submissions yet.</Typography>}
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>

@@ -40,7 +40,7 @@ const Exercise = (props) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <Grid item xs={4}>
+                                <Grid item xs={8} sm={4} >
                                     <RadioGroup name={'exercise-choices'} row
                                                 value={props.answerKey + ' ' + props.selectedChoice}>
                                         <FormControlLabel value={props.answerKey + ' ' + 0}
@@ -49,15 +49,15 @@ const Exercise = (props) => {
                                     </RadioGroup>
                                 </Grid>
 
-                                <Grid item xs={1}>
+                                <Grid item xs={2} sm={1}>
                                     {props.rightSolution === 0 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
-                                <Grid id="percentage" item xs={1}>
+                                <Grid id="percentage" item xs={2} sm={1}>
                                     {(props.percentage[0] * 100).toFixed(0) + '%'}
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={8} sm={4}>
                                     <RadioGroup name={'exercise-choices'} row
                                                 value={props.answerKey + ' ' + props.selectedChoice}>
                                         <FormControlLabel value={props.answerKey + ' ' + 1}
@@ -65,16 +65,16 @@ const Exercise = (props) => {
                                                           label={props.answers[1]}/>
                                     </RadioGroup>
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid item xs={2} sm={1}>
                                     {props.rightSolution === 1 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
-                                <Grid id="percentage" item xs={1}>
+                                <Grid id="percentage" item xs={2} sm={1}>
                                     {(props.percentage[1] * 100).toFixed(0) + '%'}
                                 </Grid>
 
-                                <Grid item xs={4}>
+                                <Grid item xs={8} sm={4}>
                                     <RadioGroup name={'exercise-choices'} row
                                                 value={props.answerKey + ' ' + props.selectedChoice}>
                                         <FormControlLabel value={props.answerKey + ' ' + 2}
@@ -82,16 +82,16 @@ const Exercise = (props) => {
                                                           label={props.answers[2]}/>
                                     </RadioGroup>
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid item xs={2} sm={1}>
                                     {props.rightSolution === 2 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
-                                <Grid id="percentage" item xs={1}>
+                                <Grid id="percentage" item xs={2} sm={1}>
                                     {(props.percentage[2] * 100).toFixed(0) + '%'}
                                 </Grid>
 
-                                <Grid item xs={4}>
+                                <Grid item xs={8} sm={4}>
                                     <RadioGroup name={'exercise-choices'} row
                                                 value={props.answerKey + ' ' + props.selectedChoice}>
                                         <FormControlLabel value={props.answerKey + ' ' + 3}
@@ -100,13 +100,13 @@ const Exercise = (props) => {
                                     </RadioGroup>
                                 </Grid>
 
-                                <Grid item  xs={1}>
+                                <Grid item  xs={2} sm={1}>
                                     {props.rightSolution === 3 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}
                                 </Grid>
 
-                                <Grid id="percentage" item xs={1}>
+                                <Grid id="percentage" item xs={2} sm={1}>
                                     {(props.percentage[3] * 100).toFixed(0) + '%'}
                                 </Grid>
 
