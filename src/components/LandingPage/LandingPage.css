@@ -40,7 +40,7 @@
 .icon {
     margin-right: 0.5vw;
     width: 4vw;
-    height: 4vw;
+    height: 4vh;
 }
 
 .heading {
@@ -135,6 +135,12 @@
     background-color: #FAFAFA;
 }
 
+.content-page3-offers {
+    border-top: 1px solid #EF9A9A;
+    border-bottom: 1px solid #EF9A9A;
+    border-radius: 8px;
+}
+
 .content-page3 p {
     margin: 0 0 0 0;
     padding: 2vh 0 2vh 0;
@@ -179,8 +185,8 @@
 
 .team-member img {
     min-width: 150px;
-    min-height: 150px;
-    max-height: 200px;
+    min-height: 200px;
+    max-height: 250px;
     max-width: 200px;
     width: 12vw;
     height: 12vh;

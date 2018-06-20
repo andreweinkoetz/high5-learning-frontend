@@ -111,6 +111,24 @@ export default class LandingPage extends React.Component {
             {
                 url: `${window.location.origin}/img/martin.jfif`,
             },
+            {
+                url: `${window.location.origin}/img/pencil-alt.svg`,
+            },
+            {
+                url: `${window.location.origin}/img/signal.svg`,
+            },
+            {
+                url: `${window.location.origin}/img/sync.svg`,
+            },
+            {
+                url: `${window.location.origin}/img/users.svg`,
+            },
+            {
+                url: `${window.location.origin}/img/graduation-cap.svg`,
+            },
+            {
+                url: `${window.location.origin}/img/thumbs-up.svg`,
+            },
         ];
 
         if (UserService.isAuthenticated()) {
@@ -163,12 +181,14 @@ export default class LandingPage extends React.Component {
                     {/* about our product / service */}
                     <section className="content-page3">
                         <h1>WHAT WE OFFER</h1>
-                        <p>Modern, intuitive e-learning platform</p>
-                        <p>Creation of virtual classes</p>
-                        <p>Teacherspublish multiple choice homework</p>
-                        <p>Instant feedback to teachers from students</p>
-                        <p>Statistics for teachers about homework</p>
-                        <p>Reusability of classes</p>
+                        <div className="content-page3-offers">
+                        <p><img className="icon" src={images[12].url} alt="High Five Icon"/>Modern, intuitive e-learning platform</p>
+                        <p><img className="icon" src={images[11].url} alt="High Five Icon"/>Creation of virtual classes</p>
+                        <p><img className="icon" src={images[8].url} alt="High Five Icon"/>Teacherspublish multiple choice homework</p>
+                        <p><img className="icon" src={images[13].url} alt="High Five Icon"/>Instant feedback to teachers from students</p>
+                        <p><img className="icon" src={images[9].url} alt="High Five Icon"/>Statistics for teachers about homework</p>
+                        <p><img className="icon" src={images[10].url} alt="High Five Icon"/>Reusability of classes</p>
+                        </div>
                     </section>
                     {/* about our team / us */}
                     <section className="content-page4">
@@ -176,20 +196,16 @@ export default class LandingPage extends React.Component {
                         <div className="team">
                             {/* Andre Landgraf	Hermann Grübel	Martin Lindemann Andre Weinkötz */}
                             <div className="team-member">
-                                <p><img className="icon" src={images[6].url} alt="Andre Landgraf" height="60"
-                                        width="60"/><br/>Hermann Grübel</p>
+                                <p><img src={images[6].url} alt="Hermann"/><br/>Hermann Grübel</p>
                             </div>
                             <div className="team-member">
-                                <p><img className="icon" src={images[5].url} alt="Andre Weinkötz" height="60"
-                                        width="60"/><br/>Andre Landgraf</p>
+                                <p><img src={images[5].url} alt="Andre"/><br/>Andre Landgraf</p>
                             </div>
                             <div className="team-member">
-                                <p><img className="icon" src={images[7].url} alt="Martin" height="60"
-                                        width="60"/><br/>Martin Lindemann</p>
+                                <p><img src={images[7].url} alt="Martin"/><br/>Martin Lindemann</p>
                             </div>
                             <div className="team-member" id="last-team-member">
-                                <p><img className="icon" src={images[4].url} alt="High Five Icon" height="60"
-                                        width="60"/><br/>Andre Weinkötz</p>
+                                <p><img  src={images[4].url} alt="Andre"/><br/>Andre Weinkötz</p>
                             </div>
                         </div>
                     </section>
@@ -197,8 +213,7 @@ export default class LandingPage extends React.Component {
                 {/* transparent absolute div presenting brand name & logo */}
                 <div className="head-line">
                     <div className="heading">
-                        <h1><img className="icon" src={images[3].url} alt="High Five Icon" height="60"
-                                 width="60"/> HIGH-FIVE LEARNING</h1>
+                        <h1><img className="icon" src={images[3].url} alt="High Five Icon"/> HIGH-FIVE LEARNING</h1>
                     </div>
                 </div>
                 {/* absolute div presenting login and register options */}
