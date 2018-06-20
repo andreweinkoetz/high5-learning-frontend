@@ -184,7 +184,7 @@ export default class LandingPage extends React.Component {
                         <div className="content-page3-offers">
                         <p><img className="icon" src={images[12].url} alt="High Five Icon"/>Modern, intuitive e-learning platform</p>
                         <p><img className="icon" src={images[11].url} alt="High Five Icon"/>Creation of virtual classes</p>
-                        <p><img className="icon" src={images[8].url} alt="High Five Icon"/>Teacherspublish multiple choice homework</p>
+                        <p><img className="icon" src={images[8].url} alt="High Five Icon"/>Teachers publish multiple choice homework</p>
                         <p><img className="icon" src={images[13].url} alt="High Five Icon"/>Instant feedback to teachers from students</p>
                         <p><img className="icon" src={images[9].url} alt="High Five Icon"/>Statistics for teachers about homework</p>
                         <p><img className="icon" src={images[10].url} alt="High Five Icon"/>Reusability of classes</p>
