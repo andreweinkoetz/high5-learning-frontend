@@ -88,14 +88,12 @@ export default class MyProfile extends React.Component {
         return (
             <div>
                 <Grid container spacing={16} justify={'center'}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{minHeight:56}}>
                         <Typography variant={'title'}>My profile</Typography>
+                        <Typography variant={'caption'}>Here you can change your password</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant={'subheading'}>Change your password</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
