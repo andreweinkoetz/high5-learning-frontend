@@ -1,0 +1,9 @@
+@media screen and (max-width: 600px) {
+    .aggregationLevel {
+        display: block;
+        text-align: center;
+    }
+    .gridSelection {
+        text-align: center;
+    }
+}

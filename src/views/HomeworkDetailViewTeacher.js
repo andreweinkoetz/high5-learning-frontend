@@ -12,7 +12,7 @@ import {Progress} from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import Hidden from '@material-ui/core/Hidden'
 
-
+import './HomworkDetailViewTeacher.css';
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
 import ExerciseListEmpty from '../components/Exercise/ExerciseListEmpty';
 import HomeworkService from '../services/HomeworkService';
@@ -191,9 +191,9 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
                     <Grid container spacing={0} direction={"row"}>
                         <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                            <Typography variant={"subheading"}>Aggregation level</Typography>
+                            <Typography variant={"subheading"} className={"aggregationLevel"}>Aggregation level</Typography>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6} className={"gridSelection"}>
                             <FormControl style={{minWidth: '120px'}}>
                                 <Select value={this.state.selectedStudent} onChange={this.handleValueSelected}>
 
