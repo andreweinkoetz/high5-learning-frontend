@@ -116,7 +116,7 @@ const Class = (props) => {
                                 onClick={() => props.deleteClass(props.id)}>
                             Delete class</Button>
                     </div>
-                    : <Typography>{props.description}<br/>
+                    : <Typography>{props.openHomework > 0 ? "You have " + props.openHomework + " open homework to submit in this class." : "You submitted all homework in this class"}<br/>
                     </Typography>}
             </ExpansionPanelDetails>
         </ExpansionPanel>
