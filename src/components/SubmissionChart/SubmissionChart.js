@@ -8,16 +8,8 @@ export default class SubmissionChart extends React.Component {
 
 
     render() {
-            /*const data = [
-                {date: '2018-05-01', num: 4},
-                {date: '2018-05-02', num: 6},
-                {date: '2018-05-03', num: 1},
-                {date: '2018-05-04', num: 10},
-                {date: '2018-05-06', num: 12},
-                {date: '2018-05-07', num: 1},
-                {date: '2018-05-09', num: 0},
-            ];*/
 
+        // data is from the map/reduce getStatisticsForHomework() of the submission controller
       var data = this.props.submissionStatistics;
 
         return (

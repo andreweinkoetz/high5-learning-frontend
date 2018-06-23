@@ -3,6 +3,7 @@ import React from 'react';
 import './CustomTooltip.css';
 
 export default class CustomTooltip extends React.Component {
+    // this statefull component displays the tooltip in the chart
     constructor(props) {
         super(props);
 
@@ -17,7 +18,7 @@ export default class CustomTooltip extends React.Component {
                 this.props.data[i].students.forEach((obj) => {
                         names.push(obj.username)
                     }
-                )
+                );
                 return names.reverse().join("\n");
             }
         }
@@ -32,8 +33,12 @@ export default class CustomTooltip extends React.Component {
                 return (
                     <div className="custom-tooltip">
 
+                        {/*display of date and count*/}
                         <p className="label">{`${label} : ${payload[0].value}`}</p>
+
                         <p className="desc">Students: </p>
+
+                        {/*display of students submitted on the date*/}
                         <div className="intro">{this.getIntroOfPage(label)}</div>
 
                     </div>
@@ -42,8 +47,7 @@ export default class CustomTooltip extends React.Component {
 
             return null;
         }
-        return <div></div>
-            ;
+        return <div></div>;
     }
 
 

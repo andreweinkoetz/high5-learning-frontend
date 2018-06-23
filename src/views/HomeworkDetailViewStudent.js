@@ -12,7 +12,7 @@ import HomeworkService from '../services/HomeworkService';
 import UserService from '../services/UserService';
 import SubmissionService from '../services/SubmissionService';
 
-
+/* this component checks whether a student has submitted a homework or not and displays the homework to check or the results */
 export default class HomeworkDetailViewStudent extends React.Component {
 
 
@@ -52,7 +52,8 @@ export default class HomeworkDetailViewStudent extends React.Component {
             id: this.props.location.state.id
         });
 
-        //check if homework is already submitted by student
+        // check if homework already has been submitted by student
+        // this.props.location.state.id is from the homework component, the location interface represents the location of the object it is linked to
         SubmissionService.getSubmissionOfHomeworkOfStudent(this.props.location.state.id).then(submission => {
             if (submission.length !== 0) {
                 const submittedValues = [...submission[0].exercises];
@@ -66,6 +67,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
             }
         }).catch(e => this.props.handleNotification(e));
 
+        // get exercises array with all information of the exercises
         HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
             const homeworkExercises = [...homework.exercises];
 
@@ -121,13 +123,15 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
 
             const userId = UserService.getCurrentUser().id;
+
+            //prepare submission student(String) homework(String) exercises[]
             const submissionToAdd = {...this.state.submissionToAdd};
             submissionToAdd.exercises = this.state.selectedValues;
             submissionToAdd.student = userId;
             submissionToAdd.homework = this.state.id;
             this.addNewSubmission(submissionToAdd);
 
-            //prepare notification
+            //prepare notification to display the number of right solutions
             let countRightSolution = 0;
             let countExercises = this.state.exercises.length;
             this.state.exercises.forEach((elem, index) => {
@@ -136,7 +140,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
                 }
             });
 
-            //here setting state to rerender in order to get to student submission after pressing submit
+            //here setting state to render in order to get to student submission after pressing submit
             this.setState({
                 submitted: true,
                 submittedValues: submissionToAdd.exercises
@@ -161,9 +165,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
 //calls SubmissionService and adds new submission to the database
     addNewSubmission(submissionToAdd) {
         SubmissionService.addNewSubmission(submissionToAdd)
-            .then(submissionToAdd => console.log('test'))
-            .catch(e => alert(e));
-
+            .catch(e => this.props.handleNotification(e));
     };
 
     render() {
@@ -189,6 +191,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
                 <Typography variant={'caption'}>Loading...</Typography></div>;
         }
 
+        // call functional component ExerciseList if there is no submission
         let notSubmitted;
         if (!this.state.submitted) {
             notSubmitted = <ExerciseList selectedValues={this.state.selectedValues}
@@ -196,6 +199,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
                                          exercises={this.state.exercises}/>;
         }
 
+        // call functional component ExerciseListSolutionStudent if there is a subission and result should be displayed
         let submitted;
         if (this.state.submitted) {
             submitted = <ExerciseListSolutionStudent exercises={this.state.exercises}

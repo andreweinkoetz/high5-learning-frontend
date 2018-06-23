@@ -83,6 +83,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
             .then(() => {
                 SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
                     .then(submission => {
+                        // check if at least one submission exists
                         if (submission.submissions.length !== 0) {
                             const submissionStatistics = [...submission.aggregatedSubmissions];
 
@@ -119,6 +120,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 submissionStatistics: submissionStatistics.reverse()
                             });
                         }
+
+                        // if no submission exists empty is true and the component ExerciseListEmpty is called
                         else {
                             this.setState({
                                 empty: true,
@@ -191,7 +194,8 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 <Paper elevation={4} style={{marginBottom: '20px', padding: '10px'}}>
                     <Grid container spacing={0} direction={"row"}>
                         <Grid item xs={12} sm={6} style={{paddingLeft: '25px', paddingTop: '10px'}}>
-                            <Typography variant={"subheading"} className={"aggregationLevel"}>Aggregation level</Typography>
+                            <Typography variant={"subheading"} className={"aggregationLevel"}>Aggregation
+                                level</Typography>
                         </Grid>
                         <Grid item xs={12} sm={6} className={"gridSelection"}>
                             <FormControl style={{minWidth: '120px'}}>
@@ -244,7 +248,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
                     </Paper>
 
-                    <Paper elevation={4} style={{ padding: '10px'}}>
+                    <Paper elevation={4} style={{padding: '10px'}}>
                         <Grid item xs={12}>
                             <Grid container spacing={0} style={{padding: '10px'}} alignItems={"center"}
                                   direction={"row"}>
@@ -339,7 +343,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                 </Grid>
             </Grid>;
 
-
+        //check if exercise solution lis
         let result;
         (!this.state.empty) ?
             result =
