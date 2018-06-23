@@ -50,12 +50,13 @@ const styles = theme => ({
     }
 });
 
-
+// A single class component to be displayed in an expansion panel
+// A teacher has additional buttons to alter the class information or delete the class.
 const Class = (props) => {
 
     const {classes} = props;
 
-    let secondaryContent;
+    let secondaryContent; // Badge element only for students with open homework within this class
 
     if (UserService.isTeacher() || (props.openHomework === undefined || props.openHomework === 0 )) {
         secondaryContent = null
@@ -101,6 +102,7 @@ const Class = (props) => {
                 <div className={classes.secondaryContent}>
                     {secondaryContent}
                 </div>
+
             </ExpansionPanelSummary>
 
             <ExpansionPanelDetails>

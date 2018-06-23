@@ -1,7 +1,7 @@
 import React from 'react';
 import Class from './Class';
 
-
+// Is used to map the array of classes into single JSX elements
 const ClassList = (props) => {
 
     return (

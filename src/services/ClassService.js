@@ -7,6 +7,7 @@ export default class ClassService {
     }
 
 
+    // returns a list of all classes for a user
     static getClassesOfUser(){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}`,
@@ -19,6 +20,7 @@ export default class ClassService {
 
     }
 
+    // returns a list of all homework for a user
     static getAllHomeworkOfUser(){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}/allhomework/`,
@@ -31,6 +33,7 @@ export default class ClassService {
 
     }
 
+    // returns a key-value pair of classId, number of not submitted homework
     static getOpenHomeworkOfStudent(classId){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}/openhw/` + classId,
@@ -42,6 +45,7 @@ export default class ClassService {
         });
     }
 
+    // returns list of homework of one class (for class detail view)
     static getHomeworkOfClass(classId){
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}` + classId, function(data) {
@@ -53,8 +57,8 @@ export default class ClassService {
 
     }
 
+    // adds the new class into the database
     static addNewClass(classToAdd){
-
         return new Promise((resolve, reject) => {
             HttpService.post(`${ClassService.baseUrl()}`, classToAdd,
                 function(data) {
@@ -66,8 +70,8 @@ export default class ClassService {
 
     }
 
+    // updates an existing database
     static updateClass(classToUpdate, classId){
-
         return new Promise((resolve, reject) => {
             HttpService.put(`${ClassService.baseUrl()}` + classId, classToUpdate,
                 function(data) {
@@ -79,8 +83,8 @@ export default class ClassService {
 
     }
 
+    // deletes an existing database
     static deleteClass(classId){
-
         return new Promise((resolve, reject) => {
             HttpService.delete(`${ClassService.baseUrl()}` + classId,
                 function(data) {
@@ -92,8 +96,8 @@ export default class ClassService {
 
     }
 
+    // returns a list of all students that are assigned to a specific class
     static getStudentsOfClass(classId){
-
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}students/` + classId,
                 function(data) {

@@ -14,7 +14,7 @@ import Notification from './components/Notification/Notification';
 import HomeworkDetailView from './views/HomeworkDetailView';
 import MyProfile from "./views/MyProfile";
 
-
+// Main component
 class App extends Component {
 
     constructor(props) {
@@ -22,6 +22,7 @@ class App extends Component {
 
         this.state = {
 
+            // Notification component shared by all components
             notificationFired: false,
             notification: {
                 code: 0,
@@ -30,10 +31,13 @@ class App extends Component {
                 variant: ''
             },
 
+            // breadcrumbs to be displayed from all components
             breadcrumbs: [{link: 'myclasses/'}],
 
             updatedClassesNavBar: [],
 
+            // All views and their paths in our application
+            // We are using the render function to provide more props to the component than possible when using the 'simple' way.
             routes: [
                 {
                     render: () => (<MyProfile {...props} handleNotification={this.handleNotification}
@@ -78,6 +82,7 @@ class App extends Component {
 
     }
 
+    // display a notification message for the user
     handleNotification(notification) {
         this.setState({
             notificationFired: true,
@@ -107,6 +112,7 @@ class App extends Component {
 
     render() {
 
+        // Setup our theme (simple blue and a darker grey)
         const theme = createMuiTheme({
             palette: {
                 primary: blue,
@@ -117,6 +123,7 @@ class App extends Component {
 
         let routes;
 
+        // Only display our application after the user is authenticated.
         if (UserService.isAuthenticated()) {
             routes = <Page breadcrumbs={this.state.breadcrumbs}
                            updatedClassesNavBar={this.state.updatedClassesNavBar}
@@ -124,6 +131,7 @@ class App extends Component {
             >{this.state.routes.map((route, i) => (
                 <Route key={i} {...route}/>))}</Page>;
         } else {
+            // If not authenticated, display landing page
             routes = <Route
                 render={() => (<LandingPage {...this.props} handleNotification={this.handleNotification}/>)}
                 path={'/'}

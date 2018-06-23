@@ -12,7 +12,7 @@ import {Progress} from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import Hidden from '@material-ui/core/Hidden'
 
-import './HomworkDetailViewTeacher.css';
+import './HomeworkDetailViewTeacher.css';
 import ExerciseListSolutionTeacher from '../components/Exercise/ExerciseListSolutionTeacher';
 import ExerciseListEmpty from '../components/Exercise/ExerciseListEmpty';
 import HomeworkService from '../services/HomeworkService';

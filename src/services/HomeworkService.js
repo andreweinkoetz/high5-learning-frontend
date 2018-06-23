@@ -6,6 +6,7 @@ export default class HomeworkService {
         return HttpService.apiURL() + "/homework/";
     }
 
+    // Get all information of this homework (incl. exercises etc.) from db
     static getHomeworkDetail(homeworkId){
         return new Promise((resolve, reject) => {
             HttpService.get(`${HomeworkService.baseUrl()}` + homeworkId,
@@ -17,8 +18,8 @@ export default class HomeworkService {
         });
     }
 
+    // Adds a new homework to the database
     static addNewHomework(classId, homeworkToAdd){
-
         return new Promise((resolve, reject) => {
             HttpService.post(`${HomeworkService.baseUrl()}` + classId, homeworkToAdd,
                 function(data) {

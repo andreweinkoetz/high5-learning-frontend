@@ -14,6 +14,8 @@ import SubmissionService from '../services/SubmissionService';
 import UserService from '../services/UserService';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
+// Detail component for displaying all information for one specific class
+// Contains a list of homework
 export default class ClassDetailView extends React.Component {
 
 
@@ -69,22 +71,23 @@ export default class ClassDetailView extends React.Component {
         });
 
         if (UserService.isTeacher()) {
-            ClassService.getAllHomeworkOfUser().then((homework) => {
+            ClassService.getAllHomeworkOfUser().then((homework) => { // used for creating new homework modal (dropdowns)
                 this.setState({availableClasses: [...homework]})
             });
         }
 
-        ClassService.getHomeworkOfClass(this.props.location.state.id).then((data) => {
-            this.setState({
-                homework: [...data.singleClass.homework],
-                submissions: [...data.submissions],
-                loading: false
-            });
-            if(UserService.isTeacher()){
-                return undefined;
-            }
-            return SubmissionService.getRankingOfSubmissions(this.state.currentClass.id);
-        })
+        ClassService.getHomeworkOfClass(this.props.location.state.id)
+            .then((data) => { // returns list of homework within this class
+                this.setState({
+                    homework: [...data.singleClass.homework],
+                    submissions: [...data.submissions],
+                    loading: false
+                });
+                if (UserService.isTeacher()) {
+                    return undefined; // teachers have no submissions so the following methods are student-only
+                }
+                return SubmissionService.getRankingOfSubmissions(this.state.currentClass.id); // key-value (homeworkId, rankingPosition (based on submission date))
+            })
             .then((homeworkRanking) => {
                 this.setState({homeworkRanking: homeworkRanking})
             })
@@ -537,7 +540,7 @@ export default class ClassDetailView extends React.Component {
 
     render() {
 
-        let addNewHomeworkButton = null;
+        let addNewHomeworkButton = null; // This button is only available for teachers
 
         if (UserService.isTeacher()) {
             addNewHomeworkButton = <Grid item xs={6} sm={6} md={6}>
@@ -559,7 +562,7 @@ export default class ClassDetailView extends React.Component {
             </Grid>;
         }
 
-        let modal = this.state.showModal ? <ModalDialogNewHomework
+        let modal = this.state.showModal && <ModalDialogNewHomework
             changeClass={this.handleClassSelected}
             availableClasses={this.state.availableClasses}
             selectedClass={this.state.selectedClass}
@@ -579,7 +582,7 @@ export default class ClassDetailView extends React.Component {
             handleAddExercise={this.handleAddExercise}
             handleDeleteExercise={this.handleDeleteExercise}
             ableToDeleteExercises={this.state.ableToDeleteExercises}
-            updateHomeworkWished={this.state.updateHomeworkWished}/> : null;
+            updateHomeworkWished={this.state.updateHomeworkWished}/>;
 
         return (
             <div>
@@ -587,7 +590,8 @@ export default class ClassDetailView extends React.Component {
                 <Grid container spacing={16}>
                     <Grid item xs={addNewHomeworkButton ? 6 : 12} sm={6} md={6}>
                         <Typography variant={'title'}>My homework</Typography>
-                        <Typography variant={'caption'}>This your homework in class: {this.state.currentClass.title} </Typography>
+                        <Typography variant={'caption'}>This your homework in
+                            class: {this.state.currentClass.title} </Typography>
                     </Grid>
                     {addNewHomeworkButton}
                     <Grid item xs={12}>
@@ -598,16 +602,17 @@ export default class ClassDetailView extends React.Component {
                             <div style={{textAlign: 'center', paddingTop: 40}}><CircularProgress size={30}/>
                                 <Typography variant={'caption'}>Loading...</Typography>
                             </div>
-                            : <HomeworkList classId={this.state.currentClass.id}
-                                            classTitle={this.state.currentClass.title}
-                                            homework={this.state.homework}
-                                            deleteHomework={this.handleDeleteHomework}
-                                            updateHomework={this.handleUpdateHomework}
-                                            makeHomeworkInvisible={this.handleMakeHomeworkInvisble}
-                                            makeHomeworkVisible={this.handleMakeHomeworkVisible}
-                                            changeSwitch={this.handleSwitchChange}
-                                            submissions={this.state.submissions}
-                                            homeworkRanking={this.state.homeworkRanking}
+                            : <HomeworkList // here the list comp is called to display all homework of a class in panels
+                                classId={this.state.currentClass.id}
+                                classTitle={this.state.currentClass.title}
+                                homework={this.state.homework}
+                                deleteHomework={this.handleDeleteHomework}
+                                updateHomework={this.handleUpdateHomework}
+                                makeHomeworkInvisible={this.handleMakeHomeworkInvisble} // not used
+                                makeHomeworkVisible={this.handleMakeHomeworkVisible} // not used
+                                changeSwitch={this.handleSwitchChange}
+                                submissions={this.state.submissions}
+                                homeworkRanking={this.state.homeworkRanking}
                             />}
                     </Grid>
                 </Grid>

@@ -27,6 +27,7 @@ const styles = {
     }
 };
 
+// Header element as a toolbar with some functionality regarding navigation and logging out.
 function Header(props) {
 
     const {classes} = props;

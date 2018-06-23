@@ -21,6 +21,7 @@ const styles = theme => ({
     }
 });
 
+// Navigation bar on the left side of the page
 const NavBar = (props) => {
     const {classes} = props;
 

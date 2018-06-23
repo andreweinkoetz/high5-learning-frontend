@@ -10,7 +10,7 @@ import Hidden from "@material-ui/core/es/Hidden/Hidden";
 import UserService from "../../services/UserService";
 import ClassService from "../../services/ClassService";
 
-
+// Main layout of the "logged in" UI
 class Page extends React.Component {
 
     constructor(props) {
@@ -32,24 +32,21 @@ class Page extends React.Component {
     }
 
     componentWillMount() {
-        ClassService.getClassesOfUser().then((data) => {
+        ClassService.getClassesOfUser().then((data) => { // get all classes of a user
             this.setState({classes: [...data], loading: false});
-            if (data.length === 0){
-
-            }
         });
     }
 
     handleMenu = event => {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({anchorEl: event.currentTarget}); // set element to which header-kebab menu is locked when displaying
     };
 
     handleMenuClose = () => {
-        this.setState({ anchorEl: null });
+        this.setState({anchorEl: null}); // hide header-kebab menu
     };
 
 
-    logout() {
+    logout() { // logout and redirect
         UserService.logout();
         window.location.replace(window.location.origin);
     }
@@ -77,13 +74,22 @@ class Page extends React.Component {
 
     componentDidUpdate() {
         if (this.props.updatedClassesNavBar !== this.state.updatedClasses) {
-            this.setState({classes: this.props.updatedClassesNavBar,
-                updatedClasses: this.props.updatedClassesNavBar});
+            this.setState({
+                classes: this.props.updatedClassesNavBar,
+                updatedClasses: this.props.updatedClassesNavBar
+            });
         }
     }
 
     render() {
 
+        /* basic layout:
+            header
+            breadcrumbs
+            navbar | content
+        */
+
+        // The header has a kebab menu when in mobile view, as the navbar is not visible in mobile!
         return (
             <div>
 
@@ -110,9 +116,9 @@ class Page extends React.Component {
                         <Hidden only={'xs'}>
                             {this.state.loading ? null :
                                 <NavBar
-                                collapsed={this.state.navBarCollapsed}
-                                clicked={this.handleClick}
-                                myClasses={this.state.classes}/>}
+                                    collapsed={this.state.navBarCollapsed}
+                                    clicked={this.handleClick}
+                                    myClasses={this.state.classes}/>}
                         </Hidden>
                     </Grid>
                     <Grid item xs={10} sm={7} md={8}>

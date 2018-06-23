@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 import './Breadcrumb.css';
 
+// Breadcrumb component to help the user with orientation in our application
 const Breadcrumb = (props) => {
 
     return (

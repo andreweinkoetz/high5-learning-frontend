@@ -7,6 +7,7 @@ import UserService from "../services/UserService";
 import Button from "@material-ui/core/es/Button/Button";
 
 
+// View to display a password reset for a single user
 export default class MyProfile extends React.Component {
 
     constructor(props) {
@@ -40,7 +41,7 @@ export default class MyProfile extends React.Component {
         this.setState({password: event.target.value, noMatch: event.target.value !== this.state.confirmPassword});
     };
 
-    handleChangePassword2 = (event) => {
+    handleChangePassword2 = (event) => { // needed for confirmation textfield
         this.setState({confirmPassword: event.target.value, noMatch: event.target.value !== this.state.password});
     };
 
@@ -128,7 +129,6 @@ export default class MyProfile extends React.Component {
                     </Grid>
                     <Grid item xs={12} style={{textAlign:'center'}}>
                         <Button
-                            /*disabled={this.state.noMatch || (this.state.password === '' || this.state.confirmPassword === '')}*/
                             className="Button"
                             color="primary"
                             variant="raised"

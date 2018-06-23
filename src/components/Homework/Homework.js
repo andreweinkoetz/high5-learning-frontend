@@ -63,11 +63,11 @@ const Homework = (props) => {
 
     const {classes} = props;
 
-    let panelDetail = <div></div>;
-    let secondaryContent = <div></div>;
+    let panelDetail = <div></div>; // teacher: homework edit/delete button, student: submission info-text
+    let secondaryContent = <div></div>; // teacher: make homework (in-)visible, student: cake icon if rank === #1
 
     const hwIcon = props.isSubmitted ? <AssignmentTurnedInIcon className={classes.hwIcon}/> :
-        <AssignmentIcon className={classes.hwIcon}/>;
+        <AssignmentIcon className={classes.hwIcon}/>; // the icon changes if the student has submitted the homework
 
     if (UserService.isTeacher()) {
         panelDetail =
@@ -91,10 +91,10 @@ const Homework = (props) => {
                     onChange={props.changeSwitch(props.id)}/>
         </Tooltip>;
     } else {
-        secondaryContent= props.rank === 1 && <CakeIcon className={classes.cakeIcon}/>;
+        secondaryContent= props.rank === 1 && <CakeIcon className={classes.cakeIcon}/>; // display cake and modify text if student was the first one to submit!
         panelDetail = props.rank ?
             <Typography>{props.rank === 1 ? "Congratulations! ": "Well done! "}You've submitted your solutions as #{props.rank}!</Typography>
-            : <Typography>You haven't submitted this homework yet.</Typography>
+            : <Typography>You haven't submitted this homework yet.</Typography> // if not submitted
     }
 
     return (

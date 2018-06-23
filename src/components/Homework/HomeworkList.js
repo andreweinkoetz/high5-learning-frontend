@@ -3,14 +3,13 @@ import React from 'react';
 import Homework from './Homework';
 import UserService from '../../services/UserService';
 
-//this component contains the list of all exercises
-
+// Is used to map the array of homework into single JSX elements
 const HomeworkList = (props) => {
 
     return (
         <div>
             {props.homework.map((obj) => {
-                if (!UserService.isTeacher() && !obj.visible) {
+                if (!UserService.isTeacher() && !obj.visible) { // do not display invisible homework for students!
                     return null;
                 }
                 const submitted = (props.submissions.findIndex(x => {
@@ -27,8 +26,8 @@ const HomeworkList = (props) => {
                         deleteHomework={props.deleteHomework}
                         homeworkVisible={obj.visible}
                         createdAt={obj.createdAt}
-                        makeHomeworkInvisible={props.makeHomeworkInvisible}
-                        makeHomeworkVisible={props.makeHomeworkVisible}
+                        makeHomeworkInvisible={props.makeHomeworkInvisible} // not used
+                        makeHomeworkVisible={props.makeHomeworkVisible} // not used
                         changeSwitch={props.changeSwitch}
                         isSubmitted={submitted}
                         rank={props.homeworkRanking ? props.homeworkRanking[obj._id] : -1}

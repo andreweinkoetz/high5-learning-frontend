@@ -60,7 +60,7 @@ const styles = theme => ({
     },
     messageContent: {
         display: 'block',
-        alignItems:'center'
+        alignItems: 'center'
     }
 });
 
@@ -74,8 +74,9 @@ function NotificationContent(props) {
             message={
                 <span id="client-snackbar" className={classes.message}>
           <Icon className={classNames(classes.icon, classes.iconVariant)}/>
-                    <span className={classes.messageContent}>{props.notification.title}{variant === 'error' ? ` (${props.notification.code})` : null}<br/>
-                    {props.notification.msg.split(',').map((val,k) => <div key={k}>{val}<br key={k}/></div>)}
+                    <span
+                        className={classes.messageContent}>{props.notification.title}{variant === 'error' && ` (${props.notification.code})`}<br/>
+                        {props.notification.msg.split(',').map((val, k) => <div key={k}>{val}<br key={k}/></div>)}
                     </span>
         </span>
             }

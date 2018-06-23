@@ -27,6 +27,7 @@ export default class SubmissionService {
         })
     }
 
+    // gets a key-value pair of homeworkId, rankingPosition
     static getRankingOfSubmissions(classId) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${SubmissionService.baseUrl()}ranking/` + classId, function (data) {

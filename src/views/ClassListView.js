@@ -12,6 +12,8 @@ import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
 import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
 
+// Default view after logging in
+// A list of classes is displayed in which the user is enrolled.
 export default class ClassListView extends React.Component {
 
     constructor(props) {
@@ -40,7 +42,7 @@ export default class ClassListView extends React.Component {
             loading: true
         });
 
-        ClassService.getClassesOfUser()
+        ClassService.getClassesOfUser() // all classes of a user to be displayed in the panels
             .then((data) => {
                 if (data.length === 0) {
                     this.setState({
@@ -53,7 +55,7 @@ export default class ClassListView extends React.Component {
                 }
             })
             .then(() => {
-                return ClassService.getOpenHomeworkOfStudent();
+                return ClassService.getOpenHomeworkOfStudent(); // number to be displayed in badge
             })
             .then(openHw => {
                 if (openHw) {
@@ -134,7 +136,7 @@ export default class ClassListView extends React.Component {
 
     render() {
 
-        let addClassButton = null;
+        let addClassButton = null; // will only be displayed when logged in user is of type 'teacher'
 
         if (UserService.isTeacher()) {
             addClassButton = <Grid item xs={6} sm={6} md={6}>
@@ -180,7 +182,7 @@ export default class ClassListView extends React.Component {
                         {this.state.loading ?
                             <div style={{textAlign: 'center', paddingTop: 40}}><CircularProgress size={30}/>
                                 <Typography variant={'caption'}>Loading...</Typography></div>
-                            : <ClassList
+                            : <ClassList // here the list comp is called to display all classes of a user in panels
                                 classes={this.state.classes}
                                 openHomework={this.state.openHomework}
                                 updateClassInfo={this.handleUpdateClassWished}
