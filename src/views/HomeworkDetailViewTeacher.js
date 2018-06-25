@@ -99,18 +99,15 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
                             let rightAnswerPercentage;
 
-                            let sumRightAnswerPercentage = 0;
+                            /*let sumRightAnswerPercentage = 0;
 
                             for (let i = 0; i < exerciseStatistics.length; i++) {
                                 sumRightAnswerPercentage += exerciseStatistics[i].rightAnswerPercentage;
                             }
-                            rightAnswerPercentage = Math.round(sumRightAnswerPercentage / this.state.exercises.length * 100);
-
-
-                           /* exerciseStatistics.length === 1
-                                ? rightAnswerPercentage = Math.round(exerciseStatistics[0].rightAnswerPercentage * 100)
-                                : rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
-                                + curr.rightAnswerPercentage) / this.state.exercises.length * 100);*/
+                            rightAnswerPercentage = Math.round(sumRightAnswerPercentage / this.state.exercises.length * 100);*/
+                            
+                            rightAnswerPercentage = Math.round(exerciseStatistics.reduce((acc, curr) => acc
+                                + curr.rightAnswerPercentage, 0) / this.state.exercises.length * 100);
 
 
                             var counts = [];
