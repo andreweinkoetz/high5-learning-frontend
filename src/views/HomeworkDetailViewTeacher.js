@@ -98,10 +98,11 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                             const submissionRate = Math.round(submission.submissionRate * 100);
 
                             let rightAnswerPercentage;
+                            console.log(submission);
 
 
                             exerciseStatistics.length === 1
-                                ? rightAnswerPercentage = exerciseStatistics[0].rightAnswerPercentage * 100
+                                ? rightAnswerPercentage = Math.round(exerciseStatistics[0].rightAnswerPercentage * 100)
                                 : rightAnswerPercentage = Math.round(exerciseStatistics.reduce((prev, curr) => prev.rightAnswerPercentage
                                 + curr.rightAnswerPercentage) / this.state.exercises.length * 100);
 
