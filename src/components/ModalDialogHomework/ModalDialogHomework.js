@@ -90,7 +90,7 @@ const ModalDialogHomework = (props) => {
                         required={true}
                         fullWidth={true}
                         autoFocus={true}
-                        value={props.homeworkTitle}
+                        value={props.homeworkModal.title}
                     />
                     <div style={{maxHeight:'500px', marginBottom: '10px'}}>
                         {exercises}
