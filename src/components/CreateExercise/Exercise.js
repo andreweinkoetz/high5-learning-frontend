@@ -9,7 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-class CreateExercise extends Component {
+class Exercise extends Component {
 
     constructor(props) {
         super(props);
@@ -20,6 +20,7 @@ class CreateExercise extends Component {
     };
 
     render () {
+
         return (
             <div>
                 <DialogContent>
@@ -107,4 +108,4 @@ class CreateExercise extends Component {
     }
 }
 
-export default CreateExercise;
+export default Exercise;

@@ -11,26 +11,27 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 
-import CreateExercise from '../CreateExercise/CreateExercise';
+import Exercise from '../CreateExercise/Exercise';
 
 // modal dialog which appears when teacher either want to create a new homework or update one
-const ModalDialogNewHomework = (props) => {
+const ModalDialogHomework = (props) => {
 
     // maps the exercises of a homework into single exercise components, which are shown to the teacher in a list
-    let exercises = props.exercises.map(exc => {
+    let exercises = props.homeworkModal.exercises.map(exc => {
             return (
-                <CreateExercise
+                <Exercise
                     key={exc.id}
                     id={exc.id}
                     changeRadioValue={props.handleChangeRadioValue}
                     changeAnswers={props.handleChangeAnswers}
-                    radioValue={props.exercises[exc.id-1].rightSolution}
                     changeQuestion={props.handleExerciseQuestionChange}
-                    errorExerciseQuestion={props.exercisesErrors[exc.id-1].question}
-                    errorExerciseAnswers={props.exercisesErrors[exc.id-1].answers}
                     handleDeleteExercise={props.handleDeleteExercise}
-                    answersValues={props.exercises[exc.id-1].answers}
-                    questionValue={props.exercises[exc.id-1].question}
+
+                    radioValue={props.homeworkModal.exercises[exc.id-1].rightSolution}
+                    errorExerciseQuestion={props.homeworkModalErrors.exercises[exc.id-1].question}
+                    errorExerciseAnswers={props.homeworkModalErrors.exercises[exc.id-1].answers}
+                    answersValues={props.homeworkModal.exercises[exc.id-1].answers}
+                    questionValue={props.homeworkModal.exercises[exc.id-1].question}
                     ableToDeleteExercises={props.ableToDeleteExercises}
                 />
             )
@@ -82,7 +83,7 @@ const ModalDialogNewHomework = (props) => {
                 <DialogTitle>{props.updateHomeworkWished ? "Update homework" : "Create new homework"}</DialogTitle>
                 <DialogContent>
                     <TextField
-                        error={props.homeworkTitleError}
+                        error={props.homeworkModalErrors.title}
                         onChange={props.handleTitleChange}
                         label="Title"
                         helperText="Required"
@@ -121,4 +122,4 @@ const ModalDialogNewHomework = (props) => {
     )
 };
 
-export default ModalDialogNewHomework;
+export default ModalDialogHomework;

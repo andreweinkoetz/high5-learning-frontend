@@ -10,7 +10,7 @@ import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProg
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
-import ModalDialogNewClass from '../components/ModalDialogNewClass/ModalDialogNewClass';
+import ModalDialogNewClass from '../components/ModalDialogClass/ModalDialogClass';
 
 // Default view after logging in
 // A list of classes is displayed in which the user is enrolled.
@@ -100,7 +100,7 @@ export default class ClassListView extends React.Component {
         ClassService.getStudentsOfClass(id)
             .then(students => { // students of the to be updated class are fetched...
                 const informationOfClassToBeUpdated = {title: t, description: d, students: students}; // ... information of to be updated class is saved ...
-                this.setState({ // ... the modal dialog is shown, as a update class (not create class) and needed info is set (which is given to ModalDialogNewClass component)
+                this.setState({ // ... the modal dialog is shown, as a update class (not create class) and needed info is set (which is given to ModalDialogClass component)
                     showModal: true,
                     updateClassWished: true,
                     idOfToBeUpdatedClass: id,
