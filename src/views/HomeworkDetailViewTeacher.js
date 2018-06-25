@@ -305,7 +305,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                         theme={{suc: {color: '#4CAF50'}}}
                                         width={60}
                                         type="circle"
-                                        status={(this.state.rightAnswerPercentage === 100) ? "suc" : "active"}
+                                        status={(this.state.submissionRate === 100) ? "suc" : "active"}
                                         percent={this.state.submissionRate}
                                     />
                                 </Grid>
