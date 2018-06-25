@@ -21,20 +21,17 @@ export default class ClassListView extends React.Component {
 
         this.state = {
             loading: false,
-            showModal: false,
-            classes: [],
-            updateClassWished: false,
-            idOfToBeUpdatedClass: '',
-            studentsOfSchool: [],
-            informationOfClassToBeUpdated: {
+            showModal: false, // set true when teacher clicks "add new class" or "update class" button, then modal dialog is shown
+            classes: [], // array of classes of user
+            updateClassWished: false, // only relevant for a teacher, if he/she wants to update a class, this is set to true
+            idOfToBeUpdatedClass: '', // also only relevant for a teacher, if he/she wants to update a class, id of to be updated class is set (needed so that in backend you know which class should be updated)
+            informationOfClassToBeUpdated: { // also only relevant for a teacher, if he/she wants to update a class, info of class to be updated is set (and given to modal dialog)
                 title: '',
                 description: '',
                 students: []
             },
-            openHomework: {}
+            openHomework: {} // only relevant for student, open homework (meaning student didn't do these homework yet) are stored here
         };
-
-        this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentWillMount() {
@@ -58,7 +55,7 @@ export default class ClassListView extends React.Component {
                 return ClassService.getOpenHomeworkOfStudent(); // number to be displayed in badge
             })
             .then(openHw => {
-                if (openHw) {
+                if (openHw) { // if there are open homework, save them
                     this.setState({
                         openHomework: {...openHw},
                         loading: false
@@ -66,73 +63,60 @@ export default class ClassListView extends React.Component {
                 }
             })
             .catch(
-                (e) => {
-                    this.props.handleNotification(e);
-                }
-            );
+                (e) => this.props.handleNotification(e));
     };
 
-    componentDidMount() {
+    componentDidMount() { // needed so that breadcrumbs update after component has mounted
         this.props.updateBreadcrumb([
             {
                 link: '/myclasses',
                 linkName: 'My classes'
             }
         ])
+    };
 
-
-    }
-
-
-    toggleModal() {
+    toggleModal = () => { // toggles modal, either shows it or let it disappear, depending on context
         const oldState = this.state.showModal;
-        const errorStateWhenClickingAdd = false; // needed so that the old state of a canceled class creation isn't shown in the modal dialog
         this.setState({
             showModal: !oldState,
-            errorState: errorStateWhenClickingAdd,
-            updateClassWished: false
+            updateClassWished: false // set to false, because when teacher first updates a class and then wants to add a new one, modal dialog for creating a new class should be shown (not updating a class)
         });
-    }
-    ;
+    };
 
-    handleChangesOfClasses = () => {
+    handleChangesOfClasses = () => { // invoked from modal dialog, if teacher submitted his/her changes by adding or updating a class
         const oldState = this.state.showModal;
-        ClassService.getClassesOfUser().then((data) => {
-            this.props.updateNavBar(data);
-            this.setState({
-                classes: [...data],
-                showModal: !oldState
-            });
-        }).catch((e) => {
-            this.props.handleNotification(e);
-        });
+
+        ClassService.getClassesOfUser()
+            .then((data) => { // get the updated classes of the teacher...
+                this.props.updateNavBar(data); // needed so that updated classes is shown in correctly in navbar
+                this.setState({
+                    classes: [...data], // ... and set them
+                    showModal: !oldState
+                });
+            }).catch((e) => this.props.handleNotification(e));
     };
 
-    handleOnExitModal = () => {
-        this.setState({updateClassWished: false})
+    handleUpdateClassWished = (id, t, d) => { // invoked from the single class components when teacher wants to update a specific class
+        ClassService.getStudentsOfClass(id)
+            .then(students => { // students of the to be updated class are fetched...
+                const informationOfClassToBeUpdated = {title: t, description: d, students: students}; // ... information of to be updated class is saved ...
+                this.setState({ // ... the modal dialog is shown, as a update class (not create class) and needed info is set (which is given to ModalDialogNewClass component)
+                    showModal: true,
+                    updateClassWished: true,
+                    idOfToBeUpdatedClass: id,
+                    informationOfClassToBeUpdated: informationOfClassToBeUpdated
+                });
+            }).catch((e) => this.props.handleNotification(e));
     };
 
-    handleUpdateClassWished = (id, t, d) => {
-        ClassService.getStudentsOfClass(id).then(students => {
-            const informationOfClassToBeUpdated = {title: t, description: d, students: students};
-            this.setState({
-                showModal: true,
-                updateClassWished: true,
-                idOfToBeUpdatedClass: id,
-                informationOfClassToBeUpdated: informationOfClassToBeUpdated
-            });
-        })
+    handleDeleteClass = (id) => { // invoked from the single class components when teacher wants to delete a class
+        ClassService.deleteClass(id) // class is deleted ...
+            .then((updatedClasses) => {
+                this.props.updateNavBar(updatedClasses); // this is needed so that the navbar is updated (meaning deleted class isn't shown anymore)
+                const nClasses = [...updatedClasses];
+                this.setState({classes: nClasses}); // ...and updated classes (meaning without deleted class) is set to current classes
+            }).catch(e => this.props.handleNotification(e));
     };
-
-    handleDeleteClass = (id) => {
-        ClassService.deleteClass(id).then((newClasses) => {
-            this.props.updateNavBar(newClasses);
-            const nClasses = [...newClasses];
-            this.setState({classes: nClasses});
-        }).catch(e => this.props.handleNotification(e));
-
-    };
-
 
     render() {
 
@@ -167,8 +151,7 @@ export default class ClassListView extends React.Component {
                     handleNotification={this.props.handleNotification}
                     informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
                     idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
-                    handleChangesOfClasses={this.handleChangesOfClasses}
-                    onExitModal={this.handleOnExitModal}/>
+                    handleChangesOfClasses={this.handleChangesOfClasses}/>
                 <Grid container spacing={16}>
                     <Grid item xs={addClassButton ? 6 : 12} sm={addClassButton ? 6 : 12} md={addClassButton ? 6 : 12} style={{minHeight:56}}>
                         <Typography variant={'title'}>My classes</Typography>

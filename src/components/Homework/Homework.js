@@ -73,7 +73,7 @@ const Homework = (props) => {
         panelDetail =
             <Typography>
                 <Tooltip id="visibility-info"
-                         title={"Use the switch one the ride side of this panel to make the homework" + (props.homeworkVisible ? " invisible " : " visible ") + "for your students"}>
+                         title={"Use the switch on the right side of this panel to make the homework" + (props.homeworkVisible ? " invisible " : " visible ") + "for your students"}>
                     <i id="visibility-info">{props.homeworkVisible ? "This homework is visible for your students." : "This homework is invisible for your students"}</i>
                 </Tooltip>
                 <br/><br/>

@@ -13,8 +13,10 @@ import Typography from '@material-ui/core/Typography';
 
 import CreateExercise from '../CreateExercise/CreateExercise';
 
+// modal dialog which appears when teacher either want to create a new homework or update one
 const ModalDialogNewHomework = (props) => {
 
+    // maps the exercises of a homework into single exercise components, which are shown to the teacher in a list
     let exercises = props.exercises.map(exc => {
             return (
                 <CreateExercise
@@ -22,7 +24,7 @@ const ModalDialogNewHomework = (props) => {
                     id={exc.id}
                     changeRadioValue={props.handleChangeRadioValue}
                     changeAnswers={props.handleChangeAnswers}
-                    radioValue={props.exercises.find(e => e.id === exc.id).rightSolution}
+                    radioValue={props.exercises[exc.id-1].rightSolution}
                     changeQuestion={props.handleExerciseQuestionChange}
                     errorExerciseQuestion={props.exercisesErrors[exc.id-1].question}
                     errorExerciseAnswers={props.exercisesErrors[exc.id-1].answers}
@@ -36,14 +38,14 @@ const ModalDialogNewHomework = (props) => {
     );
 
     let alreadyAddedHomework = null;
-    if(props.selectedClass !== "") {
-        let selecClass = props.availableClasses.find(e => e._id === props.selectedClass);
-        alreadyAddedHomework = selecClass.homework.map(h => {
+    if(props.selectedClass !== "") { // if a teacher selected a class from which he/she wants to copy a homework ...
+        let selecClass = props.availableClasses.find(e => e._id === props.selectedClass); // ... first the selected class is found ...
+        alreadyAddedHomework = selecClass.homework.map(h => { // ... then all the homework from the class are mapped to MenuItems component, which are given to the corresponding select component
             return (<MenuItem key={h._id} value={h._id}>{h.title}</MenuItem>)
         })
     }
 
-    let availableClasses = props.availableClasses.map(c => {
+    let availableClasses = props.availableClasses.map(c => { // maps the available classes of a teacher to MenuItem components, which are given to the corresponding select component
         return (<MenuItem key={c._id} value={c._id}>{c.title}</MenuItem>)
     });
 
@@ -58,9 +60,9 @@ const ModalDialogNewHomework = (props) => {
                 <div style={{paddingLeft:20, paddingRight:20, marginTop: 8}}>
                     <FormControl fullWidth>
                         <InputLabel>Selected class</InputLabel>
-                        <Select
+                        <Select // select component for the classes
                             value={props.selectedClass}
-                            onChange={props.changeClass}>
+                            onChange={props.changeSelectedClass}>
                             <MenuItem key={"None"} value={""}>None</MenuItem>
                             {availableClasses}
                         </Select>
@@ -69,15 +71,15 @@ const ModalDialogNewHomework = (props) => {
                 <div style={{paddingLeft:20, paddingRight:20, marginTop: 8}}>
                     <FormControl fullWidth>
                         <InputLabel>Selected homework</InputLabel>
-                        <Select
+                        <Select // select component for the homework
                             value={props.selectedHomework}
-                            onChange={props.changeHomework}>
+                            onChange={props.changeSelectedHomework}>
                             <MenuItem key={"None"} value={""}>None</MenuItem>
                             {alreadyAddedHomework}
                         </Select>
                     </FormControl>
                 </div>
-                {props.updateHomeworkWished ? <DialogTitle>Update homework</DialogTitle> : <DialogTitle>Create new homework</DialogTitle>}
+                <DialogTitle>{props.updateHomeworkWished ? "Update homework" : "Create new homework"}</DialogTitle>
                 <DialogContent>
                     <TextField
                         error={props.homeworkTitleError}
@@ -103,20 +105,11 @@ const ModalDialogNewHomework = (props) => {
                     </DialogActions>
 
                     <DialogActions style={{justifyContent:'center', marginBottom:15}}>
-                        {props.updateHomeworkWished
-                            ?
-                            <Button
-                                color={"primary"}
-                                variant={"raised"}
-                                onClick={props.handleCreate}
-                            >Update homework</Button>
-                            :
-                            <Button
-                                color={"primary"}
-                                variant={"raised"}
-                                onClick={props.handleCreate}
-                            >Create homework</Button>
-                        }
+                        <Button
+                            color={"primary"}
+                            variant={"raised"}
+                            onClick={props.handleSubmit}
+                        >{props.updateHomeworkWished ? "Update homework" : "Create homework"}</Button>
                         <Button
                             color={"secondary"}
                             variant={"raised"}

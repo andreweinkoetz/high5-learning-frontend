@@ -155,7 +155,7 @@ export default class LandingPage extends React.Component {
                 })()}
                 {/* one pager content */}
                 <div className="content">
-                    {/* short slogan and nice backgroud picture for the first page */}
+                    {/* short slogan and nice background picture for the first page */}
                     <section className="content-page1">
                         <h1>WE LOVE LEARNING</h1>
                         <p>“Education is the most powerful weapon which you can use to change the world.”
