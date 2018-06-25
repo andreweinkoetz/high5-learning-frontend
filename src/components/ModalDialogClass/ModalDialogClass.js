@@ -249,7 +249,7 @@ class ModalDialogClass extends Component {
 
     render() {
         const {classes} = this.props;
-        const {inputValue, clas} = this.state;
+        const {inputValue} = this.state;
 
         return (
             <Dialog
@@ -286,7 +286,7 @@ class ModalDialogClass extends Component {
                     />
                 </DialogContent>
                 <DialogContent style={{minWidth: 200}}>
-                    <Downshift inputValue={inputValue} onChange={this.handleSelectionChange} selectedItem={clas.students}
+                    <Downshift inputValue={inputValue} onChange={this.handleSelectionChange} selectedItem={this.state.class.students}
                                itemToString={(item) => (item.username)}>
                         {({
                               getInputProps,
@@ -300,7 +300,7 @@ class ModalDialogClass extends Component {
                                     fullWidth: true,
                                     classes,
                                     InputProps: getInputProps({
-                                        startAdornment: clas.students.map(item => ( // for every student which is already selected, create a chip
+                                        startAdornment: this.state.class.students.map(item => ( // for every student which is already selected, create a chip
                                             <Chip
                                                 key={item._id}
                                                 tabIndex={-1}
