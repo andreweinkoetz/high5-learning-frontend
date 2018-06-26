@@ -280,6 +280,7 @@ class ModalDialogClass extends Component {
                         label="Title"
                         value={this.state.class.title}
                         helperText="Required"
+                        required={true}
                         multiline
                     />
                 </DialogContent>

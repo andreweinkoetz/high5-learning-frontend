@@ -96,10 +96,12 @@ export default class ClassDetailView extends React.Component {
                 }
             });
 
-            ClassService.getAllHomeworkOfUser()
-                .then((homework) => {
-                    this.setState({availableClasses: [...homework]})
-                }).catch((e) => this.props.handleNotification(e));
+            if (UserService.isTeacher()) {
+                ClassService.getAllHomeworkOfUser()
+                    .then((homework) => {
+                        this.setState({availableClasses: [...homework]})
+                    }).catch((e) => this.props.handleNotification(e));
+            }
 
             this.props.updateBreadcrumb([ // update also the breadcrumbs
                 {
