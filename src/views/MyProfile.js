@@ -108,7 +108,7 @@ export default class MyProfile extends React.Component {
                         <TextField
                             fullWidth
                             value={this.state.password}
-                            label="Password"
+                            label="New password"
                             helperText="Required"
                             type="password"
                             required={true}
@@ -119,7 +119,7 @@ export default class MyProfile extends React.Component {
                         <TextField
                             fullWidth
                             value={this.state.confirmPassword}
-                            label="Confirm password"
+                            label="Confirm new password"
                             helperText="Required"
                             type="password"
                             error={this.state.noMatch}
