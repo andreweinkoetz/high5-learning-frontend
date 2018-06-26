@@ -291,16 +291,18 @@ export default class ClassDetailView extends React.Component {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
-        let exerciseIDData = homeworkModalExercises.find(e => e.id === id);
+        let exerciseIDData = {...homeworkModalExercises.find(e => e.id === id)};
         exerciseIDData.question = event.target.value;
-        homeworkModalExercises.exercises = homeworkModalExercises;
+        homeworkModalExercises[id-1] = exerciseIDData;
+        homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
-        let exerciseIDErrorData = homeworkModalErrorsExercises.find(e => e.id === id);
+        let exerciseIDErrorData = {...homeworkModalErrorsExercises.find(e => e.id === id)};
         if (event.target.value !== "") { // when there is a title, the error state of the exercise title becomes false
             exerciseIDErrorData.question = false;
         }
+        homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
         homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
         this.setState({
@@ -313,14 +315,16 @@ export default class ClassDetailView extends React.Component {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
-        let exerciseIDData = homeworkModalExercises.find(e => e.id === id);
+        let exerciseIDData = {...homeworkModalExercises.find(e => e.id === id)};
         exerciseIDData.rightSolution = event.target.value;
+        homeworkModalExercises[id-1] = exerciseIDData;
         homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
-        let exerciseIDErrorData = homeworkModalErrorsExercises.find(e => e.id === id);
+        let exerciseIDErrorData = {...homeworkModalErrorsExercises.find(e => e.id === id)};
         exerciseIDErrorData.rightSolution = true;
+        homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
         homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
         this.setState({
@@ -331,22 +335,28 @@ export default class ClassDetailView extends React.Component {
 
     handleChangeAnswers = (id, answerID) => (event) => { // invoked, when teacher changes an answer of an exercise, with id you find the exercise and with answerID the answer you change
 
-        console.log(this.state.homeworkModal);
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
-        let exerciseIDData = homeworkModalExercises.find(e => e.id === id);
-        exerciseIDData.answers[answerID] = event.target.value;
+        let exerciseIDData = {...homeworkModalExercises.find(e => e.id === id)};
+        let exerciseIDDataAnswers = [...exerciseIDData.answers];
+        exerciseIDDataAnswers[answerID] = event.target.value;
+        exerciseIDData.answers = exerciseIDDataAnswers;
+        homeworkModalExercises[id-1] = exerciseIDData;
+        homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
         if (event.target.value !== "") { // when there is an answer, the error state of the answer of the exercise becomes false
-            let exerciseIDErrorData = homeworkModalErrorsExercises.find(e => e.id === id);
-            exerciseIDErrorData.answers[answerID] = false;
+            let exerciseIDErrorData = {...homeworkModalErrorsExercises.find(e => e.id === id)};
+            let exerciseIDErrorDataAnswers = [...exerciseIDErrorData.answers];
+            exerciseIDErrorDataAnswers[answerID] = false;
+            exerciseIDErrorData.answers = exerciseIDErrorDataAnswers;
+            homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
+            homeworkModalErrors.exercises = homeworkModalErrorsExercises;
         }
 
-        console.log(this.state.homeworkModal);
         this.setState({
-            //homeworkModal: homeworkModal,
+            homeworkModal: homeworkModal,
             homeworkModalErrors: homeworkModalErrors
         });
     };
