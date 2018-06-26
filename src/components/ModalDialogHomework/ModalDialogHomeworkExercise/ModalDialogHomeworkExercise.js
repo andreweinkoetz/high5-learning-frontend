@@ -9,7 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-class Exercise extends Component {
+class ModalDialogHomeworkExercise extends Component {
 
     constructor(props) {
         super(props);
@@ -20,12 +20,11 @@ class Exercise extends Component {
     };
 
     render () {
-
         return (
             <div>
                 <DialogContent>
                     <TextField
-                        label={"Exercise " + this.props.id}
+                        label={"ModalDialogHomeworkExercise " + this.props.id}
                         onChange={this.props.changeQuestion(this.state.id)}
                         error={this.props.errorExerciseQuestion}
                         helperText="Required"
@@ -108,4 +107,4 @@ class Exercise extends Component {
     }
 }
 
-export default Exercise;
+export default ModalDialogHomeworkExercise;

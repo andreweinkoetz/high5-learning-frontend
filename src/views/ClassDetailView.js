@@ -51,11 +51,6 @@ export default class ClassDetailView extends React.Component {
             homeworkRanking: undefined
         };
 
-        this.addNewHomework = this.addNewHomework.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
-        this.handleSubmitModal = this.handleSubmitModal.bind(this);
-
     }
 
     componentWillMount() {
@@ -166,7 +161,7 @@ export default class ClassDetailView extends React.Component {
             selectedClass: "",
             ableToDeleteExercises: false
         });
-    }
+    };
 
     handleSubmitModal = () => { // invoked when a teacher wants to submit a homework (meaning creating or updating one)
         // in this function it is checked, whether some of the required fields of the to be added/updated homework are missing
@@ -290,19 +285,23 @@ export default class ClassDetailView extends React.Component {
 
                 this.toggleModal(); // close modal dialog
             }).catch(e => console.log(e));
-    }
+    };
 
     handleExerciseTitleChange = (id) => (event) => { // invoked, when teacher changes a title of an exercise, with id you find the exercise whose title you change
 
         let homeworkModal = {...this.state.homeworkModal};
-        let exerciseIDData = homeworkModal.exercises.find(e => e.id === id);
+        let homeworkModalExercises = [...homeworkModal.exercises];
+        let exerciseIDData = homeworkModalExercises.find(e => e.id === id);
         exerciseIDData.question = event.target.value;
+        homeworkModalExercises.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
-        let exerciseIDErrorData = homeworkModalErrors.exercises.find(e => e.id === id);
+        let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
+        let exerciseIDErrorData = homeworkModalErrorsExercises.find(e => e.id === id);
         if (event.target.value !== "") { // when there is a title, the error state of the exercise title becomes false
             exerciseIDErrorData.question = false;
         }
+        homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
         this.setState({
             homeworkModal: homeworkModal,
@@ -313,12 +312,16 @@ export default class ClassDetailView extends React.Component {
     handleChangeRadioValue = (id) => (event) => { // invoked, when teacher changes the radio value (right answer) of an exercise, with id you find the exercise whose right answer you change
 
         let homeworkModal = {...this.state.homeworkModal};
-        let exerciseIDData = homeworkModal.exercises.find(e => e.id === id);
+        let homeworkModalExercises = [...homeworkModal.exercises];
+        let exerciseIDData = homeworkModalExercises.find(e => e.id === id);
         exerciseIDData.rightSolution = event.target.value;
+        homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
-        let exerciseIDErrorData = homeworkModalErrors.exercises.find(e => e.id === id);
+        let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
+        let exerciseIDErrorData = homeworkModalErrorsExercises.find(e => e.id === id);
         exerciseIDErrorData.rightSolution = true;
+        homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
         this.setState({
             homeworkModal: homeworkModal,
@@ -328,18 +331,22 @@ export default class ClassDetailView extends React.Component {
 
     handleChangeAnswers = (id, answerID) => (event) => { // invoked, when teacher changes an answer of an exercise, with id you find the exercise and with answerID the answer you change
 
+        console.log(this.state.homeworkModal);
         let homeworkModal = {...this.state.homeworkModal};
-        let exerciseIDData = homeworkModal.exercises.find(e => e.id === id);
+        let homeworkModalExercises = [...homeworkModal.exercises];
+        let exerciseIDData = homeworkModalExercises.find(e => e.id === id);
         exerciseIDData.answers[answerID] = event.target.value;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
+        let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
         if (event.target.value !== "") { // when there is an answer, the error state of the answer of the exercise becomes false
-            let exerciseIDErrorData = homeworkModalErrors.exercises.find(e => e.id === id);
+            let exerciseIDErrorData = homeworkModalErrorsExercises.find(e => e.id === id);
             exerciseIDErrorData.answers[answerID] = false;
         }
 
+        console.log(this.state.homeworkModal);
         this.setState({
-            homeworkModal: homeworkModal,
+            //homeworkModal: homeworkModal,
             homeworkModalErrors: homeworkModalErrors
         });
     };
@@ -378,15 +385,20 @@ export default class ClassDetailView extends React.Component {
     handleDeleteExercise = (id) => { // invoked, when teacher wants to delete an exercise from a homework (comes from ModalDialogHomework), with id you find the exercise the teacher wants to delete
 
         let homeworkModal = {...this.state.homeworkModal};
-        homeworkModal.exercises.splice(id - 1, 1);
+        let homeworkModalExercises = [...homeworkModal.exercises];
+        homeworkModalExercises.splice(id - 1, 1);
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
-        homeworkModalErrors.exercises.splice(id - 1, 1);
+        let homeworkModalErrorExercises = [...homeworkModalErrors.exercises];
+        homeworkModalErrorExercises.splice(id - 1, 1);
 
         for (let i = (id - 1); i < homeworkModal.exercises.length; i++) {
-            homeworkModal.exercises[i].id = "" + (i + 1);
-            homeworkModalErrors.exercises[i].id = "" + (i + 1);
+            homeworkModalExercises[i].id = "" + (i + 1);
+            homeworkModalErrorExercises[i].id = "" + (i + 1);
         }
+
+        homeworkModal.exercises = homeworkModalExercises;
+        homeworkModalErrors.exercises = homeworkModalErrorExercises;
 
         const lengthExercises = homeworkModal.exercises.length;
         let oldAbleToDeleteState = {...this.state.ableToDeleteExercises};
@@ -514,7 +526,7 @@ export default class ClassDetailView extends React.Component {
             });
 
         }
-        else {
+        else { // if no homework is selected, set values of homework to initial (meaning empty)
 
             let homeworkModalErrors = {
                 title: false,

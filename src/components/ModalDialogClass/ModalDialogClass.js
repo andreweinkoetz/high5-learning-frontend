@@ -106,6 +106,7 @@ class ModalDialogClass extends Component {
             errorState: false // defines whether creating or updating a class is done correctly: becomes true when teacher forgot required information (title of class)
 
         };
+
         this.updateClass = this.updateClass.bind(this);
         this.addNewClass = this.addNewClass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -235,7 +236,7 @@ class ModalDialogClass extends Component {
 
         this.setState({
             class: clas,
-            errorState: false // teacher did somthing, so error state should be false
+            errorState: false // teacher did something, so error state should be false
         });
     };
 

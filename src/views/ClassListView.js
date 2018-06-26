@@ -10,7 +10,7 @@ import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProg
 import ClassList from '../components/Class/ClassList';
 import ClassService from '../services/ClassService';
 import UserService from '../services/UserService';
-import ModalDialogNewClass from '../components/ModalDialogClass/ModalDialogClass';
+import ModalDialogClass from '../components/ModalDialogClass/ModalDialogClass';
 
 // Default view after logging in
 // A list of classes is displayed in which the user is enrolled.
@@ -78,30 +78,28 @@ export default class ClassListView extends React.Component {
     toggleModal = () => { // toggles modal, either shows it or let it disappear, depending on context
         const oldState = this.state.showModal;
         this.setState({
-            showModal: !oldState,
-            updateClassWished: false // set to false, because when teacher first updates a class and then wants to add a new one, modal dialog for creating a new class should be shown (not updating a class)
+            showModal: !oldState
         });
     };
 
     handleChangesOfClasses = () => { // invoked from modal dialog, if teacher submitted his/her changes by adding or updating a class
-        const oldState = this.state.showModal;
 
         ClassService.getClassesOfUser()
-            .then((data) => { // get the updated classes of the teacher...
-                this.props.updateNavBar(data); // needed so that updated classes is shown in correctly in navbar
+            .then((classes) => { // get the updated classes of the teacher...
+                this.props.updateNavBar(classes); // needed so that updated classes is shown in correctly in navbar
                 this.setState({
-                    classes: [...data], // ... and set them
-                    showModal: !oldState
+                    classes: [...classes] // ... and set them
                 });
+                this.toggleModal();
             }).catch((e) => this.props.handleNotification(e));
     };
 
-    handleUpdateClassWished = (id, t, d) => { // invoked from the single class components when teacher wants to update a specific class
+    handleUpdateClassWished = (id, title, description) => { // invoked from the single class components when teacher wants to update a specific class
         ClassService.getStudentsOfClass(id)
             .then(students => { // students of the to be updated class are fetched...
-                const informationOfClassToBeUpdated = {title: t, description: d, students: students}; // ... information of to be updated class is saved ...
+                const informationOfClassToBeUpdated = {title: title, description: description, students: students}; // ... information of to be updated class is saved ...
                 this.setState({ // ... the modal dialog is shown, as a update class (not create class) and needed info is set (which is given to ModalDialogClass component)
-                    showModal: true,
+                    showModal: true, // not toggled, because otherwise modal dialog doesn't have info of to be updated class
                     updateClassWished: true,
                     idOfToBeUpdatedClass: id,
                     informationOfClassToBeUpdated: informationOfClassToBeUpdated
@@ -113,9 +111,13 @@ export default class ClassListView extends React.Component {
         ClassService.deleteClass(id) // class is deleted ...
             .then((updatedClasses) => {
                 this.props.updateNavBar(updatedClasses); // this is needed so that the navbar is updated (meaning deleted class isn't shown anymore)
-                const nClasses = [...updatedClasses];
-                this.setState({classes: nClasses}); // ...and updated classes (meaning without deleted class) is set to current classes
+                const uClasses = [...updatedClasses];
+                this.setState({classes: uClasses}); // ...and updated classes (meaning without deleted class) is set to current classes
             }).catch(e => this.props.handleNotification(e));
+    };
+
+    handleOnExitModal = () => { // invoked, when modal is closed. Sets updateClassWished to false, so that no visual bug occurs (only after the dialog is closed, this is set to false, so that the text in the dialog doesn't change from "update class" to "create new class" while closing)
+        this.setState({updateClassWished: false})
     };
 
     render() {
@@ -144,14 +146,16 @@ export default class ClassListView extends React.Component {
 
         return (
             <div>
-                <ModalDialogNewClass
-                    visible={this.state.showModal}
+                <ModalDialogClass
                     toggle={this.toggleModal}
-                    updateWished={this.state.updateClassWished}
+                    handleChangesOfClasses={this.handleChangesOfClasses}
                     handleNotification={this.props.handleNotification}
+                    onExitModal={this.handleOnExitModal}
+
+                    visible={this.state.showModal}
+                    updateWished={this.state.updateClassWished}
                     informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
-                    idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}
-                    handleChangesOfClasses={this.handleChangesOfClasses}/>
+                    idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}/>
                 <Grid container spacing={16}>
                     <Grid item xs={addClassButton ? 6 : 12} sm={addClassButton ? 6 : 12} md={addClassButton ? 6 : 12} style={{minHeight:56}}>
                         <Typography variant={'title'}>My classes</Typography>

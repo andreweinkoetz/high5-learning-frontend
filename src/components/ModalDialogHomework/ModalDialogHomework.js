@@ -11,7 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 
-import Exercise from '../CreateExercise/Exercise';
+import ModalDialogHomeworkExercise from './ModalDialogHomeworkExercise/ModalDialogHomeworkExercise';
 
 // modal dialog which appears when teacher either want to create a new homework or update one
 const ModalDialogHomework = (props) => {
@@ -19,7 +19,7 @@ const ModalDialogHomework = (props) => {
     // maps the exercises of a homework into single exercise components, which are shown to the teacher in a list
     let exercises = props.homeworkModal.exercises.map(exc => {
             return (
-                <Exercise
+                <ModalDialogHomeworkExercise
                     key={exc.id}
                     id={exc.id}
                     changeRadioValue={props.handleChangeRadioValue}
