@@ -650,7 +650,7 @@ export default class ClassDetailView extends React.Component {
                 <Grid container spacing={16}>
                     <Grid item xs={addNewHomeworkButton ? 6 : 12} sm={6} md={6}>
                         <Typography variant={'title'}>My homework</Typography>
-                        <Typography variant={'caption'}>This your homework in
+                        <Typography variant={'caption'}>This is your homework in
                             class: {this.state.currentClass.title} </Typography>
                     </Grid>
                     {addNewHomeworkButton}
