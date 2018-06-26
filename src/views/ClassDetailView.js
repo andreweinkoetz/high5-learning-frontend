@@ -392,7 +392,7 @@ export default class ClassDetailView extends React.Component {
         let homeworkModalErrorExercises = [...homeworkModalErrors.exercises];
         homeworkModalErrorExercises.splice(id - 1, 1);
 
-        for (let i = (id - 1); i < homeworkModal.exercises.length; i++) {
+        for (let i = (id - 1); i < homeworkModalExercises.length; i++) {
             homeworkModalExercises[i].id = "" + (i + 1);
             homeworkModalErrorExercises[i].id = "" + (i + 1);
         }
