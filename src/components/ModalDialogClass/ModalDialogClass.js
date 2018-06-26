@@ -110,6 +110,7 @@ class ModalDialogClass extends Component {
         this.updateClass = this.updateClass.bind(this);
         this.addNewClass = this.addNewClass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDialogCloses = this.handleDialogCloses.bind(this);
     }
 
     componentWillMount() {
@@ -248,6 +249,11 @@ class ModalDialogClass extends Component {
         this.setState({class: clas});
     };
 
+    handleDialogCloses() { // invoked, when modal dialog closes
+        this.setState({errorState: false}); // error state is set to false, so that errorState is false when opening dialog
+        this.props.onExitModal();
+    };
+
     render() {
         const {classes} = this.props;
         const {inputValue} = this.state;
@@ -258,7 +264,7 @@ class ModalDialogClass extends Component {
                 disableBackdropClick
                 disableEscapeKeyDown
                 open={this.props.visible} // only visible if teacher presses "add new class" or "update class" button
-                onExited={this.props.onExitModal}
+                onExited={this.handleDialogCloses}
             >
                 {this.props.updateWished
                     ?
