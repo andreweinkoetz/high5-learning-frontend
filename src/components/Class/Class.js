@@ -58,7 +58,7 @@ const Class = (props) => {
 
     let secondaryContent; // Badge element only for students with open homework within this class
 
-    if (UserService.isTeacher() || (props.openHomework === undefined || props.openHomework === 0 )) {
+    if (UserService.isTeacher() || (props.openHomework === undefined || props.openHomework <= 0 )) {
         secondaryContent = null
     } else {
         secondaryContent =
