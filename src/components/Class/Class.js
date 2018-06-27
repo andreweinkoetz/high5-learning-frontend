@@ -62,7 +62,7 @@ const Class = (props) => {
         secondaryContent = null
     } else {
         secondaryContent =
-            <Tooltip id="tooltip-top-start" title={props.openHomework + " assignments not submitted"} placement="top-start">
+            <Tooltip id="tooltip-top-start" title={props.openHomework + " homework not submitted"} placement="top-start">
                 <Badge color="error" badgeContent={props.openHomework}>
                     <Typography/>
                 </Badge>
