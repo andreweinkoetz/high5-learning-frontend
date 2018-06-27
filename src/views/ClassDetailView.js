@@ -394,7 +394,7 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleDeleteExercise = (id) => { // invoked, when teacher wants to delete an exercise from a homework (comes from ModalDialogHomework), with id you find the exercise the teacher wants to delete
+    handleDeleteExercise = (id) => () => { // invoked, when teacher wants to delete an exercise from a homework (comes from ModalDialogHomework), with id you find the exercise the teacher wants to delete
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
