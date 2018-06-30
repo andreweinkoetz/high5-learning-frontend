@@ -60,16 +60,18 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
         //getting homework data like questions and answer posibilities ...
-        HomeworkService.getHomeworkDetail(this.props.location.state.id).then(homework => {
-            const homeworkExercises = [...homework.exercises];
+        HomeworkService.getHomeworkDetail(this.props.location.state.id)
 
-            this.setState({
-                exercises: homeworkExercises,
+            .then(homework => {
+                const homeworkExercises = [...homework.exercises];
 
-            });
-        })
-            .catch(e => this.props.handleNotification(e))
+                this.setState({
+                    exercises: homeworkExercises,
 
+                });
+            })
+
+            // get the students of this class
             .then(() =>
                 ClassService.getStudentsOfClass(this.props.location.state.classId)
                     .then(listOfStudents => {
@@ -80,62 +82,58 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                         });
                     }))
 
+            // get submissions (statistics) of the students of this homework
             .then(() => {
                 SubmissionService.getSubmissionOfHomework(this.props.location.state.id)
                     .then(submission => {
                         // check if at least one submission exists
-                        if (submission.submissions.length !== 0) {
-                            const submissionStatistics = [...submission.aggregatedSubmissions];
-
-                            submissionStatistics.sort(function (a, b) {
-                                // Turn your strings into dates, and then subtract them
-                                // to get a value that is either negative, positive, or zero.
-                                return new Date(b._id.date) - new Date(a._id.date);
-                            });
-
-                            const exerciseStatistics = [...submission.exerciseStatistics];
-                            const newSubmission = [...submission.submissions];
-                            const submissionRate = Math.round(submission.submissionRate * 100);
-
-                            let rightAnswerPercentage;
-
-                            /*let sumRightAnswerPercentage = 0;
-
-                            for (let i = 0; i < exerciseStatistics.length; i++) {
-                                sumRightAnswerPercentage += exerciseStatistics[i].rightAnswerPercentage;
-                            }
-                            rightAnswerPercentage = Math.round(sumRightAnswerPercentage / this.state.exercises.length * 100);*/
-
-                            rightAnswerPercentage = Math.round(exerciseStatistics.reduce((acc, curr) => acc
-                                + curr.rightAnswerPercentage, 0) / this.state.exercises.length * 100);
-
-
-                            var counts = [];
-                            submission.submissions.forEach(x => Object.assign(counts[x.createdAt.substring(0, 10)] = (counts[x.createdAt.substring(0, 10)] || 0) + 1));
-
-
-                            this.setState({
-                                allSubmissions: newSubmission,
-                                exerciseStatistics: exerciseStatistics,
-                                rightAnswerPercentage: rightAnswerPercentage,
-                                submissionRate: submissionRate,
-                                loading: false,
-                                submissionCount: counts,
-                                submissionStatistics: submissionStatistics.reverse()
-                            });
-                        }
-
                         // if no submission exists empty is true and the component ExerciseListEmpty is called
-                        else {
+                        if (submission.submissions.length === 0) {
                             this.setState({
                                 empty: true,
                                 rightAnswerPercentage: 100,
                                 submissionRate: 0,
                                 loading: false
-                            })
+                            });
+                            return;
                         }
+                        const submissionStatistics = [...submission.aggregatedSubmissions];
+
+                        submissionStatistics.sort(function (a, b) {
+                            // Turn your strings into dates, and then subtract them
+                            // to get a value that is either negative, positive, or zero.
+                            return new Date(b._id.date) - new Date(a._id.date);
+                        });
+
+                        const exerciseStatistics = [...submission.exerciseStatistics];
+                        const newSubmission = [...submission.submissions];
+                        const submissionRate = Math.round(submission.submissionRate * 100);
+
+                        let rightAnswerPercentage;
+
+                        rightAnswerPercentage = Math.round(exerciseStatistics.reduce((acc, curr) => acc
+                            + curr.rightAnswerPercentage, 0) / this.state.exercises.length * 100);
+
+
+                        let counts = [];
+                        submission.submissions.forEach(x =>
+                            Object.assign(counts[x.createdAt.substring(0, 10)] =
+                                (counts[x.createdAt.substring(0, 10)] || 0) + 1));
+
+                        // update state accordingly
+                        this.setState({
+                            allSubmissions: newSubmission,
+                            exerciseStatistics: exerciseStatistics,
+                            rightAnswerPercentage: rightAnswerPercentage,
+                            submissionRate: submissionRate,
+                            loading: false,
+                            submissionCount: counts,
+                            submissionStatistics: submissionStatistics.reverse()
+                        });
                     });
             })
+
+            .catch(e => this.props.handleNotification(e));
     };
 
 
@@ -182,14 +180,11 @@ export default class HomeworkDetailViewTeacher extends React.Component {
 
 
     render() {
-
-
         if (this.state.loading) {
             return <div style={{textAlign: 'center', paddingTop: 40, paddingBottom: 40}}><CircularProgress
                 size={30}/>
                 <Typography variant={'caption'}>Loading...</Typography></div>;
         }
-
 
         let AllSubmissionMenuItem = <MenuItem value={"All"}>All</MenuItem>;
 
