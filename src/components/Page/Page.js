@@ -72,7 +72,7 @@ class Page extends React.Component {
         }
     };
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.updatedClassesNavBar !== this.state.updatedClasses) {
             this.setState({
                 classes: this.props.updatedClassesNavBar,
