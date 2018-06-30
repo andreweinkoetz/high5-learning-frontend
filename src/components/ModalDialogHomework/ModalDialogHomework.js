@@ -27,11 +27,11 @@ const ModalDialogHomework = (props) => {
                     changeQuestion={props.handleExerciseQuestionChange}
                     handleDeleteExercise={props.handleDeleteExercise}
 
-                    radioValue={props.homeworkModal.exercises[exc.id-1].rightSolution}
-                    errorExerciseQuestion={props.homeworkModalErrors.exercises[exc.id-1].question}
-                    errorExerciseAnswers={props.homeworkModalErrors.exercises[exc.id-1].answers}
-                    answersValues={props.homeworkModal.exercises[exc.id-1].answers}
-                    questionValue={props.homeworkModal.exercises[exc.id-1].question}
+                    radioValue={props.homeworkModal.exercises[exc.id - 1].rightSolution}
+                    errorExerciseQuestion={props.homeworkModalErrors.exercises[exc.id - 1].question}
+                    errorExerciseAnswers={props.homeworkModalErrors.exercises[exc.id - 1].answers}
+                    answersValues={props.homeworkModal.exercises[exc.id - 1].answers}
+                    questionValue={props.homeworkModal.exercises[exc.id - 1].question}
                     ableToDeleteExercises={props.ableToDeleteExercises}
                 />
             )
@@ -41,7 +41,7 @@ const ModalDialogHomework = (props) => {
     let alreadyAddedHomework = null;
 
     // if a teacher selected a class from which he/she wants to copy a homework ...
-    if(props.selectedClass !== "") {
+    if (props.selectedClass !== "") {
 
         // ... first the selected class is found ...
         let selecClass = props.availableClasses.find(e => e._id === props.selectedClass);
@@ -66,8 +66,9 @@ const ModalDialogHomework = (props) => {
                 disableEscapeKeyDown
                 open={props.visible}
             >
-                <Typography variant="subheading" align="left" style={{marginTop: '15px', marginLeft: '20px'}}>Copy previous created homework from classes</Typography>
-                <div style={{paddingLeft:20, paddingRight:20, marginTop: 8}}>
+                <Typography variant="subheading" align="left" style={{marginTop: '15px', marginLeft: '20px'}}>Copy
+                    previous created homework from classes</Typography>
+                <div style={{paddingLeft: 20, paddingRight: 20, marginTop: 8}}>
                     <FormControl fullWidth>
                         <InputLabel>Selected class</InputLabel>
                         <Select // select component for the classes
@@ -78,7 +79,7 @@ const ModalDialogHomework = (props) => {
                         </Select>
                     </FormControl>
                 </div>
-                <div style={{paddingLeft:20, paddingRight:20, marginTop: 8}}>
+                <div style={{paddingLeft: 20, paddingRight: 20, marginTop: 8}}>
                     <FormControl fullWidth>
                         <InputLabel>Selected homework</InputLabel>
                         <Select // select component for the homework
@@ -101,31 +102,31 @@ const ModalDialogHomework = (props) => {
                         autoFocus={true}
                         value={props.homeworkModal.title}
                     />
-                    <div style={{maxHeight:'500px', marginBottom: '10px'}}>
+                    <div style={{maxHeight: '500px', marginBottom: '10px'}}>
                         {exercises}
                     </div>
                 </DialogContent>
 
-                    <DialogActions style={{justifyContent:'center', marginTop:10, marginBottom:5}}>
-                        <Button
-                            color={"primary"}
-                            variant={"raised"}
-                            onClick={props.handleAddExercise}
-                        >Add new exercise to homework</Button>
-                    </DialogActions>
+                <DialogActions style={{justifyContent: 'center', marginTop: 10, marginBottom: 5}}>
+                    <Button
+                        color={"primary"}
+                        variant={"raised"}
+                        onClick={props.handleAddExercise}
+                    >Add new exercise to homework</Button>
+                </DialogActions>
 
-                    <DialogActions style={{justifyContent:'center', marginBottom:15}}>
-                        <Button
-                            color={"primary"}
-                            variant={"raised"}
-                            onClick={props.handleSubmit}
-                        >{props.updateHomeworkWished ? "Update homework" : "Create homework"}</Button>
-                        <Button
-                            color={"secondary"}
-                            variant={"raised"}
-                            onClick={props.handleCancel}
-                        >Cancel</Button>
-                    </DialogActions>
+                <DialogActions style={{justifyContent: 'center', marginBottom: 15}}>
+                    <Button
+                        color={"primary"}
+                        variant={"raised"}
+                        onClick={props.handleSubmit}
+                    >{props.updateHomeworkWished ? "Update homework" : "Create homework"}</Button>
+                    <Button
+                        color={"secondary"}
+                        variant={"raised"}
+                        onClick={props.handleCancel}
+                    >Cancel</Button>
+                </DialogActions>
             </Dialog>
         </div>
     )

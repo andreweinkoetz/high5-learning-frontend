@@ -302,7 +302,7 @@ export default class ClassDetailView extends React.Component {
     };
 
     // invoked, when teacher wants to add a new homework
-    addNewHomework = (homeworkToAdd)  => {
+    addNewHomework = (homeworkToAdd) => {
 
         // sent the to be added homework to the backend...
         HomeworkService.addNewHomework(this.state.currentClass.id, homeworkToAdd)
@@ -360,7 +360,7 @@ export default class ClassDetailView extends React.Component {
         let homeworkModalExercises = [...homeworkModal.exercises];
         let exerciseIDData = {...homeworkModalExercises.find(e => e.id === id)};
         exerciseIDData.question = event.target.value;
-        homeworkModalExercises[id-1] = exerciseIDData;
+        homeworkModalExercises[id - 1] = exerciseIDData;
         homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
@@ -372,7 +372,7 @@ export default class ClassDetailView extends React.Component {
             exerciseIDErrorData.question = false;
         }
 
-        homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
+        homeworkModalErrorsExercises[id - 1] = exerciseIDErrorData;
         homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
         this.setState({
@@ -388,14 +388,14 @@ export default class ClassDetailView extends React.Component {
         let homeworkModalExercises = [...homeworkModal.exercises];
         let exerciseIDData = {...homeworkModalExercises.find(e => e.id === id)};
         exerciseIDData.rightSolution = event.target.value;
-        homeworkModalExercises[id-1] = exerciseIDData;
+        homeworkModalExercises[id - 1] = exerciseIDData;
         homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
         let exerciseIDErrorData = {...homeworkModalErrorsExercises.find(e => e.id === id)};
         exerciseIDErrorData.rightSolution = true;
-        homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
+        homeworkModalErrorsExercises[id - 1] = exerciseIDErrorData;
         homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
         this.setState({
@@ -413,7 +413,7 @@ export default class ClassDetailView extends React.Component {
         let exerciseIDDataAnswers = [...exerciseIDData.answers];
         exerciseIDDataAnswers[answerID] = event.target.value;
         exerciseIDData.answers = exerciseIDDataAnswers;
-        homeworkModalExercises[id-1] = exerciseIDData;
+        homeworkModalExercises[id - 1] = exerciseIDData;
         homeworkModal.exercises = homeworkModalExercises;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
@@ -425,7 +425,7 @@ export default class ClassDetailView extends React.Component {
             let exerciseIDErrorDataAnswers = [...exerciseIDErrorData.answers];
             exerciseIDErrorDataAnswers[answerID] = false;
             exerciseIDErrorData.answers = exerciseIDErrorDataAnswers;
-            homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
+            homeworkModalErrorsExercises[id - 1] = exerciseIDErrorData;
             homeworkModalErrors.exercises = homeworkModalErrorsExercises;
         }
 
@@ -550,54 +550,54 @@ export default class ClassDetailView extends React.Component {
             .then(submissions => {
 
                 // if there are no submissions, you can update the homework
-            if (submissions.count === 0) {
+                if (submissions.count === 0) {
 
-                // get the info of the to be updated homework and set the corresponding states
-                HomeworkService.getHomeworkDetail(id)
-                    .then((homework) => {
+                    // get the info of the to be updated homework and set the corresponding states
+                    HomeworkService.getHomeworkDetail(id)
+                        .then((homework) => {
 
-                        const homeworkToUpdate = {
-                            title: homework.title,
-                            exercises: homework.exercises,
-                            visible: homework.visible
-                        };
+                            const homeworkToUpdate = {
+                                title: homework.title,
+                                exercises: homework.exercises,
+                                visible: homework.visible
+                            };
 
-                        let ableToDeleteExercisesOfToBeUpdatedHomework = this.state.ableToDeleteExercises;
-                        if (homework.exercises.length > 1) {
-                            ableToDeleteExercisesOfToBeUpdatedHomework = true;
-                        }
+                            let ableToDeleteExercisesOfToBeUpdatedHomework = this.state.ableToDeleteExercises;
+                            if (homework.exercises.length > 1) {
+                                ableToDeleteExercisesOfToBeUpdatedHomework = true;
+                            }
 
-                        let homeworkToUpdateErrors = {title: false, exercises: []};
-                        homeworkToUpdate.exercises.map(e => {
+                            let homeworkToUpdateErrors = {title: false, exercises: []};
+                            homeworkToUpdate.exercises.map(e => {
 
-                            // return here only needed so that no error warning appears
-                            return homeworkToUpdateErrors.exercises.push({
-                                id: e.id,
-                                question: false,
-                                answers: [false, false, false, false],
-                                rightSolution: false
-                            })
-                        });
+                                // return here only needed so that no error warning appears
+                                return homeworkToUpdateErrors.exercises.push({
+                                    id: e.id,
+                                    question: false,
+                                    answers: [false, false, false, false],
+                                    rightSolution: false
+                                })
+                            });
 
-                        this.setState({
-                            homeworkModalErrors: homeworkToUpdateErrors,
-                            homeworkModal: homeworkToUpdate,
-                            updateHomeworkWished: true,
-                            showModal: true, // show modal dialog
-                            idOfToBeUpdatedHomework: id,
-                            ableToDeleteExercises: ableToDeleteExercisesOfToBeUpdatedHomework
-                        });
-                }).catch(e => this.props.handleNotification(e));
-            }
-            else { // if homework already has a submission, show notification
-                this.props.handleNotification({
-                    title: 'Updating of class not possible',
-                    msg: 'A student has already submitted, so you cannot update the class!',
-                    code: 12,
-                    variant: 'warning'
-                });
-            }
-        }).catch(e => this.props.handleNotification(e));
+                            this.setState({
+                                homeworkModalErrors: homeworkToUpdateErrors,
+                                homeworkModal: homeworkToUpdate,
+                                updateHomeworkWished: true,
+                                showModal: true, // show modal dialog
+                                idOfToBeUpdatedHomework: id,
+                                ableToDeleteExercises: ableToDeleteExercisesOfToBeUpdatedHomework
+                            });
+                        }).catch(e => this.props.handleNotification(e));
+                }
+                else { // if homework already has a submission, show notification
+                    this.props.handleNotification({
+                        title: 'Updating of class not possible',
+                        msg: 'A student has already submitted, so you cannot update the class!',
+                        code: 12,
+                        variant: 'warning'
+                    });
+                }
+            }).catch(e => this.props.handleNotification(e));
     };
 
     // invoked, when teacher selects homework from select component in ModalDialogHomework

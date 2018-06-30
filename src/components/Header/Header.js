@@ -23,7 +23,7 @@ const styles = {
         marginRight: 20
     },
     menuIcon: {
-        marginRight:20
+        marginRight: 20
     }
 };
 
@@ -37,7 +37,7 @@ function Header(props) {
     if (props.isXs) {
         menu = <div className={classes.menuIcon}>
             <IconButton
-                aria-owns={Boolean(props.anchorEl)?'menu-appbar':null}
+                aria-owns={Boolean(props.anchorEl) ? 'menu-appbar' : null}
                 aria-haspopup="true"
                 onClick={props.handleMenu}
                 color="inherit"
@@ -58,8 +58,12 @@ function Header(props) {
                 open={Boolean(props.anchorEl)}
                 onClose={props.handleMenuClose}
             >
-                <MenuItem onClick={()=>{ window.location.href= '/myclasses'}}>My classes</MenuItem>
-                <MenuItem onClick={()=>{ window.location.href= '/myprofile'}}>My profile</MenuItem>
+                <MenuItem onClick={() => {
+                    window.location.href = '/myclasses'
+                }}>My classes</MenuItem>
+                <MenuItem onClick={() => {
+                    window.location.href = '/myprofile'
+                }}>My profile</MenuItem>
                 <MenuItem onClick={props.logoutFn}>Logout</MenuItem>
             </Menu>
         </div>

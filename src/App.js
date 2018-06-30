@@ -41,7 +41,7 @@ class App extends Component {
             routes: [
                 {
                     render: () => (<MyProfile {...props} handleNotification={this.handleNotification}
-                                                  updateBreadcrumb={this.updateBreadcrumb}/>),
+                                              updateBreadcrumb={this.updateBreadcrumb}/>),
                     path: '/myprofile',
                     exact: true
                 },

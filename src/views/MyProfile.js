@@ -46,18 +46,18 @@ export default class MyProfile extends React.Component {
     };
 
     handleSubmit = () => {
-        if(!this.state.confirmPassword){
+        if (!this.state.confirmPassword) {
             this.props.handleNotification({
-                title:'Confirmation needed',
+                title: 'Confirmation needed',
                 msg: 'Please enter your new password in both fields!',
                 variant: 'warning'
             });
             return;
         }
 
-        if(this.state.noMatch){
+        if (this.state.noMatch) {
             this.props.handleNotification({
-                title:'Passwords do not match',
+                title: 'Passwords do not match',
                 msg: 'The password you entered for confirmation does not match your password.',
                 variant: 'warning'
             });
@@ -68,7 +68,7 @@ export default class MyProfile extends React.Component {
             if (UserService.isAuthenticated()) {
                 this.setState({password: '', confirmPassword: ''});
                 this.props.handleNotification({
-                    title:'Password changed',
+                    title: 'Password changed',
                     msg: 'The password of your account has been successfully changed!',
                     variant: 'success'
                 })
@@ -89,7 +89,7 @@ export default class MyProfile extends React.Component {
         return (
             <div>
                 <Grid container spacing={16} justify={'center'}>
-                    <Grid item xs={12} style={{minHeight:56}}>
+                    <Grid item xs={12} style={{minHeight: 56}}>
                         <Typography variant={'title'}>My profile</Typography>
                         <Typography variant={'caption'}>Here you can change your password</Typography>
                     </Grid>
@@ -127,7 +127,7 @@ export default class MyProfile extends React.Component {
                             onChange={this.handleChangePassword2}
                         />
                     </Grid>
-                    <Grid item xs={12} style={{textAlign:'center'}}>
+                    <Grid item xs={12} style={{textAlign: 'center'}}>
                         <Button
                             className="Button"
                             color="primary"

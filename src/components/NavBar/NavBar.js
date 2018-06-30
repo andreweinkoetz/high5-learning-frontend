@@ -43,8 +43,8 @@ const NavBar = (props) => {
             </ListItem>)
     });
 
-    return (<div style={{paddingLeft:50}}>
-        <div style={{minHeight:56}}>
+    return (<div style={{paddingLeft: 50}}>
+        <div style={{minHeight: 56}}>
             <Typography variant={'title'}>Menu</Typography>
             <Typography variant={'caption'}>Find all you need here</Typography>
         </div>

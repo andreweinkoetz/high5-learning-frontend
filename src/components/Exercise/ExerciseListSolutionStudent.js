@@ -18,7 +18,7 @@ const ExerciseList = (props) => {
                         question={obj.question}
                         answers={obj.answers}
                         answerKey={k}
-                        />
+                    />
                 )
             })}
         </div>

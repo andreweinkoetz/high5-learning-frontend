@@ -182,12 +182,18 @@ export default class LandingPage extends React.Component {
                     <section className="content-page3">
                         <h1>WHAT WE OFFER</h1>
                         <div className="content-page3-offers">
-                        <p><img className="icon" src={images[12].url} alt="High Five Icon"/>Modern, intuitive e-learning platform</p>
-                        <p><img className="icon" src={images[11].url} alt="High Five Icon"/>Creation of virtual classes</p>
-                        <p><img className="icon" src={images[8].url} alt="High Five Icon"/>Teachers publish multiple choice homework</p>
-                        <p><img className="icon" src={images[13].url} alt="High Five Icon"/>Instant feedback to teachers from students</p>
-                        <p><img className="icon" src={images[9].url} alt="High Five Icon"/>Statistics for teachers about homework</p>
-                        <p><img className="icon" src={images[10].url} alt="High Five Icon"/>Reusability of classes</p>
+                            <p><img className="icon" src={images[12].url} alt="High Five Icon"/>Modern, intuitive
+                                e-learning platform</p>
+                            <p><img className="icon" src={images[11].url} alt="High Five Icon"/>Creation of virtual
+                                classes</p>
+                            <p><img className="icon" src={images[8].url} alt="High Five Icon"/>Teachers publish multiple
+                                choice homework</p>
+                            <p><img className="icon" src={images[13].url} alt="High Five Icon"/>Instant feedback to
+                                teachers from students</p>
+                            <p><img className="icon" src={images[9].url} alt="High Five Icon"/>Statistics for teachers
+                                about homework</p>
+                            <p><img className="icon" src={images[10].url} alt="High Five Icon"/>Reusability of classes
+                            </p>
                         </div>
                     </section>
                     {/* about our team / us */}
@@ -205,7 +211,7 @@ export default class LandingPage extends React.Component {
                                 <p><img src={images[7].url} alt="Martin"/><br/>Martin Lindemann</p>
                             </div>
                             <div className="team-member" id="last-team-member">
-                                <p><img  src={images[4].url} alt="Andre"/><br/>Andre Weinkötz</p>
+                                <p><img src={images[4].url} alt="Andre"/><br/>Andre Weinkötz</p>
                             </div>
                         </div>
                     </section>

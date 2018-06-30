@@ -39,7 +39,7 @@ const styles = theme => ({
 });
 
 // these three functions are needed for the Downshift
-function renderInput (inputProps) {
+function renderInput(inputProps) {
     const {InputProps, classes, ref, ...other} = inputProps;
 
     return (
@@ -56,7 +56,7 @@ function renderInput (inputProps) {
     );
 }
 
-function renderSuggestion ({suggestion, index, itemProps, highlightedIndex, selectedItem}) {
+function renderSuggestion({suggestion, index, itemProps, highlightedIndex, selectedItem}) {
     const isHighlighted = highlightedIndex === index;
     const isSelected = (selectedItem || '').indexOf(suggestion.username) > -1;
 
@@ -75,7 +75,7 @@ function renderSuggestion ({suggestion, index, itemProps, highlightedIndex, sele
     );
 }
 
-function getSuggestions (availableStudentsOfSchoolForSelection, inputValue) {
+function getSuggestions(availableStudentsOfSchoolForSelection, inputValue) {
     let count = 0;
 
     return availableStudentsOfSchoolForSelection.filter(suggestion => {
@@ -155,7 +155,7 @@ class ModalDialogClass extends Component {
                 // so that you can't add a student twice
                 infoOfUpdatedClass.students.forEach(function (c) {
                     let student = availableStudentsOfSchoolForSelection.find(s => s._id === c._id);
-                    availableStudentsOfSchoolForSelection.splice(availableStudentsOfSchoolForSelection.indexOf(student),1);
+                    availableStudentsOfSchoolForSelection.splice(availableStudentsOfSchoolForSelection.indexOf(student), 1);
                 });
 
                 // state for class, availableStudentsOfSchoolForSelection & inputValue is set (inputValue is empty,
@@ -363,7 +363,8 @@ class ModalDialogClass extends Component {
                     />
                 </DialogContent>
                 <DialogContent style={{minWidth: 200}}>
-                    <Downshift inputValue={inputValue} onChange={this.handleSelectionChange} selectedItem={this.state.class.students}
+                    <Downshift inputValue={inputValue} onChange={this.handleSelectionChange}
+                               selectedItem={this.state.class.students}
                                itemToString={(item) => (item.username)}>
                         {({
                               getInputProps,

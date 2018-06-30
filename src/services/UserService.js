@@ -2,7 +2,9 @@ import HttpService from "./HttpService";
 
 export default class UserService {
 
-    static baseURL() {return HttpService.apiURL() + "/auth"; }
+    static baseURL() {
+        return HttpService.apiURL() + "/auth";
+    }
 
     // if user is teacher, pass license to backend
     static register(user, pass, type, school, license) {
@@ -12,14 +14,14 @@ export default class UserService {
             type: type,
             schoolname: school
         };
-        if(type === 'Teacher'){
+        if (type === 'Teacher') {
             userModel['license'] = license;
         }
 
         return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/register`, userModel, function(data) {
+            HttpService.post(`${UserService.baseURL()}/register`, userModel, function (data) {
                 resolve(data);
-            }, function(textStatus) {
+            }, function (textStatus) {
                 reject(textStatus);
             });
         });
@@ -30,9 +32,9 @@ export default class UserService {
             HttpService.post(`${UserService.baseURL()}/login`, {
                 username: user,
                 password: pass
-            }, function(data) {
+            }, function (data) {
                 resolve(data);
-            }, function(textStatus) {
+            }, function (textStatus) {
                 reject(textStatus);
             });
         });
@@ -42,9 +44,9 @@ export default class UserService {
         return new Promise((resolve, reject) => {
             HttpService.put(`${UserService.baseURL()}/changepw`, {
                 password: pass
-            }, function(data) {
+            }, function (data) {
                 resolve(data);
-            }, function(textStatus) {
+            }, function (textStatus) {
                 reject(textStatus);
             });
         });
@@ -54,14 +56,14 @@ export default class UserService {
     // the current user is member of the class he wants to access
     // use function isMemberOfClassChecker when you receive the promise
     // resolve your answer
-    static isMemberOfClass(classId){
-        if(!this.isAuthenticated()){
+    static isMemberOfClass(classId) {
+        if (!this.isAuthenticated()) {
             throw new Error("No user logged in");
         }
         return new Promise((resolve, reject) => {
-            HttpService.get(`${UserService.baseURL()}/member/`+classId, function(data) {
+            HttpService.get(`${UserService.baseURL()}/member/` + classId, function (data) {
                 resolve(data);
-            }, function(textStatus) {
+            }, function (textStatus) {
                 reject(textStatus);
             });
         });
@@ -70,12 +72,12 @@ export default class UserService {
     // this function resolves the answer of the backend
     // if the backend returns -1, the user is not member
     // else, the user is a member of the class
-    static isMemberOfClassChecker(data){
+    static isMemberOfClassChecker(data) {
         return !(data.classes === -1);
     }
 
-    static createMembership(classId){
-        if(!this.isAuthenticated()){
+    static createMembership(classId) {
+        if (!this.isAuthenticated()) {
             throw new Error("No user logged in");
         }
         const userId = this.getCurrentUser().id;
@@ -83,15 +85,15 @@ export default class UserService {
             HttpService.post(`${UserService.baseURL()}/member/`, {
                 user: userId,
                 class: classId
-            }, function(data) {
+            }, function (data) {
                 resolve(data);
-            }, function(textStatus) {
+            }, function (textStatus) {
                 reject(textStatus);
             });
         });
     }
 
-    static logout(){
+    static logout() {
         window.localStorage.removeItem('jwtToken');
     }
 
@@ -102,10 +104,10 @@ export default class UserService {
         let base64Url = token.split('.')[1];
         let base64 = base64Url.replace('-', '+').replace('_', '/');
         return {
-            id : JSON.parse(window.atob(base64)).id,
+            id: JSON.parse(window.atob(base64)).id,
             username: JSON.parse(window.atob(base64)).username,
             type: JSON.parse(window.atob(base64)).type,
-            schoolname:JSON.parse(window.atob(base64)).schoolname
+            schoolname: JSON.parse(window.atob(base64)).schoolname
         };
     }
 
@@ -113,7 +115,7 @@ export default class UserService {
         return !!window.localStorage['jwtToken'];
     }
 
-    static isTeacher(){
+    static isTeacher() {
         let token = window.localStorage['jwtToken'];
         if (!token) return false;
 

@@ -197,7 +197,8 @@ export default class ClassListView extends React.Component {
                     informationOfClassToBeUpdated={this.state.informationOfClassToBeUpdated}
                     idOfToBeUpdatedClass={this.state.idOfToBeUpdatedClass}/>
                 <Grid container spacing={16}>
-                    <Grid item xs={addClassButton ? 6 : 12} sm={addClassButton ? 6 : 12} md={addClassButton ? 6 : 12} style={{minHeight:56}}>
+                    <Grid item xs={addClassButton ? 6 : 12} sm={addClassButton ? 6 : 12} md={addClassButton ? 6 : 12}
+                          style={{minHeight: 56}}>
                         <Typography variant={'title'}>My classes</Typography>
                         <Typography variant={'caption'}>Below you find all your classes</Typography>
                     </Grid>

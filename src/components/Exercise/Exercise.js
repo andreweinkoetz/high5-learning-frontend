@@ -22,8 +22,8 @@ const Exercise = (props) => {
                                     <RadioGroup name={'exercise-choices'} row
                                                 value={props.answerKey + ' ' + props.selectedValue}
                                                 onChange={props.handleSelection}>
-                                            <FormControlLabel value={props.answerKey + ' ' + 0} control={<Radio/>}
-                                                              label={props.answers[0]}/>
+                                        <FormControlLabel value={props.answerKey + ' ' + 0} control={<Radio/>}
+                                                          label={props.answers[0]}/>
                                     </RadioGroup>
                                 </Grid>
                                 <Grid item xs={6}>

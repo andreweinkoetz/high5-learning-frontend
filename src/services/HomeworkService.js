@@ -7,50 +7,50 @@ export default class HomeworkService {
     }
 
     // Get all information of this homework (incl. exercises etc.) from db
-    static getHomeworkDetail(homeworkId){
+    static getHomeworkDetail(homeworkId) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${HomeworkService.baseUrl()}` + homeworkId,
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(textStatus) {
+                }, function (textStatus) {
                     reject(textStatus);
                 });
         });
     }
 
     // Adds a new homework to the database
-    static addNewHomework(classId, homeworkToAdd){
+    static addNewHomework(classId, homeworkToAdd) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${HomeworkService.baseUrl()}` + classId, homeworkToAdd,
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(textStatus) {
+                }, function (textStatus) {
                     reject(textStatus);
                 });
         });
 
     }
 
-    static updateHomework(homeworkId, homeworkToUpdate){
+    static updateHomework(homeworkId, homeworkToUpdate) {
 
         return new Promise((resolve, reject) => {
             HttpService.put(`${HomeworkService.baseUrl()}` + homeworkId, homeworkToUpdate,
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(textStatus) {
+                }, function (textStatus) {
                     reject(textStatus);
                 });
         });
 
     }
 
-    static deleteHomework(homeworkId){
+    static deleteHomework(homeworkId) {
 
         return new Promise((resolve, reject) => {
             HttpService.delete(`${HomeworkService.baseUrl()}` + homeworkId,
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(textStatus) {
+                }, function (textStatus) {
                     reject(textStatus);
                 });
         });
@@ -61,9 +61,9 @@ export default class HomeworkService {
 
         return new Promise((resolve, reject) => {
             HttpService.put(`${HomeworkService.baseUrl()}visibility/` + homeworkId, {desiredVisibilityStatus},
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(textStatus) {
+                }, function (textStatus) {
                     reject(textStatus);
                 });
         });

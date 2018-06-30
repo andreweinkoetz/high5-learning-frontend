@@ -11,13 +11,13 @@ import './ExerciseSolution.css';
 const Exercise = (props) => {
 
     let className;
-    if(props.empty) {
+    if (props.empty) {
         className = "empty";
     }
-    else if(props.selectedStudent !== "All" && (parseInt(props.rightSolution,10) === parseInt(props.selectedChoice,10))) {
+    else if (props.selectedStudent !== "All" && (parseInt(props.rightSolution, 10) === parseInt(props.selectedChoice, 10))) {
         className = "right";
     }
-    else if(props.selectedStudent !== "All" && (parseInt(props.rightSolution,10) !== parseInt(props.selectedChoice,10))) {
+    else if (props.selectedStudent !== "All" && (parseInt(props.rightSolution, 10) !== parseInt(props.selectedChoice, 10))) {
         className = "wrong";
     }
     else if (props.selectedStudent === "All" && props.rightAnswerPercentage >= 0.5) {
@@ -40,7 +40,7 @@ const Exercise = (props) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={0}>
-                                <Grid item xs={8} sm={4} >
+                                <Grid item xs={8} sm={4}>
                                     <RadioGroup name={'exercise-choices'} row
                                                 value={props.answerKey + ' ' + props.selectedChoice}>
                                         <FormControlLabel value={props.answerKey + ' ' + 0}
@@ -100,7 +100,7 @@ const Exercise = (props) => {
                                     </RadioGroup>
                                 </Grid>
 
-                                <Grid item  xs={2} sm={1}>
+                                <Grid item xs={2} sm={1}>
                                     {props.rightSolution === 3 ?
                                         <i className="material-icons">check_circle_outline</i> :
                                         <i className="material-icons">highlight_off</i>}

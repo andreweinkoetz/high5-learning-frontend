@@ -7,12 +7,12 @@ export default class SchoolService {
     }
 
 
-    static getSchoolOfUser(userid){
+    static getSchoolOfUser(userid) {
         return new Promise((resolve, reject) => {
-            HttpService.get(`${SchoolService.baseUrl()}`+userid,
-                function(data) {
+            HttpService.get(`${SchoolService.baseUrl()}` + userid,
+                function (data) {
                     resolve(data);
-                }, function(error) {
+                }, function (error) {
                     reject(error);
                 });
         });
@@ -20,12 +20,12 @@ export default class SchoolService {
     }
 
 
-    static getAllSchools(){
+    static getAllSchools() {
         return new Promise((resolve, reject) => {
             HttpService.get(`${SchoolService.baseUrl()}`,
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(error) {
+                }, function (error) {
                     reject(error);
                 });
         });
@@ -33,13 +33,13 @@ export default class SchoolService {
     }
 
 
-    static getStudentsOfSchool(){
+    static getStudentsOfSchool() {
 
         return new Promise((resolve, reject) => {
             HttpService.get(`${SchoolService.baseUrl()}students/`,
-                function(data) {
+                function (data) {
                     resolve(data);
-                }, function(textStatus) {
+                }, function (textStatus) {
                     reject(textStatus);
                 });
         });

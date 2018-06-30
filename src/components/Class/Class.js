@@ -58,11 +58,12 @@ const Class = (props) => {
 
     let secondaryContent; // Badge element only for students with open homework within this class
 
-    if (UserService.isTeacher() || (props.openHomework === undefined || props.openHomework <= 0 )) {
+    if (UserService.isTeacher() || (props.openHomework === undefined || props.openHomework <= 0)) {
         secondaryContent = null
     } else {
         secondaryContent =
-            <Tooltip id="tooltip-top-start" title={props.openHomework + " homework not submitted"} placement="top-start">
+            <Tooltip id="tooltip-top-start" title={props.openHomework + " homework not submitted"}
+                     placement="top-start">
                 <Badge color="error" badgeContent={props.openHomework}>
                     <Typography/>
                 </Badge>
@@ -107,8 +108,10 @@ const Class = (props) => {
 
             <ExpansionPanelDetails>
                 {UserService.isTeacher() ? <div>
-                        <Tooltip id="tooltip-studentCount" title="To add more students to this class, update the class information.">
-                            <i>You added {props.studentCount} {(props.studentCount !== 1) ? "students" : "student"} to this class.</i>
+                        <Tooltip id="tooltip-studentCount"
+                                 title="To add more students to this class, update the class information.">
+                            <i>You added {props.studentCount} {(props.studentCount !== 1) ? "students" : "student"} to this
+                                class.</i>
                         </Tooltip>
                         <br/><br/>
                         <Button variant="raised" color="primary" style={{marginRight: '10px', marginTop: '10px'}}
@@ -118,7 +121,8 @@ const Class = (props) => {
                                 onClick={() => props.deleteClass(props.id)}>
                             Delete class</Button>
                     </div>
-                    : <Typography>{props.openHomework > 0 ? "You have " + props.openHomework + " open homework to submit in this class." : "You submitted all homework in this class"}<br/>
+                    :
+                    <Typography>{props.openHomework > 0 ? "You have " + props.openHomework + " open homework to submit in this class." : "You submitted all homework in this class"}<br/>
                     </Typography>}
             </ExpansionPanelDetails>
         </ExpansionPanel>

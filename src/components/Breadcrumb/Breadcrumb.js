@@ -10,19 +10,19 @@ const Breadcrumb = (props) => {
 
     return (
         <Grid className="breadcrumb" container alignContent={"center"}>
-        {props.breadcrumbs.map((val, index) =>
-            <Grid key={index} item><Link
-                className="link"
-                to={
-                    {
-                        pathname: val.link,
-                        state:
-                            {
-                                title: val.linkName,
-                                id: val.id
-                            }
-                    }
-                }>{val.linkName}</Link><ArrowRight className="arrowRight"/> </Grid>)}
+            {props.breadcrumbs.map((val, index) =>
+                <Grid key={index} item><Link
+                    className="link"
+                    to={
+                        {
+                            pathname: val.link,
+                            state:
+                                {
+                                    title: val.linkName,
+                                    id: val.id
+                                }
+                        }
+                    }>{val.linkName}</Link><ArrowRight className="arrowRight"/> </Grid>)}
         </Grid>)
 };
 

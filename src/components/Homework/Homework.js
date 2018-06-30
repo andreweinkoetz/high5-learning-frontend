@@ -91,9 +91,10 @@ const Homework = (props) => {
                     onChange={props.changeSwitch(props.id)}/>
         </Tooltip>;
     } else {
-        secondaryContent= props.rank === 1 && <CakeIcon className={classes.cakeIcon}/>; // display cake and modify text if student was the first one to submit!
+        secondaryContent = props.rank === 1 && <CakeIcon className={classes.cakeIcon}/>; // display cake and modify text if student was the first one to submit!
         panelDetail = props.rank ?
-            <Typography>{props.rank === 1 ? "Congratulations! ": "Well done! "}You've submitted your solutions as #{props.rank}!</Typography>
+            <Typography>{props.rank === 1 ? "Congratulations! " : "Well done! "}You've submitted your solutions as
+                #{props.rank}!</Typography>
             : <Typography>You haven't submitted this homework yet.</Typography> // if not submitted
     }
 
