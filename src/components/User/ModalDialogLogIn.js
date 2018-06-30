@@ -5,10 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import PropTypes from 'prop-types';
 
 import './ModalDialog.css';
 import UserService from '../../services/UserService'
 
+/**
+ * login modal dialog
+ */
 class ModalDialogLogIn extends Component {
 
     constructor(props) {
@@ -104,5 +108,9 @@ class ModalDialogLogIn extends Component {
         )
     }
 }
+
+ModalDialogLogIn.proTypes = {
+    handleNotification: PropTypes.func.isRequired
+};
 
 export default ModalDialogLogIn;

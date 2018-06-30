@@ -15,7 +15,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import './ModalDialog.css';
 import UserService from "../../services/UserService";
+import PropTypes from "prop-types";
 
+/**
+ * the modal dialog for the registration
+ */
 class ModalDialogRegister extends Component {
 
     constructor(props) {
@@ -33,7 +37,6 @@ class ModalDialogRegister extends Component {
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangeLicense = this.handleChangeLicense.bind(this);
         this.handleChangeSchool = this.handleChangeSchool.bind(this);
-        this.handleChangeType = this.handleChangeType.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -108,6 +111,7 @@ class ModalDialogRegister extends Component {
             });
             return;
         }
+        // register the current user
         UserService.register(username, password, type, school, license).then((data) => {
             if (UserService.isAuthenticated()) {
                 this.props.onUsername(username);
@@ -207,5 +211,9 @@ class ModalDialogRegister extends Component {
         )
     }
 }
+
+ModalDialogRegister.proTypes = {
+    handleNotification: PropTypes.func.isRequired
+};
 
 export default ModalDialogRegister;

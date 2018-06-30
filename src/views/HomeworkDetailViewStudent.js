@@ -209,9 +209,10 @@ export default class HomeworkDetailViewStudent extends React.Component {
         return (
             <div>
                 <Grid container spacing={16}>
-                    <Grid item xs={12} style={{minHeight:56}}>
+                    <Grid item xs={12} style={{minHeight: 56}}>
                         <Typography variant={'title'}>Homework: {this.state.title}</Typography>
-                        <Typography variant={'caption'}>Please do your homework alone and in a quiet environment.</Typography>
+                        <Typography variant={'caption'}>Please do your homework alone and in a quiet
+                            environment.</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Divider/>

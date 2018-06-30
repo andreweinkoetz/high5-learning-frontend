@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-// this was not included, why? https://material-ui.com/getting-started/installation/
+
+
 const styles = theme => ({
     root: {
         minWidth: 300,
@@ -78,6 +79,12 @@ const styles = theme => ({
     },
 });
 
+/**
+ * The button base for the image buttons used in the LandingPage.js
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 function ButtonBases(props) {
     const {classes} = props;
     const onClickCallback = props.onClickCallback;

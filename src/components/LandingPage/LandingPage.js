@@ -7,6 +7,7 @@ import Register from '../User/ModalDialogRegister'
 import './LandingPage.css';
 import UserService from "../../services/UserService";
 import SchoolService from "../../services/SchoolService";
+import PropTypes from "prop-types";
 
 /*
 Landing Page. Appears only if you are not logged-in.
@@ -30,7 +31,6 @@ export default class LandingPage extends React.Component {
         this.onClickRegisterButton = this.onClickRegisterButton.bind(this);
         this.onClickCancelModalDialog = this.onClickCancelModalDialog.bind(this);
         this.onHandleChangeUsername = this.onHandleChangeUsername.bind(this);
-        this.onHandleChangeWindowSize = this.onHandleChangeWindowSize.bind(this);
     }
 
     componentWillMount() {
@@ -240,5 +240,8 @@ export default class LandingPage extends React.Component {
             </div>
         );
     }
-
 }
+
+LandingPage.proTypes = {
+    handleNotification: PropTypes.func.isRequired
+};

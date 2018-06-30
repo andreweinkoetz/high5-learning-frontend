@@ -105,7 +105,7 @@ export default class HomeworkDetailViewTeacher extends React.Component {
                                 sumRightAnswerPercentage += exerciseStatistics[i].rightAnswerPercentage;
                             }
                             rightAnswerPercentage = Math.round(sumRightAnswerPercentage / this.state.exercises.length * 100);*/
-                            
+
                             rightAnswerPercentage = Math.round(exerciseStatistics.reduce((acc, curr) => acc
                                 + curr.rightAnswerPercentage, 0) / this.state.exercises.length * 100);
 
