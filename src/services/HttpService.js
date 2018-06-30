@@ -6,6 +6,12 @@ export default class HttpService {
         return config.backendUrl;
     }
 
+    /**
+     * implementation of http get
+     * @param url
+     * @param onSuccess
+     * @param onError
+     */
     static get(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
@@ -36,6 +42,13 @@ export default class HttpService {
         });
     }
 
+    /**
+     * implementation of http put
+     * @param url
+     * @param data
+     * @param onSuccess
+     * @param onError
+     */
     static put(url, data, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
@@ -68,6 +81,13 @@ export default class HttpService {
         });
     }
 
+    /**
+     * implementation of http post
+     * @param url
+     * @param data
+     * @param onSuccess
+     * @param onError
+     */
     static post(url, data, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();
@@ -101,6 +121,12 @@ export default class HttpService {
         });
     }
 
+    /**
+     * implementation of http delete
+     * @param url
+     * @param onSuccess
+     * @param onError
+     */
     static delete(url, onSuccess, onError) {
         let token = window.localStorage['jwtToken'];
         let header = new Headers();

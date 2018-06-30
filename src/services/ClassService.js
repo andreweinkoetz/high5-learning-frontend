@@ -2,12 +2,19 @@ import HttpService from './HttpService';
 
 export default class ClassService {
 
+    /**
+     * the base url of the classes rest api
+     * @returns {string}
+     */
     static baseUrl() {
         return HttpService.apiURL() + "/classes/";
     }
 
 
-    // returns a list of all classes for a user
+    /**
+     * returns a list of all classes for a user
+     * @returns {Promise<any>}
+     */
     static getClassesOfUser() {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}`,
@@ -20,7 +27,10 @@ export default class ClassService {
 
     }
 
-    // returns a list of all homework for a user
+    /**
+     * returns a list of all homework for a user
+     * @returns {Promise<any>}
+     */
     static getAllHomeworkOfUser() {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}/allhomework/`,
@@ -33,7 +43,11 @@ export default class ClassService {
 
     }
 
-    // returns a key-value pair of classId, number of not submitted homework
+    /**
+     * returns a key-value pair of classId, number of not submitted homework
+     * @param classId
+     * @returns {Promise<any>}
+     */
     static getOpenHomeworkOfStudent(classId) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}/openhw/` + classId,
@@ -45,7 +59,11 @@ export default class ClassService {
         });
     }
 
-    // returns list of homework of one class (for class detail view)
+    /**
+     * returns list of homework of one class (for class detail view)
+     * @param classId
+     * @returns {Promise<any>}
+     */
     static getHomeworkOfClass(classId) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}` + classId, function (data) {
@@ -57,7 +75,11 @@ export default class ClassService {
 
     }
 
-    // adds the new class into the database
+    /**
+     * adds the new class into the database
+     * @param classToAdd
+     * @returns {Promise<any>}
+     */
     static addNewClass(classToAdd) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${ClassService.baseUrl()}`, classToAdd,
@@ -70,7 +92,12 @@ export default class ClassService {
 
     }
 
-    // updates an existing database
+    /**
+     * updates an existing class
+     * @param classToUpdate
+     * @param classId
+     * @returns {Promise<any>}
+     */
     static updateClass(classToUpdate, classId) {
         return new Promise((resolve, reject) => {
             HttpService.put(`${ClassService.baseUrl()}` + classId, classToUpdate,
@@ -83,7 +110,11 @@ export default class ClassService {
 
     }
 
-    // deletes an existing database
+    /**
+     * deletes an existing class
+     * @param classId
+     * @returns {Promise<any>}
+     */
     static deleteClass(classId) {
         return new Promise((resolve, reject) => {
             HttpService.delete(`${ClassService.baseUrl()}` + classId,
@@ -96,7 +127,11 @@ export default class ClassService {
 
     }
 
-    // returns a list of all students that are assigned to a specific class
+    /**
+     * returns a list of all students that are assigned to a specific class
+     * @param classId
+     * @returns {Promise<any>}
+     */
     static getStudentsOfClass(classId) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${ClassService.baseUrl()}students/` + classId,

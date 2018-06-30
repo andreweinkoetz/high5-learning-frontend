@@ -6,7 +6,11 @@ export default class HomeworkService {
         return HttpService.apiURL() + "/homework/";
     }
 
-    // Get all information of this homework (incl. exercises etc.) from db
+    /**
+     * Get all information of this homework (incl. exercises etc.) from db
+     * @param homeworkId
+     * @returns {Promise<any>}
+     */
     static getHomeworkDetail(homeworkId) {
         return new Promise((resolve, reject) => {
             HttpService.get(`${HomeworkService.baseUrl()}` + homeworkId,
@@ -18,7 +22,12 @@ export default class HomeworkService {
         });
     }
 
-    // Adds a new homework to the database
+    /**
+     * Adds a new homework to the database
+     * @param classId
+     * @param homeworkToAdd
+     * @returns {Promise<any>}
+     */
     static addNewHomework(classId, homeworkToAdd) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${HomeworkService.baseUrl()}` + classId, homeworkToAdd,
@@ -31,6 +40,12 @@ export default class HomeworkService {
 
     }
 
+    /**
+     * Updates the homework
+     * @param homeworkId
+     * @param homeworkToUpdate
+     * @returns {Promise<any>}
+     */
     static updateHomework(homeworkId, homeworkToUpdate) {
 
         return new Promise((resolve, reject) => {
@@ -44,6 +59,11 @@ export default class HomeworkService {
 
     }
 
+    /**
+     * Delete the Homework with homeworkId
+     * @param homeworkId
+     * @returns {Promise<any>}
+     */
     static deleteHomework(homeworkId) {
 
         return new Promise((resolve, reject) => {
@@ -57,8 +77,13 @@ export default class HomeworkService {
 
     }
 
+    /**
+     * change the visibility of the homework with homeworkId
+     * @param homeworkId
+     * @param desiredVisibilityStatus
+     * @returns {Promise<any>}
+     */
     static changeVisibilityStatus(homeworkId, desiredVisibilityStatus) {
-
         return new Promise((resolve, reject) => {
             HttpService.put(`${HomeworkService.baseUrl()}visibility/` + homeworkId, {desiredVisibilityStatus},
                 function (data) {
@@ -67,7 +92,6 @@ export default class HomeworkService {
                     reject(textStatus);
                 });
         });
-
     }
 
 

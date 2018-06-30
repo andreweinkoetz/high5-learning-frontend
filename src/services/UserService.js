@@ -2,11 +2,24 @@ import HttpService from "./HttpService";
 
 export default class UserService {
 
+    /**
+     * base url for the auth rest api
+     * @returns {string}
+     */
     static baseURL() {
         return HttpService.apiURL() + "/auth";
     }
 
-    // if user is teacher, pass license to backend
+    /**
+     * register a new user (teacher or student)
+     * if user is teacher, pass license to backend
+     * @param user
+     * @param pass
+     * @param type
+     * @param school
+     * @param license
+     * @returns {Promise<any>}
+     */
     static register(user, pass, type, school, license) {
         let userModel = {
             username: user,
@@ -27,6 +40,12 @@ export default class UserService {
         });
     }
 
+    /**
+     * login a user (teacher or student)
+     * @param user
+     * @param pass
+     * @returns {Promise<any>}
+     */
     static login(user, pass) {
         return new Promise((resolve, reject) => {
             HttpService.post(`${UserService.baseURL()}/login`, {
@@ -40,6 +59,11 @@ export default class UserService {
         });
     }
 
+    /**
+     * update the password for the current user
+     * @param pass
+     * @returns {Promise<any>}
+     */
     static changePassword(pass) {
         return new Promise((resolve, reject) => {
             HttpService.put(`${UserService.baseURL()}/changepw`, {
@@ -52,51 +76,17 @@ export default class UserService {
         });
     }
 
-    // this function verifies that
-    // the current user is member of the class he wants to access
-    // use function isMemberOfClassChecker when you receive the promise
-    // resolve your answer
-    static isMemberOfClass(classId) {
-        if (!this.isAuthenticated()) {
-            throw new Error("No user logged in");
-        }
-        return new Promise((resolve, reject) => {
-            HttpService.get(`${UserService.baseURL()}/member/` + classId, function (data) {
-                resolve(data);
-            }, function (textStatus) {
-                reject(textStatus);
-            });
-        });
-    }
-
-    // this function resolves the answer of the backend
-    // if the backend returns -1, the user is not member
-    // else, the user is a member of the class
-    static isMemberOfClassChecker(data) {
-        return !(data.classes === -1);
-    }
-
-    static createMembership(classId) {
-        if (!this.isAuthenticated()) {
-            throw new Error("No user logged in");
-        }
-        const userId = this.getCurrentUser().id;
-        return new Promise((resolve, reject) => {
-            HttpService.post(`${UserService.baseURL()}/member/`, {
-                user: userId,
-                class: classId
-            }, function (data) {
-                resolve(data);
-            }, function (textStatus) {
-                reject(textStatus);
-            });
-        });
-    }
-
+    /**
+     * log out the current user
+     */
     static logout() {
         window.localStorage.removeItem('jwtToken');
     }
 
+    /**
+     * transform the auth token (jwtToken) to json in order to get current user data
+     * @returns {*}
+     */
     static getCurrentUser() {
         let token = window.localStorage['jwtToken'];
         if (!token) return {};
@@ -111,10 +101,18 @@ export default class UserService {
         };
     }
 
+    /**
+     * check if the current user is logged in
+     * @returns {boolean}
+     */
     static isAuthenticated() {
         return !!window.localStorage['jwtToken'];
     }
 
+    /**
+     * check if the current user is a teacher (type === teacher)
+     * @returns {boolean}
+     */
     static isTeacher() {
         let token = window.localStorage['jwtToken'];
         if (!token) return false;
