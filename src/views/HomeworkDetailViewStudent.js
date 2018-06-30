@@ -12,9 +12,11 @@ import HomeworkService from '../services/HomeworkService';
 import UserService from '../services/UserService';
 import SubmissionService from '../services/SubmissionService';
 
-/* this component checks whether a student has submitted a homework or not and displays the homework to check or the results */
+/**
+ * this component checks whether a student has submitted a homework or
+ * not and displays the homework to check or the results
+ */
 export default class HomeworkDetailViewStudent extends React.Component {
-
 
     constructor(props) {
         super(props);
@@ -102,9 +104,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
 
         const newValue = event.target.value.split(' ');
         const id = newValue[0];
-        const val = newValue[1];
-
-        newSelection[id] = val;
+        newSelection[id] = newValue[1];
 
         this.setState({
             selectedValues: newSelection
@@ -162,7 +162,7 @@ export default class HomeworkDetailViewStudent extends React.Component {
     };
 
 
-//calls SubmissionService and adds new submission to the database
+    //calls SubmissionService and adds new submission to the database
     addNewSubmission(submissionToAdd) {
         SubmissionService.addNewSubmission(submissionToAdd)
             .catch(e => this.props.handleNotification(e));
