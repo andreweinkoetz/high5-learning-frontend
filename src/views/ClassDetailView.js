@@ -14,40 +14,71 @@ import SubmissionService from '../services/SubmissionService';
 import UserService from '../services/UserService';
 import CircularProgress from "@material-ui/core/es/CircularProgress/CircularProgress";
 
+
 // Detail component for displaying all information for one specific class
 // Contains a list of homework
 export default class ClassDetailView extends React.Component {
-
 
     constructor(props) {
         super(props);
 
         this.state = {
             loading: false,
-            showModal: false, // determines whether the modal dialog for creating or updating a homework is shown
-            homework: [], // array of homework of the class
-            submissions: [], // array of submissions of all homework of the class
-            ableToDeleteExercises: false, // determines, whether the teacher is able to delete an exercise in a homework (only possible, when there are at least two exercises)
-            errorText: [], // array with string messages which are shown to the teacher, when he/she forgot a required field when creating/updating a homework
-            updateHomeworkWished: false, // determines whether the teacher wants to update a homework
-            idOfToBeUpdatedHomework: "", // saves the id of the be updated homework (if there is one), needed so that the backend knows which homework to update
-            homeworkModal: { // information of the to be added or updated class from modal dialog
+
+            // determines whether the modal dialog for creating or updating a homework is shown
+            showModal: false,
+
+            // array of homework of the class
+            homework: [],
+
+            // array of submissions of all homework of the class
+            submissions: [],
+
+            // determines, whether the teacher is able to delete an exercise in a homework
+            // (only possible, when there are at least two exercises)
+            ableToDeleteExercises: false,
+
+            // array with string messages which are shown to the teacher, when he/she forgot a required field when creating/updating a homework
+            errorText: [],
+
+            // determines whether the teacher wants to update a homework
+            updateHomeworkWished: false,
+
+            // saves the id of the be updated homework (if there is one), needed so that the backend knows which homework to update
+            idOfToBeUpdatedHomework: "",
+
+            // information of the to be added or updated class from modal dialog
+            homeworkModal: {
                 title: "",
                 exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
                 assignedClass: '', // needed for backend
                 visible: false // set to false initially, so that students can't see the homework in the beginning
             },
-            homeworkModalErrors: { // saves whether something in the homework of the modal dialog is wrong, meaning a required field is forgotten. Needed so that the forgotten required fields set their error states to true (the text becomes red)
+
+            // saves whether something in the homework of the modal dialog is wrong, meaning a required field is forgotten.
+            // Needed so that the forgotten required fields set their error states to true (the text becomes red)
+            homeworkModalErrors: {
                 title: false,
                 exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
             },
-            currentClass: { // info of the current viewed class
+
+            // info of the current viewed class
+            currentClass: {
                 title: '',
                 id: ''
             },
-            availableClasses: [], // array with all classes with all homework of the teacher, needed in component ModalDialogHomework when a teacher wants to use a previous created homework as basis to create a new one
-            selectedClass: "", // used in component ModalDialogHomework, currently selected class in select field
-            selectedHomework: "", // used in component ModalDialogHomework, currently selected homework in select field
+
+            // array with all classes with all homework of the teacher, needed in component ModalDialogHomework when
+            // a teacher wants to use a previous created homework as basis to create a new one
+            availableClasses: [],
+
+
+            // used in component ModalDialogHomework, currently selected class in select field
+            selectedClass: "",
+
+            // used in component ModalDialogHomework, currently selected homework in select field
+            selectedHomework: "",
+
             homeworkRanking: undefined
         };
 
@@ -56,20 +87,23 @@ export default class ClassDetailView extends React.Component {
     componentWillMount() {
         this.setState({
             loading: true,
-            currentClass: { // current class is set
+            // current class is set
+            currentClass: {
                 title: this.props.location.state.title,
                 id: this.props.location.state.id
             }
         });
 
         if (UserService.isTeacher()) {
-            ClassService.getAllHomeworkOfUser().then((homework) => { // used for creating new homework based on previous created ones (downshift)
+            // used for creating new homework based on previous created ones (downshift)
+            ClassService.getAllHomeworkOfUser().then((homework) => {
                 this.setState({availableClasses: [...homework]})
             }).catch((e) => this.props.handleNotification(e));
         }
 
+        // returns list of homework within this class
         ClassService.getHomeworkOfClass(this.props.location.state.id)
-            .then((data) => { // returns list of homework within this class
+            .then((data) => {
                 this.setState({
                     homework: [...data.singleClass.homework],
                     submissions: [...data.submissions],
@@ -78,7 +112,8 @@ export default class ClassDetailView extends React.Component {
                 if (UserService.isTeacher()) {
                     return undefined; // teachers have no submissions so the following methods are student-only
                 }
-                return SubmissionService.getRankingOfSubmissions(this.state.currentClass.id); // key-value (homeworkId, rankingPosition (based on submission date))
+                // key-value (homeworkId, rankingPosition (based on submission date))
+                return SubmissionService.getRankingOfSubmissions(this.state.currentClass.id);
             })
             .then((homeworkRanking) => {
                 this.setState({homeworkRanking: homeworkRanking})
@@ -86,8 +121,10 @@ export default class ClassDetailView extends React.Component {
 
     }
 
-    componentDidUpdate() { // needed so that you can navigate through multiple homework each after another
-        if (this.props.location.state.id !== this.state.currentClass.id) { // if you switch from one class to another through the navbar, update all info for the current class and its homework
+    // needed so that you can navigate through multiple homework each after another
+    componentDidUpdate() {
+        // if you switch from one class to another through the navbar, update all info for the current class and its homework
+        if (this.props.location.state.id !== this.state.currentClass.id) {
             this.setState({
                 loading: true,
                 currentClass: {
@@ -103,7 +140,8 @@ export default class ClassDetailView extends React.Component {
                     }).catch((e) => this.props.handleNotification(e));
             }
 
-            this.props.updateBreadcrumb([ // update also the breadcrumbs
+            // update also the breadcrumbs
+            this.props.updateBreadcrumb([
                 {
                     link: `/myclasses`,
                     linkName: 'My classes'
@@ -126,7 +164,8 @@ export default class ClassDetailView extends React.Component {
     }
 
     componentDidMount() {
-        this.props.updateBreadcrumb([ // update the breadcrumbs after mounting the component
+        // update the breadcrumbs after mounting the component
+        this.props.updateBreadcrumb([
             {
                 link: `/myclasses`,
                 linkName: 'My classes'
@@ -139,14 +178,18 @@ export default class ClassDetailView extends React.Component {
 
     }
 
-    toggleModal = () => { // toggles modal, either shows it or let it disappear, depending on context
+    // toggles modal, either shows it or let it disappear, depending on context
+    toggleModal = () => {
         const oldState = this.state.showModal;
-        const homeworkModalErrors = { // this is needed so that the user sees no previous info from a cancelled or submitted homework creation
+
+        // this is needed so that the user sees no previous info from a cancelled or submitted homework creation
+        const homeworkModalErrors = {
             title: false,
             exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
         };
 
-        const homeworkModal = { // this is needed so that the user sees no previous info from a cancelled or submitted homework creation
+        // this is needed so that the user sees no previous info from a cancelled or submitted homework creation
+        const homeworkModal = {
             title: "",
             exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
             assignedClass: "",
@@ -165,10 +208,12 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleSubmitModal = () => { // invoked when a teacher wants to submit a homework (meaning creating or updating one)
-        // in this function it is checked, whether some of the required fields of the to be added/updated homework are missing
-        // if some of the required fields are missing, the corresponding error state is set to true and an error message is
-        // pushed into errorText
+    // invoked when a teacher wants to submit a homework (meaning creating or updating one)
+    // in this function it is checked, whether some of the required fields of the to be added/updated homework are missing
+    // if some of the required fields are missing, the corresponding error state is set to true and an error message is
+    // pushed into errorText
+    handleSubmitModal = () => {
+
         let homeworkModal = {...this.state.homeworkModal};
 
         homeworkModal.assignedClass = this.state.currentClass.id;
@@ -208,32 +253,45 @@ export default class ClassDetailView extends React.Component {
 
         homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
-        if (newErrorText.length !== 0) { // if errors where found, then newErrorText is not empty ...
-            this.setState({homeworkModalErrors: homeworkModalErrors}); // ... and the corresponding error states are set and a notification is shown
+        // if errors where found, then newErrorText is not empty ...
+        if (newErrorText.length !== 0) {
+            // ... and the corresponding error states are set and a notification is shown
+            this.setState({homeworkModalErrors: homeworkModalErrors});
             this.props.handleNotification({
                 title: 'Some problems found',
                 msg: newErrorText.toString(),
                 variant: 'warning'
             });
         } else { // if no errors where found ...
-            if (this.state.updateHomeworkWished) { // ... and the homework should be updated...
-                this.setState({errorText: newErrorText}); // this is needed, so that a previous not empty errorText (because of errors) becomes empty (meaning no errors found)
-                this.updateHomework(homeworkModal); // ... update the homework
+            // ... and the homework should be updated...
+            if (this.state.updateHomeworkWished) {
+
+                // this is needed, so that a previous not empty errorText (because of errors) becomes empty (meaning no errors found)
+                this.setState({errorText: newErrorText});
+
+                // ... update the homework
+                this.updateHomework(homeworkModal);
             }
             else { // ... else add the new homework
-                this.setState({errorText: newErrorText}); // this is needed, so that a previous not empty errorText (because of errors) becomes empty (meaning no errors found)
+
+                // this is needed, so that a previous not empty errorText (because of errors) becomes empty (meaning no errors found)
+                this.setState({errorText: newErrorText});
+
                 this.addNewHomework(homeworkModal);
             }
         }
     };
 
-    handleTitleChange = (event) => { // invoked, when title is changed of homework, sets homework title
+    // invoked, when title is changed of homework, sets homework title
+    handleTitleChange = (event) => {
 
         let homeworkModal = {...this.state.homeworkModal};
         homeworkModal.title = event.target.value;
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
-        if (event.target.value !== "") { // when there is a title, the error state of the title becomes false
+
+        // when there is a title, the error state of the title becomes false
+        if (event.target.value !== "") {
             homeworkModalErrors.title = false;
         }
 
@@ -243,9 +301,11 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    addNewHomework = (homeworkToAdd)  => { // invoked, when teacher wants to add a new homework
+    // invoked, when teacher wants to add a new homework
+    addNewHomework = (homeworkToAdd)  => {
 
-        HomeworkService.addNewHomework(this.state.currentClass.id, homeworkToAdd) // sent the to be added homework to the backend...
+        // sent the to be added homework to the backend...
+        HomeworkService.addNewHomework(this.state.currentClass.id, homeworkToAdd)
             .then((newHomework) => { // ... and when successfully added the homework, update all corresponding states
                 const updatedHomework = [...this.state.homework];
                 updatedHomework.push(newHomework);
@@ -263,9 +323,11 @@ export default class ClassDetailView extends React.Component {
             }).catch(e => this.props.handleNotification(e));
     };
 
-    updateHomework = (homeworkToUpdate) => { // invoked, when teacher wants to update a homework
+    // invoked, when teacher wants to update a homework
+    updateHomework = (homeworkToUpdate) => {
 
-        HomeworkService.updateHomework(this.state.idOfToBeUpdatedHomework, homeworkToUpdate) // sent the to be updated homework to the backend...
+        // sent the to be updated homework to the backend...
+        HomeworkService.updateHomework(this.state.idOfToBeUpdatedHomework, homeworkToUpdate)
             .then((updatedHomework) => { // ... and when successfully updated the homework, update all corresponding states
 
                 let newHomework = [...this.state.homework];
@@ -285,11 +347,14 @@ export default class ClassDetailView extends React.Component {
                     availableClasses: availableClasses
                 });
 
-                this.toggleModal(); // close modal dialog
+                // close modal dialog
+                this.toggleModal();
+
             }).catch(e => console.log(e));
     };
 
-    handleExerciseTitleChange = (id) => (event) => { // invoked, when teacher changes a title of an exercise, with id you find the exercise whose title you change
+    // invoked, when teacher changes a title of an exercise, with id you find the exercise whose title you change
+    handleExerciseTitleChange = (id) => (event) => {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
@@ -301,9 +366,12 @@ export default class ClassDetailView extends React.Component {
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
         let exerciseIDErrorData = {...homeworkModalErrorsExercises.find(e => e.id === id)};
-        if (event.target.value !== "") { // when there is a title, the error state of the exercise title becomes false
+
+        // when there is a title, the error state of the exercise title becomes false
+        if (event.target.value !== "") {
             exerciseIDErrorData.question = false;
         }
+
         homeworkModalErrorsExercises[id-1] = exerciseIDErrorData;
         homeworkModalErrors.exercises = homeworkModalErrorsExercises;
 
@@ -313,7 +381,8 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleChangeRadioValue = (id) => (event) => { // invoked, when teacher changes the radio value (right answer) of an exercise, with id you find the exercise whose right answer you change
+    // invoked, when teacher changes the radio value (right answer) of an exercise, with id you find the exercise whose right answer you change
+    handleChangeRadioValue = (id) => (event) => {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
@@ -335,7 +404,8 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleChangeAnswers = (id, answerID) => (event) => { // invoked, when teacher changes an answer of an exercise, with id you find the exercise and with answerID the answer you change
+    // invoked, when teacher changes an answer of an exercise, with id you find the exercise and with answerID the answer you change
+    handleChangeAnswers = (id, answerID) => (event) => {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
@@ -348,7 +418,9 @@ export default class ClassDetailView extends React.Component {
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorsExercises = [...homeworkModalErrors.exercises];
-        if (event.target.value !== "") { // when there is an answer, the error state of the answer of the exercise becomes false
+
+        // when there is an answer, the error state of the answer of the exercise becomes false
+        if (event.target.value !== "") {
             let exerciseIDErrorData = {...homeworkModalErrorsExercises.find(e => e.id === id)};
             let exerciseIDErrorDataAnswers = [...exerciseIDErrorData.answers];
             exerciseIDErrorDataAnswers[answerID] = false;
@@ -363,13 +435,16 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleAddExercise = () => { // invoked, when teacher wants to add a new exercise to a homework (comes from ModalDialogHomework component)
+    // invoked, when teacher wants to add a new exercise to a homework (comes from ModalDialogHomework component)
+    handleAddExercise = () => {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
         let newExerciseID = homeworkModalExercises.length;
         newExerciseID = "" + (newExerciseID + 1);
-        homeworkModalExercises.push({ // new exercise is pushed
+
+        // new exercise is pushed
+        homeworkModalExercises.push({
             id: newExerciseID,
             question: '',
             answers: ["", "", "", ""],
@@ -379,7 +454,9 @@ export default class ClassDetailView extends React.Component {
 
         let homeworkModalErrors = {...this.state.homeworkModalErrors};
         let homeworkModalErrorExercises = [...homeworkModalErrors.exercises];
-        homeworkModalErrorExercises.push({ // new exercise is pushed
+
+        // new exercise is pushed
+        homeworkModalErrorExercises.push({
             id: newExerciseID,
             question: false,
             answers: [false, false, false, false],
@@ -394,7 +471,9 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleDeleteExercise = (id) => () => { // invoked, when teacher wants to delete an exercise from a homework (comes from ModalDialogHomework), with id you find the exercise the teacher wants to delete
+    // invoked, when teacher wants to delete an exercise from a homework (comes from ModalDialogHomework),
+    // with id you find the exercise the teacher wants to delete
+    handleDeleteExercise = (id) => () => {
 
         let homeworkModal = {...this.state.homeworkModal};
         let homeworkModalExercises = [...homeworkModal.exercises];
@@ -414,7 +493,9 @@ export default class ClassDetailView extends React.Component {
 
         const lengthExercises = homeworkModal.exercises.length;
         let oldAbleToDeleteState = {...this.state.ableToDeleteExercises};
-        if (lengthExercises < 2) { // determine whether you are allowed to delete an exercise (more than one exercise in a homework is needed)
+
+        // determine whether you are allowed to delete an exercise (more than one exercise in a homework is needed)
+        if (lengthExercises < 2) {
             oldAbleToDeleteState = false;
         }
 
@@ -425,9 +506,12 @@ export default class ClassDetailView extends React.Component {
         });
     };
 
-    handleDeleteHomework = (id) => { // invoked, when teacher wants to delete a homework (comes from single Homework components), with id you find the homework the teacher wants to delete
+    // invoked, when teacher wants to delete a homework (comes from single Homework components),
+    // with id you find the homework the teacher wants to delete
+    handleDeleteHomework = (id) => {
 
-        HomeworkService.deleteHomework(id) // send the id of the to be deleted homework to the backend...
+        // send the id of the to be deleted homework to the backend...
+        HomeworkService.deleteHomework(id)
             .then((data) => { // ... and if successful, update all corresponding states
 
                 let availableClasses = [...this.state.availableClasses];
@@ -443,9 +527,13 @@ export default class ClassDetailView extends React.Component {
             .catch(e => this.props.handleNotification(e));
     };
 
-    handleSwitchChange = (id) => (event) => { // invoked, when teacher wants to make the homework visible or invisible to students (comes from single Homework component), with id you find the homework you want to make visible/invisible
+    // invoked, when teacher wants to make the homework visible or invisible to students (comes from single Homework component),
+    // with id you find the homework you want to make visible/invisible
+    handleSwitchChange = (id) => (event) => {
         const desiredVisibilityStatus = event.target.checked;
-        HomeworkService.changeVisibilityStatus(id, desiredVisibilityStatus) // send data to backend ...
+
+        // send data to backend ...
+        HomeworkService.changeVisibilityStatus(id, desiredVisibilityStatus)
             .then((data) => { // ... if successful, update homework
                 this.setState({
                     homework: [...data.homework],
@@ -454,11 +542,18 @@ export default class ClassDetailView extends React.Component {
             }).catch(e => this.props.handleNotification(e));
     };
 
-    handleUpdateHomework = (id) => { // invoked, when teacher wants to update a homework, with id you find the homework you want to update
-        SubmissionService.getSubmissionOfHomework(id) // get submissions of the homework
+    // invoked, when teacher wants to update a homework, with id you find the homework you want to update
+    handleUpdateHomework = (id) => {
+
+        // get submissions of the homework
+        SubmissionService.getSubmissionOfHomework(id)
             .then(submissions => {
-            if (submissions.count === 0) { // if there are no submissions, you can update the homework
-                HomeworkService.getHomeworkDetail(id) // get the info of the to be updated homework and set the corresponding states
+
+                // if there are no submissions, you can update the homework
+            if (submissions.count === 0) {
+
+                // get the info of the to be updated homework and set the corresponding states
+                HomeworkService.getHomeworkDetail(id)
                     .then((homework) => {
 
                         const homeworkToUpdate = {
@@ -474,7 +569,9 @@ export default class ClassDetailView extends React.Component {
 
                         let homeworkToUpdateErrors = {title: false, exercises: []};
                         homeworkToUpdate.exercises.map(e => {
-                            return homeworkToUpdateErrors.exercises.push({ // return here only needed so that no error warning appears
+
+                            // return here only needed so that no error warning appears
+                            return homeworkToUpdateErrors.exercises.push({
                                 id: e.id,
                                 question: false,
                                 answers: [false, false, false, false],
@@ -503,8 +600,11 @@ export default class ClassDetailView extends React.Component {
         }).catch(e => this.props.handleNotification(e));
     };
 
-    handleHomeworkSelected = (event) => { // invoked, when teacher selects homework from select component in ModalDialogHomework
-        if (event.target.value !== "") { // if a homework is selected, update the corresponding state
+    // invoked, when teacher selects homework from select component in ModalDialogHomework
+    handleHomeworkSelected = (event) => {
+
+        // if a homework is selected, update the corresponding state
+        if (event.target.value !== "") {
             const availableClasses = [...this.state.availableClasses];
             const selectedClass = availableClasses.find(c => c._id === this.state.selectedClass);
             const selectedHomework = selectedClass.homework.find(e => e._id === event.target.value);
@@ -522,7 +622,9 @@ export default class ClassDetailView extends React.Component {
 
             let homeworkModalErrors = {title: false, exercises: []};
             homeworkModal.exercises.map(e => {
-                return homeworkModalErrors.exercises.push({ // return here only needed so that no error warning appears
+
+                // return here only needed so that no error warning appears
+                return homeworkModalErrors.exercises.push({
                     id: e.id,
                     question: false,
                     answers: [false, false, false, false],
@@ -563,46 +665,54 @@ export default class ClassDetailView extends React.Component {
         }
     };
 
-    handleClassSelected = (event) => { // invoked, when teacher selects class from select component in ModalDialogHomework
+    // invoked, when teacher selects class from select component in ModalDialogHomework
+    handleClassSelected = (event) => {
+
         // if a class is selected, update the corresponding state
-            const availableClasses = [...this.state.availableClasses];
+        const availableClasses = [...this.state.availableClasses];
 
-            let selectedClass;
-            if (event.target.value === "") {
-                selectedClass = {_id: ""}; // if none ("") is chose, selected class is given an id which can never be the same as selectedClass and therefore the exercises of the modal dialog are set to initial
-            }
-            else {
-                selectedClass = availableClasses.find(e => e._id === event.target.value);
-            }
-            if (selectedClass._id !== this.state.selectedClass) { // if another class is selected than currently selectedClass
+        let selectedClass;
 
-                let homeworkModalErrors = {
-                    title: false,
-                    exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
-                };
+        // if none ("") is chose, selected class is given an id which can never be the same as selectedClass and
+        // therefore the exercises of the modal dialog are set to initial
+        if (event.target.value === "") {
+            selectedClass = {_id: ""};
+        }
+        else {
+            selectedClass = availableClasses.find(e => e._id === event.target.value);
+        }
 
-                let homeworkModal = {
-                    title: "",
-                    exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
-                    assignedClass: '',
-                    visible: false
-                };
+        // if another class is selected than currently selectedClass
+        if (selectedClass._id !== this.state.selectedClass) {
 
-                let ableToDeleteExercises = false;
+            let homeworkModalErrors = {
+                title: false,
+                exercises: [{id: "1", question: false, answers: [false, false, false, false], rightSolution: false}]
+            };
 
-                this.setState({
-                    selectedClass: selectedClass._id,
-                    selectedHomework: "",
-                    homeworkModalErrors: homeworkModalErrors,
-                    homeworkModal: homeworkModal,
-                    ableToDeleteExercises: ableToDeleteExercises
-                });
-            }
+            let homeworkModal = {
+                title: "",
+                exercises: [{id: "1", question: "", answers: ["", "", "", ""], rightSolution: ""}],
+                assignedClass: '',
+                visible: false
+            };
+
+            let ableToDeleteExercises = false;
+
+            this.setState({
+                selectedClass: selectedClass._id,
+                selectedHomework: "",
+                homeworkModalErrors: homeworkModalErrors,
+                homeworkModal: homeworkModal,
+                ableToDeleteExercises: ableToDeleteExercises
+            });
+        }
     };
 
     render() {
 
-        let addNewHomeworkButton = null; // This button is only available for teachers
+        // This button is only available for teachers
+        let addNewHomeworkButton = null;
 
         if (UserService.isTeacher()) {
             addNewHomeworkButton = <Grid item xs={6} sm={6} md={6}>

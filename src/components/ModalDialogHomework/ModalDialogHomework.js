@@ -39,14 +39,23 @@ const ModalDialogHomework = (props) => {
     );
 
     let alreadyAddedHomework = null;
-    if(props.selectedClass !== "") { // if a teacher selected a class from which he/she wants to copy a homework ...
-        let selecClass = props.availableClasses.find(e => e._id === props.selectedClass); // ... first the selected class is found ...
-        alreadyAddedHomework = selecClass.homework.map(h => { // ... then all the homework from the class are mapped to MenuItems component, which are given to the corresponding select component
+
+    // if a teacher selected a class from which he/she wants to copy a homework ...
+    if(props.selectedClass !== "") {
+
+        // ... first the selected class is found ...
+        let selecClass = props.availableClasses.find(e => e._id === props.selectedClass);
+
+        // ... then all the homework from the class are mapped to MenuItems component,
+        // which are given to the corresponding select component
+        alreadyAddedHomework = selecClass.homework.map(h => {
             return (<MenuItem key={h._id} value={h._id}>{h.title}</MenuItem>)
         })
     }
 
-    let availableClasses = props.availableClasses.map(c => { // maps the available classes of a teacher to MenuItem components, which are given to the corresponding select component
+
+    // maps the available classes of a teacher to MenuItem components, which are given to the corresponding select component
+    let availableClasses = props.availableClasses.map(c => {
         return (<MenuItem key={c._id} value={c._id}>{c.title}</MenuItem>)
     });
 
